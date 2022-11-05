@@ -1,25 +1,434 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.35
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5th_Lab", "5th_Lab.csproj", "{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B2908471-A915-4DD9-9304-AE4A425C3A88}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace Lab_5
+{
+    internal class Program
+    {
+        #region 1 level 1
+        static int Variations(int k, int n)
+        {
+            int fac1 = 1, fac2 = 1, fac3 = 1;
+            for (int i = 1; i < n + 1; i++)
+            {
+                fac1 *= i;
+            }
+            for (int i = 1; i < k + 1; i++)
+            {
+                fac2 *= i;
+            }
+            for (int i = 1; i < (n - k + 1); i++)
+            {
+                fac3 *= i;
+            }
+            return (fac1 / (fac2 * fac3));
+        }
+        #endregion
+
+        #region 2 level 1
+        static double Geron(double a, double b, double c)
+        {
+            double p = (a + b + c) / 2;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+        }
+        #endregion
+
+        #region 6 level 2
+        static void Delete(ref double[] array, int index)
+        {
+            double[] newArray = new double[array.Length - 1];
+            for (int i = 0; i < index; i++) newArray[i] = array[i];
+            for (int i = index; i < newArray.Length; i++) newArray[i] = array[i + 1];
+            array = newArray;
+        }
+        #endregion
+
+        #region 10 level 2
+        static void Del_column(ref double[,] array, int index)
+        {
+            for (int i = 0; i < array.GetLength(1); i++)
+            {
+                for (int j = index; j < array.GetLength(0) - 1; j++)
+                {
+                    array[i, j] = array[i, j + 1];
+                }
+            }
+        }
+        #endregion
+
+        #region 23 level 2
+        static void Task23(ref double[,] matrix)
+        {
+            double[] array = new double[matrix.GetLength(0) * matrix.GetLength(1) + 1];
+            int k = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    array[k] = matrix[i, j];
+                    k += 1;
+                }
+            }
+            Array.Sort(array);
+            Array.Reverse(array);
+            if (array.Length > 5)
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+
+                        if (matrix[i, j] == array[0] || matrix[i, j] == array[1] || matrix[i, j] == array[2] || matrix[i, j] == array[3] || matrix[i, j] == array[4])
+                        {
+                            matrix[i, j] *= 2;
+                        }
+                        else matrix[i, j] /= 2;
+
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < matrix.GetLength(1); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(0); j++)
+                    {
+                        matrix[i, j] *= 2;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region 2 level 3
+        static void Treatment(double[,] matrix, int index, out double[] array)
+        {
+            array = new double[matrix.GetLength(1)];
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                array[j] = matrix[index, j];
+            }
+        }
+        delegate double[] Deleg(ref double[] array);
+        static double[] Increase(ref double[] array)
+        {
+            Array.Sort(array);
+            return array;   
+        }
+        static double[] Decrease(ref double[] array)
+        {
+            Array.Sort(array);
+            Array.Reverse(array);
+            return array;
+        }
+        static void Return (Deleg funk, ref double[,] matrix,int index)
+        {
+            Treatment(matrix, index, out double[] array);
+            double[] array2 = funk(ref array);
+            for (int i = 0; i < array2.Length; i++)
+            {
+                matrix[index,i] = array2[i];
+            }
+        }
+
+        #endregion
+
+        #region 6 level 3
+
+        delegate int Task_6 (double[,] matrix);
+        static int Max_1(double[,] matrix)
+        {
+            double maxi = double.MinValue;
+            int index = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (matrix[0,i] > maxi) { maxi = matrix[0,i]; index = i; }
+            }
+            return index;
+        }
+        static int Max_2(double[,] matrix)
+        {
+            double maxi = double.MinValue;
+            int index = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (matrix[i, i] > maxi) { maxi = matrix[i, i]; index = i; }
+            }
+            return index;
+        }
+        static void Change(ref double[,] matrix, Task_6 f1, Task_6 f2)
+        {
+            double element = 0; int index1 = f1(matrix), index2 = f2(matrix);
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                element = matrix[i, index1];
+                matrix[i, index1] = matrix[i, index2];
+                matrix[i, index2] = element;
+            }
+        }
+        #endregion
+        static void Main(string[] args)
+        {
+            #region 1 level 1
+            const int team = 5;
+            const int condidates1 = 8, condidates2 = 10, condidates3 = 11;
+            Console.WriteLine($"Если кандидатов 8, то {Variations(team, condidates1)}, если 10, то {Variations(team, condidates2)}, а если 11 - {Variations(team, condidates3)} ");
+            #endregion
+
+            #region 2 level 1
+            double a1 = 5, b1 = 3, c1 = 4, a2 = 1, b2 = 2, c2 = 2;
+            if (a1 < b1 + c1 && b1 < a1 + c1 && c1 < a1 + b1 && a2 < b2 + c2 && b2 < a2 + c2 && c2 < a2 + b2)
+            {
+                if (Geron(a1, b1, c1) > Geron(a2, b2, c2)) Console.WriteLine($"Площадь треугольника 1 > 2 и равна {Geron(a1, b1, c1)}");
+                else Console.WriteLine($"Площадь треугольника 2 > 1 и равна {Geron(a2, b2, c2)}");
+            }
+            else Console.WriteLine("Один из треугольников (или оба) не существует(ют)");
+            #endregion
+
+            #region 6 level 2
+            double[] A = new double[7] { 23, 0, -7, 737, 100, -77, 0 }, B = new double[8] { 152, 0, -65, 9, 112, -8, 42, 70 };
+            Delete(ref A, Array.IndexOf(A, A.Max()));
+            Delete(ref B, Array.IndexOf(B, B.Max()));
+            double[] C = new double[A.Length + B.Length];
+            for (int i = 0; i < A.Length; i++)
+            {
+                C[i] = A[i];
+            }
+            for (int i = 0; i < B.Length; i++)
+            {
+                C[i + A.Length] = B[i];
+            }
+            A = C;
+            string enter = String.Join(" ", A);
+            Console.WriteLine(enter);
+            #endregion
+
+            #region 10 level 2
+            Console.WriteLine("Введите размер квадратной матрицы");
+            bool p = true; int count = 0;
+            if (int.TryParse(Console.ReadLine(), out int k) && k > 0)
+            {
+                double[,] D = new double[k, k];
+                for (int i = 0; i < k; i++)
+                {
+                    Console.WriteLine($"Напишите {k} чисел в {i} строке");
+                    for (int j = 0; j < k; j++)
+                    {
+                        if (double.TryParse(Console.ReadLine(), out double element)) { D[i, j] = element; }
+                        else
+                        {
+                            Console.WriteLine("Попробуйте снова");
+                            p = false;
+                            break;
+                        }
+                    }
+                    if (!p) break;
+                }
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = 0; j < k ; j++)
+                    {
+                        Console.Write("{0,4}", D[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+                double maxi = double.MinValue, mini = double.MaxValue;
+                int index_max = 0, index_min = 0;
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = 0; j <= i; j++)
+                    {
+                        if (D[i, j] > maxi) { maxi = D[i, j]; index_max = j; }
+                    }
+                }
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = i + 1; j < k; j++)
+                    {
+                        if (D[i, j] < mini) { mini = D[i, j]; index_min = j; }
+                    }
+                }
+                if (index_min == index_max) { Del_column(ref D, index_min); count += 1; }
+                else if (index_min > index_max) { Del_column(ref D, index_min); Del_column(ref D, index_max); count += 2; }
+                else { Del_column(ref D, index_max); Del_column(ref D, index_min); count += 2; }
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = 0; j < D.GetLength(0) - count
+                        ; j++)
+                    {
+                        Console.Write("{0,4}", D[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Попробуйте снова");
+                return;
+            }
+            #endregion
+
+            #region 23 level 2
+            Console.WriteLine("Введите кол-во строк матрицы, потом столбцов");
+            p = true;
+            if (int.TryParse(Console.ReadLine(), out k) && k > 0 && int.TryParse(Console.ReadLine(), out int h) && h > 0)
+            {
+                double[,] D = new double[k, h];
+                for (int i = 0; i < k; i++)
+                {
+                    Console.WriteLine($"Напишите {h} чисел в {i} строке");
+                    for (int j = 0; j < h; j++)
+                    {
+                        if (double.TryParse(Console.ReadLine(), out double element)) { D[i, j] = element; }
+                        else
+                        {
+                            Console.WriteLine("Попробуйте снова");
+                            p = false;
+                            break;
+                        }
+                    }
+                    if (!p) break;
+                }
+                Task23(ref D);
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = 0; j < h; j++)
+                    {
+                        Console.Write("{0,4}", D[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Попробуйте снова");
+                return;
+            }
+            Console.WriteLine("Введите кол-во строк матрицы, потом столбцов");
+            if (int.TryParse(Console.ReadLine(), out int q) && q > 0 && int.TryParse(Console.ReadLine(), out int w) && w > 0)
+            {
+                double[,] G = new double[q, w];
+                for (int i = 0; i < q; i++)
+                {
+                    Console.WriteLine($"Напишите {w} чисел в {i} строке");
+                    for (int j = 0; j < w; j++)
+                    {
+                        if (double.TryParse(Console.ReadLine(), out double element)) { G[i, j] = element; }
+                        else
+                        {
+                            Console.WriteLine("Попробуйте снова");
+                            p = false;
+                            break;
+                        }
+                    }
+                    if (!p) break;
+                }
+                Task23(ref G);
+                for (int i = 0; i < q; i++)
+                {
+                    for (int j = 0; j < w; j++)
+                    {
+                        Console.Write("{0,4}", G[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Попробуйте снова");
+                return;
+            }
+            #endregion
+
+            #region 2 level 3
+            Console.WriteLine("Введите кол-во строк матрицы, потом столбцов");
+            p = true;
+            if (int.TryParse(Console.ReadLine(), out k) && k > 0 && int.TryParse(Console.ReadLine(), out h) && h > 0)
+            {
+                double[,] D = new double[k, h];
+                for (int i = 0; i < k; i++)
+                {
+                    Console.WriteLine($"Напишите {h} чисел в {i} строке");
+                    for (int j = 0; j < h; j++)
+                    {
+                        if (double.TryParse(Console.ReadLine(), out double element)) { D[i, j] = element; }
+                        else
+                        {
+                            Console.WriteLine("Попробуйте снова");
+                            p = false;
+                            break;
+                        }
+                    }
+                    if (!p) break;
+                }
+                for (int i = 0; i < k; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        Return(Increase, ref D, i);
+                    }
+                    else Return(Decrease, ref D, i);
+                }
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = 0; j < h; j++)
+                    {
+                        Console.Write("{0,4}", D[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Попробуйте снова");
+                return;
+            }
+
+            #endregion
+
+            #region 6 level 3
+            Console.WriteLine("Введите размер квадратной матрицы");
+            p = true; count = 0;
+            if (int.TryParse(Console.ReadLine(), out k) && k > 0)
+            {
+                double[,] D = new double[k, k];
+                for (int i = 0; i < k; i++)
+                {
+                    Console.WriteLine($"Напишите {k} чисел в {i} строке");
+                    for (int j = 0; j < k; j++)
+                    {
+                        if (double.TryParse(Console.ReadLine(), out double element)) { D[i, j] = element; }
+                        else
+                        {
+                            Console.WriteLine("Попробуйте снова");
+                            p = false;
+                            break;
+                        }
+                    }
+                    if (!p) break;
+                }
+                Change(ref D, Max_1, Max_2);
+                for (int i = 0; i < k; i++)
+                {
+                    for (int j = 0; j < k; j++)
+                    {
+                        Console.Write("{0,4}", D[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Попробуйте снова");
+                return;
+            }
+            #endregion
+        }
+    }
+}
