@@ -1,0 +1,797 @@
+1-ST PART
+ //2-ND TASK
+        static int treygolniki(int a,int b,int c)
+        {
+            int p1 = (a + b + c) / 2;
+            int S_1 = (int)Math.Sqrt(p1 * (p1 - a) * (p1 - b) * (p1 - c));
+            return S_1;
+            
+        }
+        static int treug_2(int a,int b,int c)
+        {
+            int p1 = (a + b + c) / 2;
+            int S_1 =  (int)Math.Sqrt(p1 * (p1 - a) * (p1 - b) * (p1 - c));
+            return S_1;
+        }
+        static void Main(string[] args)
+        {
+            int l = treug_2(20, 40, 25);
+            int l2 = treygolniki(40, 20, 10);
+            if (l > l2)
+            {
+                Console.WriteLine("площадь 2 треугольника больше");
+            }
+            else
+            {
+                Console.WriteLine("плошадь 1 треугольника больше");
+            }
+
+
+
+ //TASK 2
+            int i;
+            int fact_a = 1;
+            for (i = 1; i <= a; i++)
+            {
+                fact_a = fact_a * i;
+            }
+            return fact_a;
+        }
+        static double Cab(int a, int b)
+        {
+            return Fact(a) / (Fact(b) * Fact(a - b) * 1.0);
+
+        }
+        static void Main(string[] args)
+        {
+            //1 part task 1
+            double c = Cab(5, 10);
+            double l = Cab(5, 11);
+            double k = Cab(5, 8);
+            Console.WriteLine(c + " " + k + " " + l + " ");
+            Console.Read();
+            
+         
+         
+         
+          2-ND PART!
+          
+          
+          
+           static void zapolnenie(int[,] x)
+        {
+            Random r = new Random();
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    x[i, j] = r.Next(-30, 30);
+                }
+            }
+        }
+        static int z(int[,] x)
+        {
+            int max = x[0, 0];
+            int imax = 0;
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                if (x[i,i] > max)
+                {
+                    max = x[i, i];
+                    imax = i;
+                }
+            }
+            //нижняя диоганаль
+            int l = 1;
+            for (int i = 1; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(0) - l; j++)
+                {
+                    if (x[j + i,i] > max)
+                    {
+                        max = x[j + i, j];
+                        imax = j;
+                    }
+                }
+                l += 1;
+                if (l == 3)
+                {
+                    break;
+                }
+            }
+            return imax;
+        }
+        static int za(int[,] x)
+        {
+            //верхняя часть
+            int xmin = x[0,0];
+            int ixmin = 0;
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                if (x[i,i] <xmin)
+                {
+                    xmin = x[i, i];
+                    ixmin = i;
+                }
+            }
+            int ljx_2 = 1;
+            for (int i = 1; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1) - ljx_2; j++)
+                {
+                    if (x[j+i,j] < xmin)
+                    {
+                        xmin = (x[j,j + i]);
+                        ixmin = j + i;
+                    }
+                }
+                ljx_2 += 1;
+                if (ljx_2 == 3)
+                {
+                    break;
+                }
+            }
+            return ixmin;
+        }
+        static int[,] udalenie_strok(int amax,int amin, int[,] x)
+        {
+            int[,] New_array = new int[x.GetLength(0),x.GetLength(1) - 2];
+            for (int i = amax; i < x.GetLength(0) - 1; i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    x[j,i] = x[j,i + 1];
+                    
+                }
+            }
+            for (int i = amin; i < x.GetLength(0) - 1; i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    x[j, i] = x[j, i + 1];
+                }
+            }
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1) - 2; j++)
+                {
+                    New_array[i,j] = x[i, j];
+                }
+            }
+            return New_array;
+
+        }
+    
+
+        static void Main(string[] args)
+        {
+            //2 часть 10 номер
+           
+                string s = Console.ReadLine();
+            int n;
+            int.TryParse(s, out n);
+            int[,] l = new int[n, n];
+            if (n <3 )
+            {
+                Console.WriteLine("Введите большее кол-во");
+                return;
+            }
+            zapolnenie(l);
+            Console.WriteLine(" Вывод исходной матрицы");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(l[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("Вывод отредактированной");
+            int[,] New_array = udalenie_strok(z(l), za(l), l);
+            for (int i = 0; i < New_array.GetLength(0); i++)
+            {
+                for (int j = 0; j < New_array.GetLength(1); j++)
+                {
+                    Console.Write(New_array[i,j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.ReadLine();
+            
+            
+            
+              //7 номер 2 часть
+            static void ar(int[,] x)
+            {
+                Random r = new Random();
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        x[i, j] = r.Next(-30, 30);
+                    }
+
+                }
+            }
+            static int poisk_max_kol_elementov(int[,] x)
+            {
+                int max_count = 0;
+                int i_el_max = 0;
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+
+
+
+
+                    int int_count = 0;
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        if (x[i, j] > 0)
+                        {
+                            int_count++;
+                        }
+                    }
+                    if (int_count > max_count)
+                    {
+                        max_count = int_count;
+                        i_el_max = i;
+                    }
+                }
+                return i_el_max;
+            }
+            static int poisk_max_val_in_C(int[,] C)
+            {
+                int imax = 0;
+                int max_count = 0;
+                for (int i = 0; i < C.GetLength(1); i++)
+                {
+
+
+
+                    int count = 0;
+                    for (int j = 0; j < C.GetLength(0); j++)
+                    {
+                        if (C[j, i] > 0)
+                        {
+                            count++;
+                        }
+                    }
+                    if (count > max_count)
+                    {
+                        max_count = count;
+                        imax = i;
+                    }
+                }
+                return imax;
+            }
+            static int[,] del_i_evelechenie_massiva_b(int[,] x, int[,] z, int index, int imax)
+            {
+                int[,] new_array = new int[x.GetLength(0) + 1, x.GetLength(1)];
+                int l = 0;
+
+                for (int i = 0; i <= index; i++)
+                {
+                    for (int j = 0; j < new_array.GetLength(1); j++)
+                    {
+
+                        new_array[i, j] = x[i, j];
+
+
+
+                    }
+                    l += 1;
+                }
+
+                //Вставка строки
+
+
+                for (int j = 0; j < z.GetLength(0); j++)
+                {
+                    new_array[index + 1, j] = z[j, imax];
+                }
+
+                l += 1;
+
+                for (int i = index + 1; i < x.GetLength(0) && l < new_array.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        new_array[l, j] = x[i, j];
+                    }
+                    l += 1;
+                }
+
+
+                return new_array;
+
+
+
+            }
+            static void Main(string[] args)
+            {
+                int[,] B = new int[4, 5];
+                int[,] C = new int[5, 6];
+                ar(B);
+                ar(C);
+                Console.WriteLine("Вывод массива В");
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 5; j++)
+                    {
+                        Console.Write(B[i, j] + " ");
+
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine("Вывод массива С");
+                for (int i = 0; i < C.GetLength(0); i++)
+                {
+                    for (int j = 0; j < C.GetLength(1); j++)
+                    {
+                        Console.Write(C[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+                int[,] NEw_Array = del_i_evelechenie_massiva_b(B, C, poisk_max_kol_elementov(B), poisk_max_val_in_C(C));
+                Console.WriteLine("Вывод новой матрицы");
+                for (int i = 0; i < NEw_Array.GetLength(0); i++)
+                {
+                    for (int j = 0; j < NEw_Array.GetLength(1); j++)
+                    {
+                        Console.Write(NEw_Array[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                Console.Read();
+                
+                
+                
+                
+                
+                
+                 //6 номер 2 часть
+            int min_index = 0;
+            int min = x[0];
+            for (int i = 1; i < x.Length; i++)
+            {
+                if (x[i] > min)
+                {
+                    min = x[i];
+                    min_index = i;
+                }
+            }
+            return min_index;
+                  
+        }
+        static int[] vosvrat_massiva(int[] x,int index)
+        {
+            int[] New_array = new int[x.Length - 1];
+            for (int i = 0; i < New_array.Length; i++)
+            {
+                if (i < index)
+                {
+                    New_array[i] = x[i];
+                }
+                else if (i >= index)
+                {
+                    New_array[i] = x[i + 1];
+                }
+
+            }
+            return New_array;
+
+        }
+        static int[] obedenenie_massiviv(int[] x, int[] j)
+        {
+            int[] konech_array = new int[x.Length + j.Length];
+            for (int i = 0; i < konech_array.Length; i++)
+            {
+                if (i < x.Length)
+                {
+                    konech_array[i] = x[i];
+                }
+                else
+                {
+                    konech_array[i] = j[i - x.Length];
+                }
+            }
+            return konech_array;
+        }
+
+        static void Main(string[] args)
+        {
+            Random rnd = new Random();
+            int[] a = new int[7];
+            int[] b = new int[8];
+            for (int i = 0; i < 7; i++)
+            {
+                a[i] = rnd.Next(1, 15);
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                b[i] = rnd.Next(-40, 40);
+            }
+            Console.WriteLine("Вывод элементо массива А");
+            foreach (int x in a)
+            {
+                Console.Write(x + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Вывод элементов массива B");
+            foreach (int x in b)
+            {
+                Console.Write(x + " ");
+            }
+            Console.WriteLine();
+            int[] NEw_a = vosvrat_massiva(a, del_index(a));
+            int[] New_b = vosvrat_massiva(b, del_index(b));
+            int[] new_c = obedenenie_massiviv(NEw_a, New_b);
+            for (int i = 0; i < new_c.Length; i++)
+            {
+                Console.Write(new_c[i] + " ");
+            }
+            Console.ReadLine();
+
+
+
+
+
+ static void random(int[,] L)
+        {
+            Random r = new Random();
+            for (int i = 0; i < L.GetLength(0); i++)
+            {
+                for (int j = 0; j < L.GetLength(1); j++)
+                {
+                    L[i, j] = r.Next(-40, 40);
+                }
+            }
+        }
+        static void SEPOR(int[] l,int f, int[,] M)
+        {
+            for (int i = 0; i < l.Length - 1; i++)
+            {
+                int amin = l[i];
+                int imin = i;
+                for (int j = i + 1; j < l.Length; j++)
+                {
+                    if (l[j] < amin)
+                    {
+                        amin = l[j];
+                        imin = j;
+                    }
+                }
+                l[imin] = l[i];
+                l[i] = amin;
+
+                /* dest[imax] = dest[k];
+                dest[k] = amax; 
+                 */
+
+            }
+            for (int i = 0; i < l.Length; i++)
+            {
+                M[f, i] = l[i];
+            }
+        }
+        static void ymnochenie(int[,] x)
+        {
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1) - 1; j++)
+                {
+                    x[i, j] = x[i, j] / 2;
+                }
+            }
+            for (int i = x.GetLength(1) - 1; i < x.GetLength(1) ; i++)
+            {
+                for (int j = 0; j < x.GetLength(0); j++)
+                {
+                    x[j, i] = x[j, i ] * 2;
+                }
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            int[,] F = new int[5, 5];
+            random(F);
+            Console.WriteLine("Вывод изначального упорядоченного массива");
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Console.Write(F[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            //редактирование
+            int[] ML = new int[5];
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    ML[j] = F[i, j];
+                }
+                SEPOR(ML, i, F);
+
+            }
+            ymnochenie(F);
+            Console.WriteLine("Вывод после обработки");
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Console.Write(F[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.Read();
+            
+            
+            
+            
+            3-RT PART
+            
+            
+            
+            
+            //3 ЧАСТЬ 4 НОМЕР
+    internal class Program
+    {
+        delegate int MAIL(int[] a,int f);
+        #region заполнение матрицы
+        static void piss(int[,] matrix)
+        {
+            Random r = new Random();
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    matrix[i, j] = r.Next(-30, 30);
+                }
+            }
+
+        }
+        #endregion
+        static int len(int[,] a)
+        {
+            int s = 0;
+            for (int i = a.GetLength(1) ; i > 0; i--)
+            {
+                s += i;
+            }
+            return s;
+        }
+        static int[] vosvr(int index, int[] a ,int[,] l)
+        {
+            int x = 0;
+            a = new int[index];
+            for (int i = 0; i < l.GetLength(0); i++)
+            {
+                a[i] = l[i, i];
+                x += 1;
+            }
+            int xer = 1;
+            for (int i = 1; i < l.GetLength(0); i++)
+            {
+                for (int j = 0; j < l.GetLength(1) - xer; j++)
+                {
+                    a[x] = l[i + j, j] ;
+                    x += 1;
+                }
+                xer += 1;
+            }
+            return a;
+        }
+        static int mass(int[] a,int i )
+        {
+            return a[i];
+        }
+        
+       
+        /// <summary>
+        ///  нахождение суммы
+        /// </summary>
+        /// <param name="f">передаваемый метод с уже заполненным массивом</param>
+        /// <param name="n">кол-во элементов в одномерном массиве</param>
+        
+        /// <param name="s">выходная сумма</param>
+        /// <returns></returns>
+        static double xl(MAIL f,int[] l,int n,out double s)
+        {
+            s = 0;
+            for (int i = 0; i < n; i++)
+            {
+                s +=  Math.Pow(f(l,i),2);
+                
+                
+            } 
+            return s;
+                    
+        }
+       
+        #region верхний треугольник
+        //для верхнего треугольника
+        static int[] xl2(int[,] x, int[] k,int index)
+        {
+            int t = 0;
+            k = new int[index];
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                k[i] = x[i, i];
+                t += 1;
+            }
+            int xer_2 = 1;
+            for (int i = 1; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1) - xer_2; j++)
+                {
+                    k[t] = x[j, i + j];
+                    t += 1;
+                }
+                xer_2 += 1;
+            }
+            return k;
+
+
+        }
+        #endregion
+        static void Main(string[] args)
+        {
+            string lm = Console.ReadLine();
+            int n;
+            int.TryParse(lm, out n);
+            int[,] s = new int[n,n];
+            piss(s);
+            Console.WriteLine("Вывод исходной матрицы s");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(s[i,j] + " ");
+                }
+                Console.WriteLine();
+            }
+            double q = 0;
+            double w;
+            //нижний треугольник
+            int[] M = new int[len(s)];
+            //верхний треугольник
+            int[] L =new int[len(s)];
+            int[] new_l = xl2(s, L, len(s));
+            xl(mass, new_l, len(s), out w);
+            q = w;
+            double v;
+            double b = 0;
+            int[] new_m = vosvr(len(s), M, s);
+            Console.WriteLine("Вывод вектора нижнего треугольника");
+            for (int i = 0; i < new_m.Length; i++)
+            {
+                Console.Write(new_m[i] + " ");
+            }
+            Console.WriteLine();
+            xl(mass, new_m, len(s), out v);
+            b = v;
+            
+            Console.WriteLine(b);
+            Console.WriteLine("Вывод вектора верхнего треугольника");
+            for (int i = 0; i < new_l.Length; i++)
+            {
+                Console.Write(new_l[i] + " ");
+            }
+            Console.WriteLine("Вывод суммы верхнего треугольника");
+
+            Console.WriteLine(q);
+            Console.ReadLine();
+            
+            
+            
+            
+             //1 НОМЕР 3 ЧАСТЬ
+    internal class Program
+    {
+
+        public delegate double XY(double n);
+        static double sum_X(double n)
+        {
+           
+            int i = 1;
+
+            double s = 0;
+                s += Math.Cos(i * n) / i;
+               
+                i += 1;
+                i = i * i;
+            return s;
+        }
+        static double sum_y(double n)
+        {
+            int i = 1;
+
+
+            double y = 0;
+            y += Math.Exp(Math.Cos(n)) * Math.Cos(Math.Sin(n));
+            i += 1;
+            i = i * i;
+            return y;
+        }
+        static void Main(string[] args)
+        {
+            double l;
+            double f;
+            double o, b;
+            double y = 0;
+            double d = 0;
+
+            double k = 0;
+            double m = 0;
+
+
+            
+
+            wifif(sum_X, sum_y, 1, 0.1, 0.1, out  l,out f);
+            m = l;
+            k = f;
+            wifif(Sum_X2, Sum_Y2, Math.PI / 5, Math.PI / 25, Math.PI,out o,out b);
+            y = o;
+            d = b;
+            Console.WriteLine("Суммы первого ряда");
+            Console.WriteLine(m);
+            Console.WriteLine(k);
+            Console.WriteLine("Суммы второго ряда");
+            Console.WriteLine(y);
+            Console.WriteLine(d);
+            Console.ReadLine();
+
+        }
+        
+        #region неработающая хуита
+        static double Sum_X2(double n)
+        {
+            double s = 0;
+           
+            int i = 1;
+           
+                s += Math.Pow(-1,i) + Math.Cos(i * n) / Math.Pow(i,2);
+               
+                i = i * i;
+                i += 1;
+
+            return s;
+          
+        }
+        static double Sum_Y2(double n)
+        {
+           
+            double y = 0;
+            int i = 1;
+
+            
+            y += (Math.Pow(n, 2) - (Math.PI / 3)) / 4;
+            i = i * i;
+            i += 1;
+
+            return y;
+        }
+        
+        #endregion 
+        static double wifif(XY f,XY L, double n, double a,double b,out double MX,out double MY)
+        {
+            MX = 0;
+            MY = 0;
+            for (double i = a; i < n; i+= b)
+            { 
+                MX = MX + f(i);    
+                MY = MY + L(i);
+            }
+            return MX;
+            return MY;
+            
+            
+            
+            
+            
+          
+          
