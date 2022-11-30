@@ -1,248 +1,80 @@
- static void pp(int[,] l)
+//2-nd part 23-th task
+        static void random(int[,] L)
         {
             Random r = new Random();
-            for (int i = 0; i < l.GetLength(0); i++)
+            for (int i = 0; i < L.GetLength(0); i++)
             {
-                for (int j = 0; j < l.GetLength(1); j++)
+                for (int j = 0; j < L.GetLength(1); j++)
                 {
-                    l[i, j] = r.Next(-20, 20);
+                    L[i, j] = r.Next(-40, 40);
                 }
             }
         }
-        static int[,] preobrazovanie(int[] a, int[,] l)
+        static void yvelechenie_i_del(int[,] a)
         {
-            int n = 0;
-            do
+            int[] new_array = new int[a.GetLength(0) * a.GetLength(1)];
+            int k = 0;
+            for (int i = 0; i <a.GetLength(0); i++)
             {
-                int index = 0;
-                int amax = l[index, 0];
-                int index_1 = 0;
-                for (int i = 0; i < l.GetLength(1); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
                 {
-                    if (l[index, i] > amax)
-                    {
-                        amax = l[index, i];
-                        index_1 = i;
-
-                    }
+                    new_array[k] = a[i,j];
+                    k += 1;
                 }
-                a[n] = index_1;
-                n = n + 1;
-                index += 1;
-               
-                
-
-            } while (n != l.GetLength(1));
-            int kol = 0;
-            for (int i = 0; i < l.GetLength(0); i++)
-            {
-                for (int j = 0; j < l.GetLength(1); j++)
-                {
-                    if (j != a[kol])
-                    {
-                        l[i, j] = l[i, j] / 2;
-                    }
-                    else
-                    {
-                        l[i, j] *= 2;
-                    }
-                }
-                kol += 1;
             }
-            return l;
+            Array.Sort(new_array);
+            Array.Reverse(new_array);
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if (a[i, j] == new_array[0] || a[i, j] == new_array[1] || a[i, j] == new_array[2] || a[i, j] == new_array[3] || a[i, j] == new_array[4])
+                    {
+                        if (a[i, j] > 0)
+                        {
+                            a[i,j] *= 2;
+
+                        }
+                        else
+                        {
+                            a[i, j] /= 2;
+                        }
+                    }
+                    else if (a[i, j] > 0) a[i, j] /= 2;
+                    else a[i, j] *= 2;
+
+                }
+            }
+            
+          
+
         }
+       
         static void Main(string[] args)
         {
             string s = Console.ReadLine();
             int n;
             int.TryParse(s, out n);
-            int[,] a = new int[n,n];
-            pp(a);
-            Console.WriteLine("Вывод исходной");
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    Console.Write(a[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
-            int[] l = new int[n];
-
-            int[,] new_array = preobrazovanie(l, a);
-            Console.WriteLine("Вывод новой");
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    Console.Write(new_array[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.ReadLine();
-
-        }
-        
-        
-        //10 номер
-         static void zapolnenie(int[,] x)
-        {
-            Random r = new Random();
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1); j++)
-                {
-                    x[i, j] = r.Next(-30, 30);
-                }
-            }
-        }
-        static int z(int[,] x)
-        {
-            int max = x[0, 0];
-            int imax = 0;
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                if (x[i,i] > max)
-                {
-                    max = x[i, i];
-                    imax = i;
-                }
-            }
-            //нижняя диоганаль
-            int l = 1;
-            for (int i = 1; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(0) - l; j++)
-                {
-                    if (x[j + i,i] > max)
-                    {
-                        max = x[j + i, j];
-                        imax = j;
-                    }
-                }
-                l += 1;
-                if (l == 3)
-                {
-                    break;
-                }
-            }
-            return imax;
-        }
-        static int za(int[,] x)
-        {
-            //верхняя часть
-            int xmin = x[0,0];
-            int ixmin = 0;
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                if (x[i,i] <xmin)
-                {
-                    xmin = x[i, i];
-                    ixmin = i;
-                }
-            }
-            int ljx_2 = 1;
-            for (int i = 1; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1) - ljx_2; j++)
-                {
-                    if (x[j+i,j] < xmin)
-                    {
-                        xmin = (x[j,j + i]);
-                        ixmin = j + i;
-                    }
-                }
-                ljx_2 += 1;
-                if (ljx_2 == 3)
-                {
-                    break;
-                }
-            }
-            return ixmin;
-        }
-        static int[,] udalenie_strok(int amax,int amin, int[,] x)
-        {
-            if (amax == amin)
-            {
-                int[,] New_array1 = new int[x.GetLength(0), x.GetLength(1) - 1];
-                for (int i = amax; i < x.GetLength(0) - 1; i++)
-                {
-                    for (int j = 0; j < x.GetLength(1); j++)
-                    {
-                        x[j, i] = x[j, i + 1];
-
-                    }
-                }
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = 0; j < x.GetLength(1) - 1; j++)
-                    {
-                        New_array1[i, j] = x[i, j];
-                    }
-                }
-                return New_array1;
-            }
-            else
-            {
-                int[,] New_array = new int[x.GetLength(0), x.GetLength(1) - 2];
-                for (int i = amax; i < x.GetLength(0) - 1; i++)
-                {
-                    for (int j = 0; j < x.GetLength(1); j++)
-                    {
-                        x[j, i] = x[j, i + 1];
-
-                    }
-                }
-                for (int i = amin; i < x.GetLength(0) - 1; i++)
-                {
-                    for (int j = 0; j < x.GetLength(1); j++)
-                    {
-                        x[j, i] = x[j, i + 1];
-                    }
-                }
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = 0; j < x.GetLength(1) - 2; j++)
-                    {
-                        New_array[i, j] = x[i, j];
-                    }
-                }
-                return New_array;
-            }
-
-        }
-    
-
-        static void Main(string[] args)
-        {
-            //2 часть 10 номер
            
-                string s = Console.ReadLine();
-            int n;
-            int.TryParse(s, out n);
-            int[,] l = new int[n, n];
-            if (n <3 )
-            {
-                Console.WriteLine("Введите большее кол-во");
-                return;
-            }
-            zapolnenie(l);
-            Console.WriteLine(" Вывод исходной матрицы");
+            int[,] a = new int[n, n];
+            random(a);
+            Console.WriteLine("Old matrix");
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    Console.Write(l[i, j] + " ");
+                    Console.Write(a[i,j] + " ");
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("Вывод отредактированной");
-            int[,] New_array = udalenie_strok(z(l), za(l), l);
-            for (int i = 0; i < New_array.GetLength(0); i++)
+            yvelechenie_i_del(a);
+          
+            Console.WriteLine("New matrix");
+            for (int i = 0; i < n; i++)
             {
-                for (int j = 0; j < New_array.GetLength(1); j++)
+                for (int j = 0; j < n; j++)
                 {
-                    Console.Write(New_array[i,j] + " ");
+                    Console.Write(a[i,j] + " ");
                 }
                 Console.WriteLine();
             }
