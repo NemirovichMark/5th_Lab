@@ -1,31 +1,91 @@
- // 1- rst 2-ND TASK
-        static int treygolniki(int a, int b, int c)
+ static void pp(int[,] l)
         {
-            int p1 = (a + b + c) / 2;
-            int S_1 = (int)Math.Sqrt(p1 * (p1 - a) * (p1 - b) * (p1 - c));
-            return S_1;
-
+            Random r = new Random();
+            for (int i = 0; i < l.GetLength(0); i++)
+            {
+                for (int j = 0; j < l.GetLength(1); j++)
+                {
+                    l[i, j] = r.Next(-20, 20);
+                }
+            }
         }
-       
+        static int[,] preobrazovanie(int[] a, int[,] l)
+        {
+            int n = 0;
+            do
+            {
+                int index = 0;
+                int amax = l[index, 0];
+                int index_1 = 0;
+                for (int i = 0; i < l.GetLength(1); i++)
+                {
+                    if (l[index, i] > amax)
+                    {
+                        amax = l[index, i];
+                        index_1 = i;
+
+                    }
+                }
+                a[n] = index_1;
+                n = n + 1;
+                index += 1;
+               
+                
+
+            } while (n != l.GetLength(1));
+            int kol = 0;
+            for (int i = 0; i < l.GetLength(0); i++)
+            {
+                for (int j = 0; j < l.GetLength(1); j++)
+                {
+                    if (j != a[kol])
+                    {
+                        l[i, j] = l[i, j] / 2;
+                    }
+                    else
+                    {
+                        l[i, j] *= 2;
+                    }
+                }
+                kol += 1;
+            }
+            return l;
+        }
         static void Main(string[] args)
         {
-            int l = treygolniki(20, 40, 25);
-            int l2 = treygolniki(40, 20, 10);
-            if (l > l2)
+            string s = Console.ReadLine();
+            int n;
+            int.TryParse(s, out n);
+            int[,] a = new int[n,n];
+            pp(a);
+            Console.WriteLine("Вывод исходной");
+            for (int i = 0; i < n; i++)
             {
-                Console.WriteLine("площадь 2 треугольника больше");
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(a[i, j] + " ");
+                }
+                Console.WriteLine();
             }
-            else
+            int[] l = new int[n];
+
+            int[,] new_array = preobrazovanie(l, a);
+            Console.WriteLine("Вывод новой");
+            for (int i = 0; i < n; i++)
             {
-                Console.WriteLine("плошадь 1 треугольника больше");
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(new_array[i, j] + " ");
+                }
+                Console.WriteLine();
             }
+            Console.ReadLine();
 
         }
         
         
-        
-        //2-nd part 10-th task
-        static void zapolnenie(int[,] x)
+        //10 номер
+         static void zapolnenie(int[,] x)
         {
             Random r = new Random();
             for (int i = 0; i < x.GetLength(0); i++)
@@ -42,7 +102,7 @@
             int imax = 0;
             for (int i = 0; i < x.GetLength(0); i++)
             {
-                if (x[i, i] > max)
+                if (x[i,i] > max)
                 {
                     max = x[i, i];
                     imax = i;
@@ -54,7 +114,7 @@
             {
                 for (int j = 0; j < x.GetLength(0) - l; j++)
                 {
-                    if (x[j + i, i] > max)
+                    if (x[j + i,i] > max)
                     {
                         max = x[j + i, j];
                         imax = j;
@@ -71,11 +131,11 @@
         static int za(int[,] x)
         {
             //верхняя часть
-            int xmin = x[0, 0];
+            int xmin = x[0,0];
             int ixmin = 0;
             for (int i = 0; i < x.GetLength(0); i++)
             {
-                if (x[i, i] < xmin)
+                if (x[i,i] <xmin)
                 {
                     xmin = x[i, i];
                     ixmin = i;
@@ -86,9 +146,9 @@
             {
                 for (int j = 0; j < x.GetLength(1) - ljx_2; j++)
                 {
-                    if (x[j + i, j] < xmin)
+                    if (x[j+i,j] < xmin)
                     {
-                        xmin = (x[j, j + i]);
+                        xmin = (x[j,j + i]);
                         ixmin = j + i;
                     }
                 }
@@ -100,7 +160,7 @@
             }
             return ixmin;
         }
-        static int[,] udalenie_strok(int amax, int amin, int[,] x)
+        static int[,] udalenie_strok(int amax,int amin, int[,] x)
         {
             if (amax == amin)
             {
@@ -115,7 +175,7 @@
                 }
                 for (int i = 0; i < x.GetLength(0); i++)
                 {
-                    for (int j = 0; j < x.GetLength(1) - 2; j++)
+                    for (int j = 0; j < x.GetLength(1) - 1; j++)
                     {
                         New_array1[i, j] = x[i, j];
                     }
@@ -124,7 +184,6 @@
             }
             else
             {
-
                 int[,] New_array = new int[x.GetLength(0), x.GetLength(1) - 2];
                 for (int i = amax; i < x.GetLength(0) - 1; i++)
                 {
@@ -150,17 +209,19 @@
                 }
                 return New_array;
             }
+
         }
+    
 
         static void Main(string[] args)
         {
             //2 часть 10 номер
-
-            string s = Console.ReadLine();
+           
+                string s = Console.ReadLine();
             int n;
             int.TryParse(s, out n);
             int[,] l = new int[n, n];
-            if (n < 3)
+            if (n <3 )
             {
                 Console.WriteLine("Введите большее кол-во");
                 return;
@@ -181,105 +242,9 @@
             {
                 for (int j = 0; j < New_array.GetLength(1); j++)
                 {
-                    Console.Write(New_array[i, j] + " ");
+                    Console.Write(New_array[i,j] + " ");
                 }
                 Console.WriteLine();
             }
             Console.ReadLine();
-        }
-        
-        
-         //2-nd part 23-th task
-        static void random(int[,] L)
-        {
-            Random r = new Random();
-            for (int i = 0; i < L.GetLength(0); i++)
-            {
-                for (int j = 0; j < L.GetLength(1); j++)
-                {
-                    L[i, j] = r.Next(-40, 40);
-                }
-            }
-        }
-        static void SEPOR(int[] l, int f, int[,] M)
-        {
-            for (int i = 0; i < l.Length - 1; i++)
-            {
-                int amin = l[i];
-                int imin = i;
-                for (int j = i + 1; j < l.Length; j++)
-                {
-                    if (l[j] < amin)
-                    {
-                        amin = l[j];
-                        imin = j;
-                    }
-                }
-                l[imin] = l[i];
-                l[i] = amin;
-
-
-            }
-            for (int i = 0; i < l.Length; i++)
-            {
-                M[f, i] = l[i];
-            }
-        }
-        static void ymnochenie(int[,] x)
-        {
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1) - 1; j++)
-                {
-                    x[i, j] = x[i, j] / 2;
-                }
-            }
-            for (int i = x.GetLength(1) - 1; i < x.GetLength(1); i++)
-            {
-                for (int j = 0; j < x.GetLength(0); j++)
-                {
-                    x[j, i] = x[j, i] * 2;
-                }
-            }
-        }
-
-        static void Main(string[] args)
-        {
-            int n;
-            string s = Console.ReadLine();
-            int.TryParse(s, out n);
-            int[,] F = new int[n, n];
-            random(F);
-            Console.WriteLine("Вывод изначального упорядоченного массива");
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    Console.Write(F[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
-            //редактирование
-            int[] ML = new int[n];
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    ML[j] = F[i, j];
-                }
-                SEPOR(ML, i, F);
-
-            }
-            ymnochenie(F);
-            Console.WriteLine("Вывод после обработки");
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    Console.Write(F[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.Read();
-
         }
