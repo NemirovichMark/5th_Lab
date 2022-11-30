@@ -6,7 +6,7 @@
             {
                 for (int j = 0; j < L.GetLength(1); j++)
                 {
-                    L[i, j] = r.Next(-40, 40);
+                    L[i, j] = r.Next(1, 40);
                 }
             }
         }
@@ -30,18 +30,21 @@
                 {
                     if (a[i, j] == new_array[0] || a[i, j] == new_array[1] || a[i, j] == new_array[2] || a[i, j] == new_array[3] || a[i, j] == new_array[4])
                     {
-                        if (a[i, j] > 0)
-                        {
+                        
+                        
                             a[i,j] *= 2;
 
-                        }
-                        else
-                        {
-                            a[i, j] /= 2;
-                        }
+                        
+                        
+                        
+                            
+                        
                     }
-                    else if (a[i, j] > 0) a[i, j] /= 2;
-                    else a[i, j] *= 2;
+                    else
+                    {
+                        a[i,j] /= 2;
+                    }
+                    
 
                 }
             }
