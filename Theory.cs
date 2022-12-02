@@ -1,233 +1,679 @@
 using System;
-using System.Drawing;
 
 namespace _5th_Lab
 {
     class Program
     {
-        #region How to use Delegate. Example 1.
-        delegate int LinkUsing(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
-        static int GetLength(int[] arr) // create a 1st method with same params as ddelegate has
-        {
-            return arr.Length;
-        }
-        static int GetSum(int[] arr) // create a 2nd method with same params as ddelegate has
-        {
-            int sum = 0;
-            foreach (int element in arr)
-                sum += element;
-            return sum;
-        }
-        static int Calculate(LinkUsing func, int[] arr, int count)
-        {
-            int total = 0;
-            for (int i = 0; i < count; i++)
-            {
-                total += func(arr);
-            }
-            return total;
-        }
-        #endregion
-
-        #region How to use Delegate. Example 2.
-        delegate void SequenceUsing(int[] arr); // create a delegate with type: return void (!!!), input: 1st param: int[]
-        static void Say(int[] arr) // create a 1st method with same params as ddelegate has
-        {
-            Console.WriteLine($"It is a {arr.GetType().ToString()}");
-        }
-        static void Read(int[] arr) // create a 2nd method with same params as ddelegate has
-        {
-            foreach (int element in arr)
-                Console.Write($"{element} ");
-            Console.WriteLine();
-        }
-        static void Analyze(int[] arr, int start, int end)
-        {
-            int[] part = new int[end-start];
-            int k = 0;
-            for (int i = start; i < end; i++)
-            {
-                part[k] = arr[i];
-                k++;
-            }
-            SequenceUsing severalWorks = Say; // if we call the severalWorks after that, it would call Say(int[] arr);
-            severalWorks += Read; // if we call the severalWorks after that, it would call Say(int[] arr) and next Read(int[] arr);
-            try
-            {
-                severalWorks -= Say; // if we call the severalWorks after that, it would call Read(int[] arr) only;
-            }
-            catch { }
-            severalWorks += Say; // if we call the severalWorks after that, it would call Read(int[] arr) and next Say(int[] arr);
-            
-            severalWorks(part); // call it (2 methods).
-            /*
-             * But know, that if the methods return some value, you will get only last result!!! so better use delegates with void methods in that way!
-             */
-        }
-        #endregion
-        #region How to use Delegate. Example 3.
-        delegate double ChooseUsage(int[,] matrix, int row); // create a delegate with type: return double value, input: 2 param: int[,], int
-        static double GetAverageInTheRow(int[,] matrix, int row)
-        {
-            double avg = 0;
-            int columns = matrix.GetLength(1);
-            for (int i = 0; i < columns; i++)
-                avg += matrix[row, i] / columns;
-            return avg;
-        }
-        static double GetAverageInTheColumn(int[,] matrix, int column)
-        {
-            double avg = 0;
-            int rows = matrix.GetLength(0);
-            for (int i = 0; i < rows; i++)
-                avg += matrix[i, column] / rows;
-            return avg;
-        }
-        #endregion
-
-        static int PolymorphMethod() { return 0; }
-        static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
-                                                                        //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
-        static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
-        static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
-
-        //     static T PolymorphMethod<T>(T yourType) { return number; } - cannot create since there is method with same input params
-        static double PolymorphMethod(int count, double[] array)
-        {
-            var sum = 0.0;
-            foreach (double value in array)
-            {
-                sum += value;
-            }
-            return sum + count;
-        }
-
-        static bool Compare(int left, int right) => left > right; // => it is lambda operator the same as { return }
-        static bool Compare(double left, double right) => left > right;
-
         static void Main(string[] args)
         {
+            #region Level I
+            Console.WriteLine("------ Level I -----------------------\n");
 
-            Console.WriteLine("Delegate example 1");
-            int[] array = new int[5] { 1, 0, 2, 0, 5 };
-            Calculate(GetLength, array, 3);
-            Calculate(GetSum, array, 3);
+            #region Task 1
+            Console.WriteLine("Task 1:\n");
 
-            Console.WriteLine("Delegate example 2");
+            Console.WriteLine($"5 from 8: {Combination(5, 8)}");
+            Console.WriteLine($"5 from 10: {Combination(5, 10)}");
+            Console.WriteLine($"5 from 11: {Combination(5, 11)}");
 
-            Analyze(new int[5] { 1, 2, 3, 4, 5 }, 2, 4);
+            #endregion
 
-            Console.WriteLine("Delegate example 3");
+            #region Task 2
+            Console.WriteLine("\nTask 2:\n");
 
-            ChooseUsage select;
-            if (int.TryParse(Console.ReadLine(), out int sample))
-                select = GetAverageInTheRow;
+            (int a, int b, int c) t1 = (7, 3, 5);
+            (int a, int b, int c) t2 = (4, 8, 8);
+
+            Console.WriteLine($"Triangle #1: a = {t1.a}, b = {t1.b}, c = {t1.c}");
+            Console.WriteLine($"Triangle #2: a = {t2.a}, b = {t2.b}, c = {t2.c}");
+
+            int comparisonResult = CompareTriangles(t1, t2);
+
+            switch (comparisonResult)
+            {
+                case 0:
+                    Console.WriteLine("Result: triangles are equal");
+                    break;
+                case 1:
+                    Console.WriteLine("Result: t1 > t2");
+                    break;
+                case 2:
+                    Console.WriteLine("Result: t1 < t2");
+                    break;
+                default:
+                    Console.WriteLine("Entered values is incorrect!");
+                    break;
+            }
+
+            Console.WriteLine();
+            #endregion
+
+            #endregion
+
+            #region Level II
+            Console.WriteLine("------ Level II -----------------------\n");
+
+            #region Task 6
+            Console.WriteLine("\nTask 6:\n");
+
+            int[] firstArray = new int[7] { 9, 12, 0, 7, 2, 5, 4 };
+            int[] secondArray = new int[8] { 3, 15, 85, 40, 13, 28, 9, 0 };
+
+            Console.Write("First array: ");
+            for (int i = 0; i < firstArray.Length; i++)
+                Console.Write($"{firstArray[i]} ");
+            Console.WriteLine();
+
+            Console.Write("Second array: ");
+            for (int i = 0; i < secondArray.Length; i++)
+                Console.Write($"{secondArray[i]} ");
+            Console.WriteLine();
+
+            int firstMaxIndex = ArrayMaxIndex(firstArray);
+            int secondMaxIndex = ArrayMaxIndex(secondArray);
+
+            firstArray = ArrayRemoveAt(firstArray, firstMaxIndex);
+            secondArray = ArrayRemoveAt(secondArray, secondMaxIndex);
+
+            firstArray = ArrayUnite(firstArray, secondArray);
+
+            Console.Write("Result array: ");
+            for (int i = 0; i < firstArray.Length; i++)
+                Console.Write($"{firstArray[i]} ");
+            Console.WriteLine();
+            #endregion
+
+            #region Task 10
+            Console.WriteLine("\nTask 10:\n");
+
+            int[,] matrix = new int[,]
+            {
+                { 0, 4, 5, 1 },
+                { 3, 6, 8, 2 },
+                { 5, 0, 12, 11 },
+                { 4, 3, 7, 5 }
+            };
+
+            Console.WriteLine("Initial matrix:");
+            WriteMatrix(matrix);
+            Console.WriteLine();
+
+            matrix = MatrixDeleteByRule(matrix);
+
+            Console.WriteLine("Result matrix:");
+            WriteMatrix(matrix);
+            Console.WriteLine();
+            #endregion
+
+            #region Task 23
+            Console.WriteLine("\nTask 23:\n");
+
+            matrix = new int[,]
+            {
+                { 0, -2, -4 },
+                { -6, -8, -10 },
+                { -12, -14, -16 }
+            };
+
+            int[,] matrix2 = new int[,]
+            {
+                { 1, 12, 3, 0, 9, 5 },
+                { 11, 6, 7, 9, 9, 2 },
+                { 3, 5, 17, 14, 0, 3 },
+                { 0, 15, 3, 6, 2, 5 }
+            };
+
+            Console.WriteLine("Initial matrix #1:");
+            WriteMatrix(matrix);
+            Console.WriteLine();
+
+            MatrixLevelUp(matrix);
+
+            Console.WriteLine("Result matrix #1:");
+            WriteMatrix(matrix);
+            Console.WriteLine();
+
+            Console.WriteLine("Initial matrix #2:");
+            WriteMatrix(matrix2);
+            Console.WriteLine();
+
+            MatrixLevelUp(matrix2);
+
+            Console.WriteLine("Result matrix #2:");
+            WriteMatrix(matrix2);
+            Console.WriteLine();
+            #endregion
+
+            #endregion
+
+            #region Level III
+            Console.WriteLine("------ Level III -----------------------\n");
+
+            #region Task 1
+            Console.WriteLine("\nTask 1:\n");
+
+            (decimal start, decimal end, decimal step) parameters = (0.1m, 1m, 0.1m);
+            Summarize(FirstSumAddend, FirstReccurrent, FirstReferenceFunc, 1, parameters, 0.0001);
+
+            Console.WriteLine();
+
+            parameters = ((decimal)(Math.PI / 5), (decimal)Math.PI, (decimal)(Math.PI / 25));
+            Summarize(SecondSumAddend, SecondReccurrent, SecondReferenceFunc, 0, parameters, 0.0001);
+            #endregion
+
+            #region Task 2
+            Console.WriteLine("\nTask 2:\n");
+
+            matrix = new int[,]
+            {
+                { 1, 12, 3, 0, 9, 5 },
+                { 11, 6, 7, 9, 9, 2 },
+                { 3, 5, 17, 14, 0, 3 },
+                { 0, 15, 3, 6, 2, 5 }
+            };
+
+            Console.WriteLine("Initial matrix:");
+            WriteMatrix(matrix);
+
+            MatrixOddEvenSort(matrix, MatrixSort);
+
+            Console.WriteLine();
+            Console.WriteLine("Result matrix:");
+            WriteMatrix(matrix);
+            Console.WriteLine();
+
+            #endregion
+
+            #region Task 3
+            Console.WriteLine("\nTask 3:\n");
+
+            int[] array = new int[] { 4, 8, 9, 0, 3, 5, 4, 7, 1, 8, 9, 4 };
+            Console.Write("Initial array: ");
+            WriteArray(array);
+            Console.WriteLine();
+
+            int sum = ArrayOddIndexSum(array);
+            Console.WriteLine($"Odd index sum: {sum}");
+            #endregion
+
+            #endregion
+        }
+
+        static int Combination(int take, int all)
+        {
+            int combination = 0;
+
+            if (take > all)
+                return -1;
+
+            int n = Fact(all);
+            int k = Fact(take);
+            int diff = Fact(all - take);
+
+            combination = n / (k * diff);
+
+            return combination;
+        }
+
+
+        static bool TriangleExists((int a, int b, int c) t)
+        {
+            if (t.a >= t.b + t.c)
+                return false;
+            if (t.b >= t.a + t.c)
+                return false;
+            if (t.c >= t.b + t.c)
+                return false;
+            return true;
+        }
+
+        static int CompareTriangles((int a, int b, int c) t1, (int a, int b, int c) t2)
+        {
+            if (!TriangleExists(t1) || !TriangleExists(t2))
+                return -1;
+
+            bool hasNegativeValues = t1.a < 0 ||
+                t1.b < 0 ||
+                t1.c < 0 ||
+                t2.a < 0 ||
+                t2.b < 0 ||
+                t2.c < 0;
+
+            if (hasNegativeValues)
+                return -1;
+
+            double p1 = (t1.a + t1.b + t1.c) / 2;
+            double p2 = (t2.a + t2.b + t2.c) / 2;
+
+            double s1 = Math.Sqrt(p1 * (p1 - t1.a) * (p1 - t1.b) * (p1 - t1.c));
+            double s2 = Math.Sqrt(p2 * (p2 - t2.a) * (p2 - t2.b) * (p2 - t2.c));
+
+            if (s1 > s2)
+                return 1;
+            else if (s1 < s2)
+                return 2;
+
+            return 0;
+        }
+
+        static int[] ArrayRemoveAt(int[] array, int index)
+        {
+            int[] newArray = new int[array.Length - 1];
+            int newIndex = 0;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i == index)
+                    continue;
+                newArray[newIndex] = array[i];
+                newIndex++;
+            }
+
+            return newArray;
+        }
+
+        static int[] ArrayUnite(int[] firstArray, int[] secondArray)
+        {
+            int[] newArray = new int[firstArray.Length + secondArray.Length];
+
+            int newIndex = 0;
+
+            for (int i = 0; i < firstArray.Length; i++)
+            {
+                newArray[newIndex] = firstArray[i];
+                newIndex++;
+            }
+
+            for (int i = 0; i < secondArray.Length; i++)
+            {
+                newArray[newIndex] = secondArray[i];
+                newIndex++;
+            }
+
+            return newArray;
+        }
+
+        static int ArrayMaxIndex(int[] array)
+        {
+            int max = array[0];
+            int idx = 0;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] > max)
+                {
+                    max = array[i];
+                    idx = i;
+                }
+            }
+
+            return idx;
+        }
+
+        static int[,] MatrixDeleteByRule(int[,] matrix)
+        {
+            int max = matrix[0, 0];
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            int maxColumn = 0;
+
+            // Find max of lower triangle of matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    if (j > i)
+                        break;
+
+                    if (matrix[i, j] > max)
+                    {
+                        max = matrix[i, j];
+                        maxColumn = j;
+                    }
+                }
+            }
+
+            int min = matrix[0, 0];
+            int minColumn = 0;
+
+            // Find min of upper triangle of matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    if (j <= i)
+                        continue;
+
+                    if (matrix[i, j] < min)
+                    {
+                        min = matrix[i, j];
+                        minColumn = j;
+                    }
+                }
+            }
+
+            matrix = MatrixRemoveColumn(matrix, maxColumn);
+            matrix = MatrixRemoveColumn(matrix, minColumn);
+
+            return matrix;
+        }
+
+        static int[,] MatrixRemoveColumn(int[,] matrix, int columnIndex)
+        {
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            int[,] newMatrix = new int[rows, columns - 1];
+
+
+            for (int i = 0; i < rows; i++)
+            {
+                int newColIndex = 0;
+                for (int j = 0; j < columns; j++)
+                {
+                    if (j == columnIndex)
+                        continue;
+
+                    newMatrix[i, newColIndex] = matrix[i, j];
+                    newColIndex++;
+                }
+            }
+
+            return newMatrix;
+        }
+
+        static void MatrixLevelUp(int[,] matrix)
+        {
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            int startIdx = MatrixGetOneDimIndex(0, 0, columns);
+            int endIdx = MatrixGetOneDimIndex(rows - 1, columns - 1, columns);
+
+            MatrixSort(matrix, MatrixSortKind.Desc, startIdx, endIdx);
+
+            int elementChangedCount = 0;
+            int nextI = 0;
+            int nextJ = 0;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    if (matrix[i, j] >= 0)
+                        matrix[i, j] *= 2;
+                    else
+                        matrix[i, j] /= 2;
+
+                    elementChangedCount++;
+
+                    if (elementChangedCount == 5)
+                    {
+                        if (j + 1 == columns)
+                        {
+                            nextJ = 0;
+                            nextI = i + 1;
+                        }
+                        else
+                        {
+                            nextJ = j + 1;
+                            nextI = i;
+                        }
+                        break;
+                    }
+                }
+
+                if (elementChangedCount == 5)
+                    break;
+            }
+
+            for (int i = nextI; i < rows; i++)
+            {
+                int j = 0;
+
+                if (i == nextI)
+                    j = nextJ;
+
+                for (; j < columns; j++)
+                {
+                    if (matrix[i, j] >= 0)
+                        matrix[i, j] /= 2;
+                    else
+                        matrix[i, j] *= 2;
+                }
+            }
+        }
+
+        enum MatrixSortKind { Asc, Desc }
+
+        // End and start indexes should be one dimensional
+        static void MatrixSort(int[,] matrix, MatrixSortKind sortKind, int startIdx, int endIdx)
+        {
+            int sortIndex = startIdx + 1;
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            while (sortIndex <= endIdx)
+            {
+                (int row, int column) reflectedIdx = MatrixReflectIndex(sortIndex, columns);
+                int rowIdx = reflectedIdx.row;
+                int colIdx = reflectedIdx.column;
+
+                reflectedIdx = MatrixReflectIndex(sortIndex - 1, columns);
+                int prevRowIdx = reflectedIdx.row;
+                int prevColIdx = reflectedIdx.column;
+
+                if (sortKind == MatrixSortKind.Desc)
+                {
+                    if (sortIndex == startIdx || matrix[prevRowIdx, prevColIdx] >= matrix[rowIdx, colIdx])
+                    {
+                        sortIndex++;
+                    }
+                    else
+                    {
+                        int swap = matrix[prevRowIdx, prevColIdx];
+                        matrix[prevRowIdx, prevColIdx] = matrix[rowIdx, colIdx];
+                        matrix[rowIdx, colIdx] = swap;
+
+                        sortIndex--;
+                    }
+                }
+                else
+                {
+                    if (sortIndex == startIdx || matrix[prevRowIdx, prevColIdx] <= matrix[rowIdx, colIdx])
+                    {
+                        sortIndex++;
+                    }
+                    else
+                    {
+                        int swap = matrix[prevRowIdx, prevColIdx];
+                        matrix[prevRowIdx, prevColIdx] = matrix[rowIdx, colIdx];
+                        matrix[rowIdx, colIdx] = swap;
+
+                        sortIndex--;
+                    }
+                }
+            }
+        }
+
+        delegate void MatrixSortFunc(int[,] matrix, MatrixSortKind sortKind, int startIdx, int endIdx);
+
+        static void MatrixOddEvenSort(int[,] matrix, MatrixSortFunc sortFunc)
+        {
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                int startIdx = MatrixGetOneDimIndex(i, 0, columns);
+                int endIdx = MatrixGetOneDimIndex(i, columns - 1, columns);
+
+                if ((i + 1) % 2 != 0)
+                    sortFunc(matrix, MatrixSortKind.Desc, startIdx, endIdx);
+                else
+                    sortFunc(matrix, MatrixSortKind.Asc, startIdx, endIdx);
+            }
+        }
+
+        static (int row, int column) MatrixReflectIndex(int oneDimensionalIndex, int columns)
+        {
+            int rowIndex = oneDimensionalIndex / columns;
+            int columnIndex = oneDimensionalIndex % columns;
+
+            return (rowIndex, columnIndex);
+        }
+        static int MatrixGetOneDimIndex(int row, int column, int columns) => row * columns + column;
+
+        delegate double GetSumAddend(int i, decimal x, int reccurrent);
+        delegate int GetReccurrent(int prevReccurrent, int i);
+        delegate double TraceReferenceFunc(decimal x);
+
+        static int FirstReccurrent(int prevReccurrent, int i) => prevReccurrent * i;
+        static int SecondReccurrent(int prevReccurrent, int i) => -prevReccurrent;
+
+        static double FirstReferenceFunc(decimal x) => Math.Exp(Math.Cos((double)x)) * Math.Cos(Math.Sin((double)x));
+        static double SecondReferenceFunc(decimal x) => ((double)(x * x) - (Math.PI * Math.PI / 3)) / 4;
+
+        static double FirstSumAddend(int i, decimal x, int reccurrent)
+        {
+            double addend = Math.Cos(i * (double)x) / reccurrent;
+            return addend;
+        }
+
+        static double SecondSumAddend(int i, decimal x, int reccurrent)
+        {
+            double addend = reccurrent * Math.Cos(i * (double)x) / (i * i);
+            return addend;
+        }
+
+        static void Summarize(GetSumAddend getSumAddend,
+            GetReccurrent getReccurrent,
+            TraceReferenceFunc referenceFunc,
+            double initSum,
+            (decimal start, decimal end, decimal step) parameters,
+            double epsiland)
+        {
+            for (decimal x = parameters.start; x <= parameters.end; x += parameters.step)
+            {
+                double sum = initSum;
+                double addend = 1;
+                int reccurrent = 1;
+
+                for (int i = 1; addend > epsiland; i++)
+                {
+                    reccurrent = getReccurrent(reccurrent, i);
+                    addend = getSumAddend(i, x, reccurrent);
+                    sum += addend;
+                }
+
+                Console.WriteLine(LogSummarization(referenceFunc, x, sum));
+            }
+        }
+
+        static int ArrayOddIndexSum(int[] array)
+        {
+            double avg = ArrayAvg(array);
+
+            if (array[0] > avg)
+                SwapPairsArray(array, false);
             else
-                select = GetAverageInTheColumn;
-            Console.WriteLine($"Average = {select(new int[2, 3] { { 1, 2, 0 }, { 11, 3, 9 } }, 1)}");
+                SwapPairsArray(array, true);
 
-            return;
-            #region OOP principles
+            Console.Write("Swapped array: ");
+            WriteArray(array);
+            Console.WriteLine();
 
-            /* You operation mith moduls. Modul can work with data he get or keep inside. 
-             * Moduls of higher lvl hould not know about lower ones.
-             * So your code will be safe and logical.
-             * 
-             * 
-             * What are you need?
-             * 
-             * Abstraction - noone shuld know HOW another modul (class / method) works.
-             * You have to provide input value and get the output.
-             * User interface shouldn't affect on the system's work.
-             * Also realization should not change the pattern (abstract scheme)
-             * 
-             * Encapsulation - do not provide more than asked.
-             * Another class or method shouldn't know about any field or method in your object (class, structure and so on) except you provide to it.
-             * Group your data in a single object. One object (entity) should know and do only that things that incuded or were gotten outside.
-             * 
-             * Inheritance - Inheritance is the method of acquiring features of the existing class into the new class with additional properties or methods.
-             * Also it is allow us to reach better incapsulation (up-cast).
-             * Inheritance can be from 1 to many (classes / interfaces) or from many to one (interfaces only). 
-             * So we can create an object (entity) with such properties we need and agregate in with another objects that have the same property.
-             * 
-             * Polymorphism - the most essential concept which allow any object or method has more than one name associated with it. And it allow your code be more flexible.
-             * Difference can be in the type it use, parameters it get.
-             * 
-             * In that lab you will have an acquaintance with polymorphism
-             * 
-             */
+            int sum = 0;
+            for (int i = 1; i < array.Length; i += 2)
+                sum += array[i];
 
-            Console.WriteLine(PolymorphMethod());
+            return sum;
+        }
 
-            Console.WriteLine(PolymorphMethod(10));
+        delegate void SwapPairsArrayFunc(int[] array, bool fromEnd);
 
-            Console.WriteLine(PolymorphMethod(2.56));
+        static void SwapPairsArray(int[] array, bool fromEnd)
+        {
+            int bound = 0;
 
-            Console.WriteLine(PolymorphMethod("Abracadabra")); // general type will be called, because no another method that suit to this type
-
-            Console.WriteLine(PolymorphMethod(5, new[] { 0.1223, 1.2, 8.9, -1.5 }));
-
-            #endregion
-
-            #region DRY - don't repeat yourself
-
-            /* Very simple advice :)
-             * You already did it, using cycle, for example instead maing calculation on each line
-             * 
-             * If you see that in your program is repeat, make a separate method and call it when it needs.
-             */
-
-            int numerator = 1, denominator = 1;
-
-
-            double sum = 0, average = 0;
-
-            if (numerator > denominator)
+            if (!fromEnd)
             {
-                Console.WriteLine(true);
+                if (array.Length % 2 == 0)
+                    bound = array.Length - 1;
+                else
+                    bound = array.Length - 2;
+
+                for (int i = 0; i < bound; i += 2)
+                {
+                    int swap = array[i];
+                    array[i] = array[i + 1];
+                    array[i + 1] = swap;
+                }
             }
             else
             {
-                Console.WriteLine(false);
-            }
+                if (array.Length % 2 != 0)
+                    bound += 1;
 
-            if (sum > average)
+                for (int i = array.Length - 1; i > bound; i -= 2)
+                {
+                    int swap = array[i];
+                    array[i] = array[i - 1];
+                    array[i - 1] = swap;
+                }
+            }
+        }
+
+        static double ArrayAvg(int[] array)
+        {
+            int sum = ArraySum(array);
+            return (double)sum / array.Length;
+        }
+
+        static int ArraySum(int[] array)
+        {
+            int sum = 0;
+            foreach (var num in array)
+                sum += num;
+            return sum;
+        }
+
+        static string LogSummarization(TraceReferenceFunc referenceFunc, decimal x, double currentAddend)
+        {
+            double y = referenceFunc(x);
+            return $"s = {Math.Round(currentAddend, 3)}\t y = {Math.Round(y, 3)}\t x = {Math.Round(x, 3)}";
+        }
+
+        static void WriteArray(int[] array)
+        {
+            foreach (var num in array)
+                Console.Write($"{num} ");
+        }
+
+        static void WriteMatrix(int[,] matrix)
+        {
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
             {
-                Console.WriteLine(true);
+                for (int j = 0; j < columns; j++)
+                    Console.Write("{0, -5}", matrix[i, j]);
+                Console.WriteLine();
             }
-            else
+        }
+
+        static int Fact(int n)
+        {
+            int fact = n;
+            while (n > 1)
             {
-                Console.WriteLine(false);
+                n -= 1;
+                fact *= n;
             }
 
-            // Carry out the logic (DRY + Incapsilation + Polymorphism in such small example)) - look in the head of program
-            Compare(numerator, denominator);
-            Compare(sum, average);
-
-            #endregion
-
-            #region SOLID principles
-
-            /* single responsibility, open–closed, Liskov substitution, interface segregation и dependency inversion
-             * 
-             * S - Each class should keep everithing he need for work inside itself.
-             * O - Your program should be open for extentions but closed for changes. It is very difficlt to reach it, actually.
-             * L - Heirs should be able to use father's metods.
-             * I - Separate your program to interfaces and provide only what need in particular cases.
-             * D - One object shouldn't to talk another at the same level what to do. Use actions instead.
-             */
-
-            // We will work with SOLID closely at 7-8 & 10th labs.
-
-            #endregion
-
-            #region Signature
-            /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
-             * In c# for methods (and delegates) it includes full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
-             */
-
-            #endregion
+            return fact;
         }
     }
 }
