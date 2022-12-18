@@ -1,0 +1,497 @@
+// Лабораторная работа №5
+// Уровень 1
+// Номер 1
+/*
+#region
+static int VarCount(int n, int k) {
+            return Fact(n) / (Fact(k) * Fact(n - k));
+        }
+        static int Fact(int f) {
+            int a = 1;
+            for (int i = 2; i <= f; i++) {
+                a = a * i;
+            }
+            return a;
+        }
+        static void l1_1() {
+            int n = Convert.ToInt32(Console.ReadLine()), k = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine(VarCount(n, k));
+            int n1 = Convert.ToInt32(Console.ReadLine()), k1 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine(VarCount(n1, k1));
+        }
+l1_1();
+#endregion
+*/
+
+// Номер 2
+/*
+#region
+static double Square(double a, double b, double c) {
+  double p = (a + b + c) / 2;
+  if (c > p || a > p || b > p) {
+  Console.WriteLine("not a triangle");
+  return 0;
+        }
+            double s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            return s;
+        }
+        static void l1_2() {
+            int a = 5, b = 5, c = 7;
+            double q = Square(a, b, c);
+            Console.WriteLine(q);
+            int a1 = 6, b1 = 6, c1 = 11;
+            double q2 = Square(a1, b1, c1);
+            Console.WriteLine(q2);
+            if (q > q2) {
+                Console.WriteLine("first is bigger");
+
+            } else {
+                Console.WriteLine("second is bigger");
+            }
+        }
+l1_2();
+#endregion
+*/
+
+// Уровень 2
+// Номер 6
+/*
+#region
+static int[] DeleteMax(int[] arr) {
+  int max = int.MinValue;
+  int imax = 0;
+  int[] a = new int[arr.Length - 1];
+  int n = arr.Length;
+  for (int i = 0; i < n; i++) {
+       if (arr[i] > max) {
+       max = arr[i];
+       imax = i;
+       }
+   }
+   n--;
+   for (int i = 0; i < imax; i++) {
+   a[i] = arr[i];
+   }
+   for (int i = imax; i < n; i++) {
+       a[i] = arr[i + 1];
+   }
+      return a;
+    }
+   static void l2_6() {
+   int[] a = new int[7];
+   for (int i = 0; i < 7; i++)
+{
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out a[i]));
+    }
+}
+            int[] b = new int[8];
+            for (int i = 0; i < 8; i++)
+{
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out a[i]));
+    }
+}
+            a = DeleteMax(a);
+            foreach(int u in a) {
+                Console.Write(u + " ");
+            }
+            Console.WriteLine();
+            b = DeleteMax(b);
+            foreach(int u in b) {
+                Console.Write(u + " ");
+            }
+            Console.WriteLine();
+            int[] c = new int[a.Length + b.Length];
+            for (int i = 0; i < a.Length; i++) {
+                c[i] = a[i];
+            }
+            int bi = 0;
+            for (int i = a.Length; i < a.Length + b.Length; i++) {
+                c[i] = b[bi];
+                bi++;
+            }
+            foreach(int u in c) {
+                Console.Write(u);
+            }
+        }
+l2_6();
+#endregion
+*/
+
+// Номер 10
+/*
+#region
+static void PrintMatrix(int[, ] arr) {
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j < arr.GetLength(1); j++) {
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        static int[, ] DeleteColumns(int[, ] arr) {
+            int max = int.MinValue;
+            int imax = 0;
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j <= i; j++) {
+                    if (arr[i, j] > max) {
+                        max = arr[i, j];
+                        imax = j;
+                    }
+                }
+            }
+            int min = int.MaxValue;
+            int imin = 0;
+            for (int i = arr.GetLength(0) - 2; i >= 0; i--) {
+                for (int j = arr.GetLength(0) - 1; j > i; j--) {
+                    if (arr[i, j] < min) {
+                        min = arr[i, j];
+                        imin = j;
+                    }
+                }
+            }
+            if (imax < imin) {
+                int[, ] a = new int[arr.GetLength(0), arr.GetLength(1) - 2];
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = 0; j < imax; j++) {
+                        a[i, j] = arr[i, j];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imin; j < arr.GetLength(1) - 1; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imax; j < arr.GetLength(1) - 2; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                return a;
+            }
+            if (imax > imin) {
+                int[, ] a = new int[arr.GetLength(0), arr.GetLength(1) - 2];
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = 0; j < imin; j++) {
+                        a[i, j] = arr[i, j];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imax; j < arr.GetLength(1) - 1; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imin; j < arr.GetLength(1) - 2; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                return a;
+            } {
+                int[, ] a = new int[arr.GetLength(0), arr.GetLength(1) - 1];
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = 0; j < imin; j++) {
+                        a[i, j] = arr[i, j];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imin; j < arr.GetLength(1) - 1; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                return a;
+            }
+        }
+        static void l2_10() {
+        int n = 3;
+        int[, ] a = new int[n, n];
+        for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out a[i, j]));
+    }
+}
+            PrintMatrix(a);
+            a = DeleteColumns(a);
+            PrintMatrix(a);
+        }
+
+        l2_10();
+#endgerion
+*/
+
+// Номер 23
+/*
+#region
+        static void PrintMatrix(int[, ] arr) {
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j < arr.GetLength(1); j++) {
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static int FindMax(int a, int[, ] arr) {
+            int max = int.MinValue;
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                {
+                    for (int j = 0; j < arr.GetLength(1); j++) {
+                        if (arr[i, j] > max && arr[i, j] < a) {
+                            max = arr[i, j];
+                        }
+                    }
+                }
+            }
+            return max;
+        }
+        static void DoubleMax(int[, ] arr) {
+            int f = int.MaxValue;
+            for (int i = 0; i < 5; i++) {
+                Console.WriteLine(f = FindMax(f, arr));
+            }
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j < arr.GetLength(1); j++) {
+                    if (arr[i, j] >= f) {
+                        arr[i, j] *= 2;
+                    } else {
+                        arr[i, j] /= 2;
+                    }
+                }
+            }
+        }
+
+        static void l2_23() {
+        int m = 3;
+            int[, ] a = new int[m, m];
+            for (int i = 0; i < m; i++)
+{
+    for (int j = 0; j < m; j++)
+    {
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out a[i, j]));
+    }
+}
+            PrintMatrix(a);
+            Console.WriteLine();
+            DoubleMax(a);
+            Console.WriteLine();
+            PrintMatrix(a);
+            Console.WriteLine();
+            int n = 4;
+            int[, ] b = new int[n, n];
+            for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out b[i, j]));
+    }
+}
+            PrintMatrix(b);
+            Console.WriteLine();
+            DoubleMax(b);
+            Console.WriteLine();
+            PrintMatrix(b);
+        }
+l2_23();
+#endregion
+*/
+
+// Уровень 3
+// Номер 2
+/*
+#region
+   static void PrintMatrix(int[, ] arr) {
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j < arr.GetLength(1); j++) {
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static void SortRowUp(int[, ] arr, int i) {
+            for (int t = 0; t < arr.GetLength(1); t++) {
+                for (int j = t; j < arr.GetLength(1); j++) {
+                    if (arr[i, t] > arr[i, j]) {
+                        int temp = arr[i, t];
+                        arr[i, t] = arr[i, j];
+                        arr[i, j] = temp;
+                    }
+                }
+            }
+        }
+        static void SortRowDown(int[, ] arr, int i) {
+            for (int t = 0; t < arr.GetLength(1); t++) {
+                for (int j = t; j < arr.GetLength(1); j++) {
+                    if (arr[i, t] < arr[i, j]) {
+                        int temp = arr[i, t];
+                        arr[i, t] = arr[i, j];
+                        arr[i, j] = temp;
+                    }
+                }
+            }
+        }
+        static void SortMatrix(int[, ] arr, ProccessRow f1, ProccessRow f2) {
+            for (int i = 0; i < arr.GetLength(0); i += 2) {
+                f1(arr, i);
+            }
+            for (int i = 1; i < arr.GetLength(0); i += 2) {
+                f2(arr, i);
+            }
+        }
+        static void l3_2() {
+            int n = 4;
+            int[, ] a = new int[n, n];
+            for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out a[i, j]));
+    }
+}
+            PrintMatrix(a);
+            SortMatrix(a, SortRowUp, SortRowDown);
+            PrintMatrix(a);
+        }
+
+l3_2();
+delegate void ProccessRow(int[, ] a, int i);
+#endregion
+*/
+
+// Номер 10
+/*
+#region
+     static void PrintMatrix(int[, ] arr) {
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j < arr.GetLength(1); j++) {
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static int FindMaxUpper(int[, ] arr) {
+            int min = int.MaxValue;
+            int imin = 0;
+            for (int i = arr.GetLength(0) - 2; i >= 0; i--) {
+                for (int j = arr.GetLength(0) - 1; j > i; j--) {
+                    if (arr[i, j] < min) {
+                        min = arr[i, j];
+                        imin = j;
+                    }
+                }
+            }
+            return imin;
+        }
+
+        static int FindMaxLower(int[, ] arr) {
+            int max = int.MinValue;
+            int imax = 0;
+            for (int i = 0; i < arr.GetLength(0); i++) {
+                for (int j = 0; j <= i; j++) {
+                    if (arr[i, j] > max) {
+                        max = arr[i, j];
+                        imax = j;
+                    }
+                }
+            }
+            return imax;
+        }
+
+        static int[, ] DeleteColumns2(int[, ] arr, FindColumnToDelete f1, FindColumnToDelete f2) {
+            int imax = f1(arr);
+            int imin = f2(arr);
+            if (imax < imin) {
+                int[, ] a = new int[arr.GetLength(0), arr.GetLength(1) - 2];
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = 0; j < imax; j++) {
+                        a[i, j] = arr[i, j];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imin; j < arr.GetLength(1) - 1; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imax; j < arr.GetLength(1) - 2; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                return a;
+            }
+            if (imax > imin) {
+                int[, ] a = new int[arr.GetLength(0), arr.GetLength(1) - 2];
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = 0; j < imin; j++) {
+                        a[i, j] = arr[i, j];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imax; j < arr.GetLength(1) - 1; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imin; j < arr.GetLength(1) - 2; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                return a;
+            } {
+                int[, ] a = new int[arr.GetLength(0), arr.GetLength(1) - 1];
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = 0; j < imin; j++) {
+                        a[i, j] = arr[i, j];
+                    }
+                }
+                for (int i = 0; i < arr.GetLength(0); i++) {
+                    for (int j = imin; j < arr.GetLength(1) - 1; j++) {
+                        a[i, j] = arr[i, j + 1];
+                    }
+                }
+                return a;
+            }
+        }
+
+        static void l3_7_10() {
+            int n = 3;
+            int[, ] a = new int[n, n];
+             for (int i = 0; i < n; i++)
+{
+    for (int j = 0; j < n; j++)
+    {
+        do
+        {
+        }
+        while (!int.TryParse(Console.ReadLine(), out a[i, j]));
+    }
+}
+            PrintMatrix(a);
+            a = DeleteColumns2(a, FindMaxUpper, FindMaxLower);
+            PrintMatrix(a);
+        }
+
+l3_7_10();
+delegate int FindColumnToDelete(int[, ] arr);
+#endregion
+*/
