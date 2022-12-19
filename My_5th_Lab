@@ -1,0 +1,351 @@
+
+using System;
+using System.Dynamic;
+using System.Linq;
+using System.Reflection;
+
+namespace Lab_5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int c, maxColumn, minColumn, c1, l1, c2, l2;
+            double min, max;
+            double[,] array, boxx;
+            double[] arr, box;
+
+            #region 1 in 1
+            Console.WriteLine("Task 1 level 1");
+
+            Console.Write("Numbers of ways for 8 candidates: ");
+            Console.WriteLine(Combination(8, 5));
+
+            Console.Write("Numbers of ways for 10 candidates: ");
+            Console.WriteLine(Combination(10, 5));
+
+            Console.Write("Numbers of ways for 11 candidates: ");
+            Console.WriteLine(Combination(11, 5));
+
+            Console.WriteLine();
+            #endregion
+
+            #region 2 in 1
+            Console.WriteLine("Task 2 level 1");
+
+            Console.WriteLine("Write size of sides of first triangle");
+            Double.TryParse(Console.ReadLine(), out double aa1);
+            Double.TryParse(Console.ReadLine(), out double bb1);
+            Double.TryParse(Console.ReadLine(), out double cc1);
+
+            Console.WriteLine("Write size of sides of second triangle");
+            Double.TryParse(Console.ReadLine(), out double aa2);
+            Double.TryParse(Console.ReadLine(), out double bb2);
+            Double.TryParse(Console.ReadLine(), out double cc2);
+
+            if ((aa1 > 0) && (bb1 > 0) && (cc1 > 0) && (aa2 > 0) && (bb2 > 0) && (cc2 > 0))
+            {
+                Console.WriteLine(Math.Max(TriangleSquare(aa1, bb1, cc1), TriangleSquare(aa2, bb2, cc2)));
+            }
+
+            Console.WriteLine();
+            #endregion
+
+            #region 6 in 2
+            Console.WriteLine("Task 6 level 2");
+
+            arr = new double[7];
+            Console.WriteLine("Write elements of array A");
+            for (int i = 0; i < 7; i++)
+            { Double.TryParse(Console.ReadLine(), out arr[i]); }
+
+            box = new double[8];
+            Console.WriteLine("Write elements of array B");
+            for (int i = 0; i < 8; i++)
+            { Double.TryParse(Console.ReadLine(), out box[i]); }
+
+            Console.WriteLine(String.Join(" ", arr));
+            Console.WriteLine(String.Join(" ", box));
+            Console.WriteLine(String.Join(" ", AllianceArray(DeleteMax(arr), DeleteMax(box))));
+
+            Console.WriteLine();
+            #endregion
+
+            #region 10 in 2
+            Console.WriteLine("Task 10 level 2");
+            Console.WriteLine("Write height of array");
+            if (Int32.TryParse(Console.ReadLine(), out c))
+            {
+                array = ReadArray(c, c);
+
+                // Find max of lower triangle
+                max = array[0, 0];
+                maxColumn = 0;
+                for (int i = 0; i < array.GetLength(0); i++)
+                    for (int j = 0; j <= i; j++)
+                        if (array[i, j] > max)
+                        { max = array[i, j]; maxColumn = j; }
+
+                // Find min of upper triangle
+                min = array[0, 1];
+                minColumn = 1;
+                for (int i = 0; i < array.GetLength(0); i++)
+                    for (int j = i + 1; j < array.GetLength(1); j++)
+                        if (array[i, j] < min)
+                        { min = array[i, j]; minColumn = j; }
+
+                array = DeleteColumn(array, minColumn);
+                array = DeleteColumn(array, maxColumn - 1);
+
+                WriteArr(array);
+            }
+            Console.WriteLine();
+            #endregion
+
+            #region 23 in 2
+            Console.WriteLine("Task 23 level 2");
+
+            Console.WriteLine("Write rows of first array");
+            if (Int32.TryParse(Console.ReadLine(), out c1))
+            {
+                Console.WriteLine("Write coloumns of first array");
+                if (Int32.TryParse(Console.ReadLine(), out l1))
+                {
+                    array = ReadArray(c1, l1);
+                    Console.WriteLine("Write rows of second array");
+                    if (Int32.TryParse(Console.ReadLine(), out c2))
+                    {
+                        Console.WriteLine("Write coloumns of second array");
+                        if (Int32.TryParse(Console.ReadLine(), out l2))
+                        {
+                            boxx = ReadArray(c2, l2);
+
+                            array = RecreateMatrix(array);
+                            boxx = RecreateMatrix(boxx);
+
+                            Console.WriteLine();
+                            Console.WriteLine("Recreate first array");
+                            WriteArr(array);
+                            Console.WriteLine();
+                            Console.WriteLine("Recreate second array");
+                            WriteArr(boxx);
+                        }
+                        else { Console.WriteLine(":("); }
+                    }
+                    else { Console.WriteLine(":("); }
+                }
+                else { Console.WriteLine(":("); }
+            }
+            else { Console.WriteLine(":("); }
+
+            Console.WriteLine();
+            #endregion
+
+            #region 4 in 3
+            Console.WriteLine("Task 4 level 3");
+            Console.WriteLine("Write height of array");
+            if (Int32.TryParse(Console.ReadLine(), out c))
+            {
+                array = ReadArray(c, c);
+                Console.WriteLine();
+                Console.WriteLine(Summ(array, VectorForUpTriangle, VectorForDownTriangle));
+            }
+            Console.WriteLine();
+            #endregion
+
+            #region 6 in 3
+            Console.WriteLine("Task 6 level 3");
+            Console.WriteLine("Write height of array");
+            if (Int32.TryParse(Console.ReadLine(), out c))
+            {
+                array = ReadArray(c, c);
+                WriteArr(array);
+
+                Console.WriteLine();
+
+                array = ChangeMatrix(array, MaxInFirstRow, MaxInMainDiagonal);
+                Console.WriteLine("Changed array");
+                WriteArr(array);
+            }
+            Console.WriteLine();
+            #endregion
+
+        }
+        static void WriteArr(double[,] a)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                { Console.Write(a[i, j] + " "); }
+                Console.WriteLine();
+            }
+        }
+        static double[,] ReadArray(int c, int l)
+        {
+            double[,] a = new double[c, l];
+            for (int i = 0; i < c; i++)
+                for (int j = 0; j < l; j++)
+                {
+                    Console.WriteLine("Write " + j + " element in line " + i);
+                    if (Double.TryParse(Console.ReadLine(), out a[i, j])) { }
+                    else { Console.WriteLine(":("); break; }
+                }
+            return a;
+        }
+        static int Factorial(int n)
+        {
+            int f = 1;
+            while (n > 0) { f *= n; n--; }
+            return f;
+        }
+        static int Combination(int n, int k)
+        {
+            return (Factorial(n) / (Factorial(k) * Factorial(n - k)));
+        }
+        static double TriangleSquare(double a, double b, double c)
+        {
+            double p = (a + b + c) / 2;
+            return Math.Pow(p * (p - a) * (p - b) * (p - c), 0.5);
+        }
+        static double[] DeleteMax(double[] a)
+        {
+            double max = a[0];
+            int max_index = 0;
+            for (int i = 0; i < a.Length; i++)
+            { if (a[i] > max) { max = a[i]; max_index = i; } }
+            for (int i = max_index + 1; i < a.Length; i++)
+            { a[i - 1] = a[i]; }
+            Array.Resize(ref a, a.Length - 1);
+            return a;
+        }
+        static double[] AllianceArray(double[] a, double[] b)
+        {
+            int add = a.Length;
+            Array.Resize(ref a, a.Length + b.Length);
+            for (int i = add; i < a.Length; i++)
+            { a[i] = b[i - add]; }
+            return a;
+        }
+        static double[,] DeleteColumn(double[,] a, int index)
+        {
+            double[,] newa = new double[a.GetLength(0), (a.GetLength(1) - 1)];
+            for (int i = 0; i < newa.GetLength(0); i++)
+                for (int j = 0; j < newa.GetLength(1); j++)
+                { newa[i, j] = a[i, j]; }
+            for (int i = 0; i < newa.GetLength(0); i++)
+                for (int j = index + 1; j < a.GetLength(1); j++)
+                { newa[i, j - 1] = a[i, j]; }
+            return newa;
+        }
+        static double[,] RecreateMatrix(double[,] a)
+        {
+            double[,] newa = new double[a.GetLength(0), a.GetLength(1)];
+
+            double m1, m2, m3, m4, m5;
+            Find5max(a, out m1, out m2, out m3, out m4, out m5);
+
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if ((a[i, j] == m1) || (a[i, j] == m2) || (a[i, j] == m3) || (a[i, j] == m4) || (a[i, j] == m5))
+                    { a[i, j] *= 2; }
+                    else { a[i, j] = a[i, j] * 0.5; }
+                }
+
+           return a;
+        }
+        static void Find5max(double[,]a, out double max1, out double max2, out double max3, out double max4, out double max5)
+        {
+            double[] add = new double[] {};
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Array.Resize(ref add, add.Length + 1);
+                    add[add.Length - 1] = a[i, j];
+                }
+
+            double min;
+            max1 = max2 =  max3 = max4 = max5 = min = add[0];
+
+            for (int i = 0; i < add.Length; i++) { if (add[i] < min) { min = add[i]; } }
+
+            for (int i = 0; i < add.Length; i++) { if (add[i] > max1) { max1 = add[i]; } }
+            for (int i = 0; i < add.Length; i++) { if (add[i] == max1) { add[i] = min; } }
+
+            for (int i = 0; i < add.Length; i++) { if (add[i] > max2) { max2 = add[i]; } }
+            for (int i = 0; i < add.Length; i++) { if (add[i] == max2) { add[i] = min; } }
+
+            for (int i = 0; i < add.Length; i++) { if (add[i] > max3) { max3 = add[i]; } }
+            for (int i = 0; i < add.Length; i++) { if (add[i] == max3) { add[i] = min; } }
+
+            for (int i = 0; i < add.Length; i++) { if (add[i] > max4) { max4 = add[i]; } }
+            for (int i = 0; i < add.Length; i++) { if (add[i] == max4) { add[i] = min; } }
+
+            for (int i = 0; i < add.Length; i++) { if (add[i] > max5) { max5 = add[i]; } }
+            for (int i = 0; i < add.Length; i++) { if (add[i] == max5) { add[i] = min; } }
+
+        }
+        static int MaxInFirstRow(double[,] a)
+        {
+            int ind = 0;
+            double max = a[0, 0];
+            for (int i = 0; i < a.GetLength(1); i++)
+                if (a[0, i] > max) { max = a[0, i]; ind = i; }
+            return ind;
+        }
+        static int MaxInMainDiagonal(double[,] a)
+        {
+            int ind = 0;
+            double max = a[0, 0];
+            for (int i = 0; i < a.GetLength(1); i++)
+                if (a[i, i] > max) { max = a[i, i]; ind = i; }
+            return ind;
+        }
+        delegate int Max(double[,] a);
+        static double[,] ChangeMatrix(double[,] a, Max first, Max second)
+        {
+            int ind1 = first(a);
+            int ind2 = second(a);
+            double[] add1 = new double[a.GetLength(0)];
+            double[] add2 = new double[a.GetLength(0)];
+            for (int i = 0; i < a.GetLength(1); i++) { add1[i] = a[i, ind1]; }
+            for (int i = 0; i < a.GetLength(1); i++) { add2[i] = a[i, ind2]; }
+
+            for (int i = 0; i < a.GetLength(1); i++)
+                if (i == ind1)
+                { for (int j = 0; j < a.GetLength(0); j++) { a[j, ind1] = add2[j]; } }
+
+            for (int i = 0; i < a.GetLength(1); i++)
+                if (i == ind2)
+                { for (int j = 0; j < a.GetLength(0); j++) { a[j, ind2] = add1[j]; } }
+
+            return a;
+        }
+        static double[] VectorForUpTriangle(double[,] a)
+        {
+            double[] add = { };
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
+                    if (i <= j) { Array.Resize(ref add, add.Length + 1); add[add.Length - 1] = a[i, j]; }
+            return add;
+        }
+        static double[] VectorForDownTriangle(double[,] a)
+        {
+            double[] add = { };
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
+                    if (i >= j) { Array.Resize(ref add, add.Length + 1); add[add.Length - 1] = a[i, j]; }
+            return add;
+        }
+        static double Summ(double[,] a, Vect up, Vect down)
+        {
+            double[] upa = up(a);
+            double[] downa = down(a);
+            double sum = 0;
+            for (int i = 0; i < upa.Length; i++) { sum += upa[i]; }
+            for (int i = 0; i < downa.Length; i++) { sum += downa[i]; }
+            return sum;
+        }
+        delegate double[] Vect(double[,] a);
+    }
+}
