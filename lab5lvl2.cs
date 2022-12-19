@@ -88,7 +88,7 @@ class homew6lvl2
     static public int maxsqr(double[,] a, int l)
     {
         double max = -100000000;
-        int jmax = 0;
+        int jmax = -1;
         for (int i = 0; i < l; i++)
         {
             for (int j = 0; j < l; j++)
@@ -106,7 +106,7 @@ class homew6lvl2
     static public int minsqr(double[,] a, int l)
     {
         double min = 100000000;
-        int jmin = 0;
+        int jmin = -1;
         for (int i = 0; i < l; i++)
         {
             for (int j = 0; j < l; j++)
@@ -218,9 +218,39 @@ class homew6lvl2
 
                     int jmin = minsqr(a, m);
                     // Console.WriteLine($"jmax -> {jmax}, jmin-> {jmin}");
-                    a = delsqr(a, jmin, m, m);
-                    a = delsqr(a, jmax, m, m - 1);
-                    outputsqr(a, m, m - 2);
+                    int c = 0;
+                    // Console.WriteLine($"jmax -> {jmax}, jmin-> {jmin}");
+                    if ((jmin > -1) && (jmin > -1))
+                    {
+                        if (jmin == jmax)
+                        {
+                            a = delsqr(a, jmin, m, m);
+                            c = 1;
+                        }
+                        else if ((jmin != jmax))
+                        {
+                            a = delsqr(a, jmin, m, m);
+                            a = delsqr(a, jmax, m, m - 1);
+                            c = 2;
+                        }
+                    }
+                    else
+                    {
+                        
+                        if ((jmin == -1)&&(jmax!=-1))
+                        {
+                            a = delsqr(a, jmax, m, m);
+                            c = 1;
+                        }
+                        else if ((jmin != -1) && (jmax == -1))
+                        {
+                            a = delsqr(a, jmin, m, m);
+                            c = 1;
+                        }
+                        
+
+                    }
+                    outputsqr(a, m, m - c);
                 }
                 else Console.WriteLine("fall");
             }
