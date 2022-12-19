@@ -1,9 +1,508 @@
-<Project Sdk="Microsoft.NET.Sdk">
+using System;
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>_5th_Lab</RootNamespace>
-  </PropertyGroup>
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        Lab5Level3Ex6.Ex();
+    }
+}
+ public class Lab5Level1
+    {
+        public static void Ex1()
+        {
+            int am = 5;
+            int var1 = 8, var2 = 10, var3 = 11;
+            Console.WriteLine($"For {var1} could be {Calculate(am, var1)} ways");
+            Console.WriteLine($"For {var2} could be {Calculate(am, var2)} ways");
+            Console.WriteLine($"For {var3} could be {Calculate(am, var3)} ways");
+        }
+        static int factorial(int n)
+        {
+            if (n == 0) return 1;
+            else return n * factorial(n - 1);
+        }
+        static int Calculate(int k, int n)
+        {
+            return factorial(n) / factorial(k) * factorial(n - k);
+        }
 
-</Project>
+        public static void Ex2()
+        {
+            double a1 = 5, b1 = 3, c1 = 4
+                , a2 = 1, b2 = 2, c2 = 2;
+            if (IsTriangle(a1, b1, c1) && IsTriangle(a2, b2, c2))
+            {
+                if (Geron(a1, b1, c1) > Geron(a2, b2, c2))
+                {
+                    Console.WriteLine("1st triagle is bigger then 2nd");
+                }
+                else
+                {
+                    Console.WriteLine("2nd triagle is bigger then 1st");
+                }
+            }
+            else
+            {
+                Console.WriteLine("One or both triangles don't exist");
+            }
+        }
+        static bool IsTriangle(double a, double b, double c)
+        {
+
+            if (a >= b + c)
+                return false;
+            if (b >= c + a)
+                return false;
+            if (c >= a + b)
+                return false;
+            return true;
+        }
+
+        static double Geron(double a, double b, double c)
+        {
+            double p = (a + b + c) / 2;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+        }
+    }
+    public class Lab5Level2
+    {
+        public static void Ex6()
+        {
+            int[] a = new int[7];
+            Random r = new Random();
+
+            Console.WriteLine("Array a");
+            for (int i = 0; i < a.Length; i++)
+            {
+                a[i] = r.Next(50);
+                Console.WriteLine(a[i]);
+            }
+
+            Console.WriteLine();
+
+            Console.WriteLine("Array b");
+            int[] b = new int[8];
+            Random r2 = new Random();
+            for (int i = 0; i < b.Length; i++)
+            {
+                b[i] = r2.Next(50);
+                Console.WriteLine(b[i]);
+            }
+
+
+            int maximum1 = 0;
+            double maxi1 = a[0];
+            int maximum2 = 0;
+            double maxi2 = b[0];
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] > maxi1)
+                {
+                    maxi1 = a[i];
+                    maximum1 = i;
+                }
+            }
+            for (int i = 0; i < b.Length; i++)
+            {
+                if (b[i] > maxi2)
+                {
+                    maxi2 = b[i];
+                    maximum2 = i;
+                }
+            }
+            DeleteElem(a, maximum1);
+            Array.Resize(ref a, a.Length - 1);
+            DeleteElem(b, maximum2);
+            Array.Resize(ref b, b.Length - 1);
+
+
+            Array.Resize(ref a, a.Length + b.Length);
+            int k6 = 0;
+            for (int i = a.Length - b.Length; i < a.Length; i++)
+            {
+                a[i] = b[k6];
+                k6++;
+            }
+            Console.WriteLine();
+            Console.WriteLine("Result:");
+            for (int i = 0; i < a.Length; i++)
+            {
+                Console.Write($"{a[i]} ");
+            }
+        }
+        static int[] DeleteElem(int[] a, int el)
+        {
+            for (int i = el; i < a.Length - 1; i++)
+            {
+                a[i] = a[i + 1];
+            }
+            return a;
+
+        }
+
+        public static void Ex10()
+        {
+            int lines = 4;
+            int columns = 4;
+            int[,] a10 = new int[lines, columns];
+            Random r10 = new Random();
+            for (int i = 0; i < lines; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    a10[i, j] = r10.Next(50);
+                    Console.Write(a10[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            int index_biggest = findBiggestElem(a10);
+            int index_smallest = findSmallestElem(a10);
+            if (index_biggest != index_smallest)
+            {
+                removeMatrixColumn(ref a10, index_biggest);
+                removeMatrixColumn(ref a10, index_smallest);
+                outputIndentedMatrix(a10, 2);
+            }
+            else
+            {
+                removeMatrixColumn(ref a10, index_biggest);
+                outputIndentedMatrix(a10, 1);
+            }
+        }
+        static int findBiggestElem(int[,] matrix)
+        {
+            int biggest_elem = matrix[0, 0], biggest_elem_column = 0;
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (int column = 0; column <= row; column++)
+                {
+                    if (matrix[row, column] > biggest_elem)
+                    {
+                        biggest_elem = matrix[row, column];
+                        biggest_elem_column = column;
+                    }
+                }
+            }
+            Console.WriteLine($"{biggest_elem} - biggest number, column: {biggest_elem_column + 1}");
+            return biggest_elem_column;
+        }
+
+        static int findSmallestElem(int[,] matrix)
+        {
+            int smallest_elem = matrix[0, 1], smallest_elem_column = 1;
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (int column = row + 1; column < matrix.GetLength(1); column++)
+                {
+                    if (matrix[row, column] < smallest_elem)
+                    {
+                        smallest_elem = matrix[row, column];
+                        smallest_elem_column = column;
+                    }
+                }
+            }
+            Console.WriteLine($"{smallest_elem} - smallest number, column: {smallest_elem_column + 1}");
+            return smallest_elem_column;
+        }
+
+        static void removeMatrixColumn(ref int[,] matrix, int column_0)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int column = column_0; column < matrix.GetLength(1) - 1; column++)
+                {
+                    matrix[i, column] = matrix[i, column + 1];
+                }
+            }
+        }
+
+        static void outputIndentedMatrix(int[,] matrix, int columns_cap)
+        {
+            Console.Write("\t");
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (int column = 0; column < matrix.GetLength(1) - columns_cap; column++)
+                {
+                    Console.Write($"{matrix[row, column]} ");
+                }
+                if (row != matrix.GetLength(0) - 1) Console.Write("\n\t");
+                else Console.Write("\n");
+            }
+        }
+
+        public static void Ex23()
+        {
+            int lines_a = 3;
+            int columns_a = 3;
+            double[,] a23 = new double[lines_a, columns_a];
+            Random r23 = new Random();
+            for (int i = 0; i < lines_a; i++)
+            {
+                for (int j = 0; j < columns_a; j++)
+                {
+                    a23[i, j] = r23.Next(50);
+                    Console.Write(a23[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            int lines_b = 3;
+            int columns_b = 3;
+            double[,] b23 = new double[lines_b, columns_b];
+            Random r231 = new Random();
+            for (int i = 0; i < lines_b; i++)
+            {
+                for (int j = 0; j < columns_b; j++)
+                {
+                    b23[i, j] = r231.Next(50);
+                    Console.Write(b23[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+
+            ChangeBiggestElem(a23);
+            ChangeBiggestElem(b23);
+            Console.WriteLine();
+            outputMatrix(a23);
+            outputMatrix(b23);
+        }
+
+        static void ChangeBiggestElem(double[,] matrix)
+        {
+            double[] array = new double[matrix.GetLength(0) * matrix.GetLength(1)];
+            int k = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    array[k] = matrix[i, j];
+                    k += 1;
+                }
+            }
+            Array.Sort(array);
+            Array.Reverse(array);
+            if (array.Length > 5)
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+                        if (matrix[i, j] == array[0] || matrix[i, j] == array[1] || matrix[i, j] == array[2] || matrix[i, j] == array[3] || matrix[i, j] == array[4])
+                        {
+                            if (matrix[i, j] > 0) matrix[i, j] *= 2;
+                            else matrix[i, j] /= 2;
+                        }
+                        else if (matrix[i, j] > 0) matrix[i, j] /= 2;
+                        else matrix[i, j] *= 2;
+
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < matrix.GetLength(1); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(0); j++)
+                    {
+                        matrix[i, j] *= 2;
+                    }
+                }
+            }
+        }
+
+        static void outputMatrix(double[,] matrix)
+        {
+            Console.WriteLine("Result:");
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"{matrix[i, j]}" + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+    }
+    public static class Lab5Level3Ex1
+    {
+        public static int[] Ascending(int[] array)
+        {
+            int temp;
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    if (array[i] > array[j])
+                    {
+                        temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
+            return array;
+        }
+
+        public static int[] Descending(int[] array)
+        {
+            int temp;
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    if (array[i] < array[j])
+                    {
+                        temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
+            return array;
+        }
+
+
+        delegate int[] ReorderMatrixDecreasing(int[] array);
+        static ReorderMatrixDecreasing sort_increasing = Lab5Level3Ex1.Ascending;
+        static ReorderMatrixDecreasing sort_decreasing = Lab5Level3Ex1.Descending;
+
+
+        public static void Ex()
+        {
+            int lines_1 = 5;
+            int columns_1 = 3;
+            int[,] a_2 = new int[lines_1, columns_1];
+            Random r_2 = new Random();
+            for (int i = 0; i < lines_1; i++)
+            {
+                for (int j = 0; j < columns_1; j++)
+                {
+                    a_2[i, j] = r_2.Next(50);
+                    Console.Write(a_2[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            for (int row = 0; row < a_2.GetLength(0); row++)
+            {
+                switch (row % 2)
+                {
+                    case 0:
+                        reorderMatrixRowByIndex(ref a_2, row, sort_increasing);
+                        break;
+                    case 1:
+                        reorderMatrixRowByIndex(ref a_2, row, sort_decreasing);
+                        break;
+                }
+            }
+            outputMatrix(a_2);
+        }
+
+        static void reorderMatrixRowByIndex(ref int[,] matrix, int row, ReorderMatrixDecreasing sort)
+        {
+            int[] row_local = new int[matrix.GetLength(1)];
+            for (int col = 0; col < matrix.GetLength(1); col++)
+            {
+                row_local[col] = matrix[row, col];
+            }
+            plugRowIntoMatrix(ref matrix, sort(row_local), row);
+        }
+        static void plugRowIntoMatrix(ref int[,] matrix, int[] row, int row_index)
+        {
+            for (int i = 0; i < row.Length; i++)
+            {
+                matrix[row_index, i] = row[i];
+            }
+        }
+        static void outputMatrix(int[,] matrix)
+        {
+            Console.WriteLine("Result:");
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"{matrix[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+    public static class Lab5Level3Ex6
+    {
+        public static int InMatrixRow(int[,] matrix)
+        {
+            int biggest_element = matrix[0, 0], biggest_element_index = 0;
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                if (matrix[0, i] > biggest_element)
+                {
+                    biggest_element = matrix[0, i];
+                    biggest_element_index = i;
+                }
+            }
+            return biggest_element_index;
+        }
+        public static int OnMainDiagonal(int[,] matrix)
+        {
+            int biggest_element = matrix[0, 0], biggest_element_index = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (Math.Max(biggest_element, matrix[i, i]) == matrix[i, i])
+                {
+                    biggest_element = matrix[i, i];
+                    biggest_element_index = i;
+                }
+            }
+            return biggest_element_index;
+        }
+
+
+        delegate int MatrixElementFinder(int[,] matrix);
+        static MatrixElementFinder row_biggest_index = Lab5Level3Ex6.InMatrixRow;
+        static MatrixElementFinder main_diagonal_biggest_index = Lab5Level3Ex6.OnMainDiagonal;
+
+        public static void Ex()
+        {
+            int lines_1 = 3;
+            int columns_1 = 3;
+            int[,] a_6 = new int[lines_1, columns_1];
+            Random r_6 = new Random();
+            for (int i = 0; i < lines_1; i++)
+            {
+                for (int j = 0; j < columns_1; j++)
+                {
+                    a_6[i, j] = r_6.Next(50);
+                    Console.Write(a_6[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            SwapColumnsBiggestOnMainDiagonalBiggestFirstRow(ref a_6);
+            OutputMatrix6(a_6);
+        }
+        static void SwapColumnsBiggestOnMainDiagonalBiggestFirstRow(ref int[,] matrix)
+        {
+            SwapMatrixColumns(ref matrix, row_biggest_index(matrix), main_diagonal_biggest_index(matrix));
+        }
+        static void SwapMatrixColumns(ref int[,] matrix, int column_1, int column_2)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                int temp = matrix[i, column_1];
+                matrix[i, column_1] = matrix[i, column_2];
+                matrix[i, column_2] = temp;
+            }
+        }
+        static void OutputMatrix6(int[,] matrix)
+        {
+            Console.WriteLine("Result:");
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"{matrix[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
