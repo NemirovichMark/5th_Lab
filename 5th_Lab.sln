@@ -1,25 +1,469 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.35
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5th_Lab", "5th_Lab.csproj", "{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B2908471-A915-4DD9-9304-AE4A425C3A88}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Numerics;
+using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using System.Transactions;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.VisualBasic;
+using System.Collections.Immutable;
+using System.Globalization;
+
+public class Proga
+{
+    public static void Main(string[] args)
+    {
+        //resh.lvl1ex1();
+        //resh.lvl1ex2();
+        //resh.lvl2ex6();
+        //resh.lvl2ex10();
+        resh.lvl2ex23();
+        //resh.lvl3ex2();
+        //resh.lvl3ex3();
+    }
+
+    public class resh
+    {
+        public static double factorial(double a)
+        {
+            double s = 1;
+            for (int i = 1; i <= a; i++)
+            {
+                s *= i;
+            }
+            return s;
+        }
+
+        public static double[,] matrixinput()
+        {
+            Console.WriteLine("Enter size of matrix");
+            int.TryParse(Console.ReadLine(), out int lines);
+            int.TryParse(Console.ReadLine(), out int colums);
+            double[,] a = new double[lines, colums];
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.WriteLine($"Enter element of matrix [{i}, {j}]:");
+                    double.TryParse(Console.ReadLine(), out a[i, j]);
+                }
+            }
+            return a;
+        }
+        public static void matrixoutput(double[,] a)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.Write(a[i, j] + "\t");
+                }
+                Console.WriteLine("");
+            }
+        }
+        public static double faktorial(int a)
+        {
+            double b = 1;
+            for (int i = 2; i <= a; i++)
+            {
+                b *= i;
+            }
+            return b;
+        }
+        public static double checkmore0(double a)
+        {
+            while (a < 0)
+            {
+                Console.WriteLine("Enter side > 0");
+                double.TryParse(Console.ReadLine(), out a);
+            }
+            return a;
+        }
+        public static double[] deliteElemntArray(double[] a, int element)
+        {
+            double[] b = new double[a.Length - 1];
+            for (int i = 0, ii = 0; i < a.Length; i++, ii++)
+            {
+                if (i == element)
+                {
+                    ii--;
+                }
+                else
+                {
+                    b[ii] = a[i];
+                }
+            }
+            return b;
+        }
+        public static double[,] deliteColumn(double[,] a, int element)
+        {
+            double[,] b = new double[a.GetLength(0), a.GetLength(1) - 1];
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0, jj = 0; j < a.GetLength(1); j++, jj++)
+                {
+                    if (j == element)
+                    {
+                        jj--;
+                    }
+                    else
+                    {
+                        b[i, jj] = a[i, j];
+                    }
+                }
+            }
+            return b;
+        }
+        public static double[,] SwapColumn(double[,] a, int First, int Second)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                double tmp;
+                tmp = a[i, First];
+                a[i, First] = a[i, Second];
+                a[i, Second] = tmp;
+            }
+            return a;
+        }
+        public static double Striangle()
+        {
+            double s, a, b, c, p;
+            Console.WriteLine("Enter sides of tiangle: ");
+            double.TryParse(Console.ReadLine(), out a);
+            a = resh.checkmore0(a);
+            double.TryParse(Console.ReadLine(), out b);
+            b = resh.checkmore0(b);
+            double.TryParse(Console.ReadLine(), out c);
+            c = resh.checkmore0(c);
+            if (a + b < c || a + c < b || c + b < a)
+            {
+                Console.WriteLine("Error, incorrect sides");
+                a = 0;
+                b = 0;
+                c = 0;
+            }
+            p = (a + b + c) / 2;
+            s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            return s;
+        }
+        public static double[,] copymatrix(double[,] a)
+        {
+            double[,] b = new double[a.GetLength(0), a.GetLength(1)];
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    b[i, j] = a[i, j];
+                }
+            }
+            return b;
+        }
+        public static double[,] multiply2(double[,] a)
+        {
+            double[,] b = copymatrix(a);
+            for (int i = 0; i < 5; i++)
+            {
+                double max = double.MinValue;
+                int maxIn0 = 0;
+                int maxIn1 = 0;
+                int sizelines = a.GetLength(0);
+                int sizecolumns = a.GetLength(1);
+                for (int j = 0; j < a.Length; j++)
+                {
+                    if (b[j / sizecolumns, j % sizecolumns] > max)
+                    {
+                        max = b[j / sizecolumns, j % sizecolumns];
+                        maxIn0 = j / sizecolumns;
+                        maxIn1 = j % sizecolumns;
+                    }
+                }
+                if (a[maxIn0, maxIn1] > 0)
+                {
+                    a[maxIn0, maxIn1] *= 2;
+                }
+                else
+                {
+                    a[maxIn0, maxIn1] /= 2;
+                }
+                b[maxIn0, maxIn1] = double.MinValue;
+                max = double.MinValue;
+            }
+            for (int j = 0; j < a.Length; j++)
+            {
+                int sizecolumns = a.GetLength(1);
+                if (b[j / sizecolumns, j % sizecolumns] > double.MinValue)
+                {
+                    if (a[j / sizecolumns, j % sizecolumns] > 0)
+                    {
+                        a[j / sizecolumns, j % sizecolumns] /= 2;
+                    }
+                    else
+                    {
+                        a[j / sizecolumns, j % sizecolumns] *= 2;
+                    }
+                }
+            }
+            return a;
+        }
+        public static void lvl1ex1()
+        {
+            int team = 5;
+            int var1 = 8;
+            int var2 = 10;
+            int var3 = 11;
+            Console.WriteLine($"Team of 5 can be chosen from 8 people by {resh.faktorial(var1) / (resh.faktorial(team) * resh.faktorial(var1 - team))} ways");
+            Console.WriteLine($"Team of 5 can be chosen from 10 people by {resh.faktorial(var2) / (resh.faktorial(team) * resh.faktorial(var2 - team))} ways");
+            Console.WriteLine($"Team of 5 can be chosen from 11 people by {resh.faktorial(var3) / (resh.faktorial(team) * resh.faktorial(var3 - team))} ways");
+        }
+        public static void lvl1ex2()
+        {
+            Console.WriteLine();
+            double a1 = resh.Striangle();
+            if (a1 == 0)
+            {
+                return;
+            }
+            double a2 = resh.Striangle();
+            if (a2 == 0)
+            {
+                return;
+            }
+            if (a1 > a2)
+            {
+                Console.WriteLine("1St is bigger!!!");
+            }
+            else if (a1 < a2)
+            {
+                Console.WriteLine("2nd is bigger!!!");
+            }
+            else
+            {
+                Console.WriteLine("Eaquals!!!");
+            }
+        }
+        public static void lvl2ex6()
+        {
+            int LenA = 7;
+            int LenB = 8;
+            double[] a = new double[LenA + LenB - 1];
+            double[] b = new double[LenB];
+            int maxInA = 0;
+            int maxInB = 0;
+            double tmp = double.MinValue;
+            for (int i = 0; i < LenA; i++)
+            {
+                Console.WriteLine($"Enter element of Array A № {i + 1}");
+                double.TryParse(Console.ReadLine(), out a[i]);
+                if (a[i] > tmp)
+                {
+                    tmp = a[i];
+                    maxInA = i;
+                }
+            }
+            a = resh.deliteElemntArray(a, maxInA);
+            tmp = double.MinValue;
+            for (int i = 0; i < LenB; i++)
+            {
+                Console.WriteLine($"Enter element of Array B № {i + 1}");
+                double.TryParse(Console.ReadLine(), out b[i]);
+                if (b[i] > tmp)
+                {
+                    tmp = b[i];
+                    maxInB = i;
+                }
+            }
+            b = resh.deliteElemntArray(b, maxInB);
+            for (int i = LenA - 1, ii = 0; i < a.Length; i++, ii++)
+            {
+                a[i] = b[ii];
+            }
+            foreach (double s in a)
+            {
+                Console.Write(s + "\t");
+            }
+        }
+        public static void lvl2ex10()
+        {
+            Console.WriteLine("Enter size of matrix");
+            int.TryParse(Console.ReadLine(), out int size);
+            double[,] a = new double[size, size];
+            double tmpmin = double.MaxValue;
+            double tmpmax = double.MinValue;
+            int minIn = 0;
+            int maxIn = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.WriteLine($"Enter element of matrix [{i}, {j}]:");
+                    double.TryParse(Console.ReadLine(), out a[i, j]);
+                    if (i < j && a[i, j] < tmpmin)
+                    {
+                        minIn = j;
+                        tmpmin = a[i, j];
+                    }
+                    else if (i >= j && a[i, j] > tmpmax)
+                    {
+                        maxIn = j;
+                        tmpmax = a[i, j];
+                    }
+                }
+            }
+            if (minIn > maxIn)
+            {
+                a = resh.deliteColumn(a, minIn);
+                a = resh.deliteColumn(a, maxIn);
+            }
+            else if (maxIn < minIn)
+            {
+                a = resh.deliteColumn(a, maxIn);
+                a = resh.deliteColumn(a, minIn);
+            }
+            else
+            {
+                a = resh.deliteColumn(a, minIn);
+            }
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.Write(a[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        public static void lvl2ex23()
+        {
+            double[,] mat = resh.multiply2(resh.matrixinput());
+            double[,] mat2 = resh.multiply2(resh.matrixinput());
+            resh.matrixoutput(mat);
+            Console.WriteLine("");
+            resh.matrixoutput(mat2);
+        }
+        delegate double[] deleg(double[] i);
+        public static double[] SortToLow(double[] a)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                Array.Sort(a);
+                Array.Reverse(a);
+            }
+            return a;
+        }
+        public static double[] SortToHight(double[] a)
+        {
+            for (int i = 0; i < a.Length; i++)
+            {
+                Array.Sort(a);
+            }
+            return a;
+        }
+        public static void lvl3ex2()
+        {
+            Console.WriteLine("Enetr size of matrix: ");
+            int.TryParse(Console.ReadLine(), out int n);
+            int.TryParse(Console.ReadLine(), out int m);
+            double[,] mat = new double[n, m];
+            for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                double[] tmp = new double[mat.GetLength(1)];
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    Console.WriteLine($"Enter element of matrix [{i}, {j}]:");
+                    double.TryParse(Console.ReadLine(), out tmp[j]);
+                }
+                if (i % 2 == 0)
+                {
+                    deleg tmp2 = SortToHight;
+                    tmp = tmp2(tmp);
+                    for (int j = 0; j < mat.GetLength(1); j++)
+                    {
+                        mat[i, j] = tmp[j];
+                    }
+                }
+                else
+                {
+                    deleg tmp2 = SortToLow;
+                    tmp = tmp2(tmp);
+                    for (int j = 0; j < mat.GetLength(1); j++)
+                    {
+                        mat[i, j] = tmp[j];
+                    }
+                }
+            }
+            for (int i = 0; i < mat.GetLength(0); i++)
+            {
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    Console.Write(mat[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        /////////////////////////////////////////////////////////////////////////////////
+        public delegate double[] delSwap(double[] x);
+        public static double[] Swapping(delSwap a, double[] x)
+        {
+            return a(x);
+        }
+        public static bool MoreAverage(double[] x)
+        {
+            double sum = 0;
+            double average = 0;
+            for (int i = 0; i < x.Length; i++)
+            {
+                sum += x[i];
+            }
+            average = sum / x.Length;
+            if (x[0] > average)
+            {
+                return true;
+            }
+            else return false;
+        }
+        public static double[] SwapNeigрbour(double[] x)
+        {
+            double tmp;
+            if (MoreAverage(x) == true)
+            {
+                for (int i = 0; i < x.Length - 1; i += 2)
+                {
+                    tmp = x[i];
+                    x[i] = x[i + 1];
+                    x[i + 1] = tmp;
+                }
+            }
+            else
+            {
+                for (int i = x.Length - 1; i > 0; i -= 2)
+                {
+                    tmp = x[i];
+                    x[i] = x[i + 1];
+                    x[i + 1] = tmp;
+                }
+            }
+            return x;
+        }
+        public static double Summ(double[] x)
+        {
+            double sum = 0;
+            for (int i = 1; i < x.Length; i += 2)
+            {
+                sum += x[i];
+            }
+            return sum;
+        }
+        public static void lvl3ex3()
+        {
+            double[] mat = new double[] { 1, 6, -10, 333, 17, -470, 0.1, 55, -987, 5 };
+            mat = Swapping(SwapNeigрbour, mat);
+            foreach (double s in mat)
+            {
+                Console.Write($"{s}   ");
+            }
+            Console.WriteLine($"Сумма элементов с нечётными индексами: {Summ(mat)}");
+        }
+    }
+}
