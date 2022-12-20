@@ -1,0 +1,282 @@
+// Level 2 Num 10
+
+        static int max_(int[,] x)
+        {
+            int max = x[0, 0];
+
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (x[i, j] > max)
+                    {
+                        max = x[i, j];
+                    }
+                }
+            }
+            return max;
+        }
+        static int under(int[,] x)
+        {
+            int max = x[0, 0], max_j = 0;
+
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j <= i; j++)
+                {
+                    if (x[i, j] > max)
+                    {
+                        max = x[i, j];
+                        max_j = j;
+                    }
+                }
+            }
+
+            return max_j;
+        }
+
+        static int above(int[,] x)
+        {
+            int min = max_(x), min_j = 0;
+
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = i + 1; j < x.GetLength(1); j++)
+                {
+                    if (x[i, j] < min)
+                    {
+                        min = x[i, j];
+                        min_j = j;
+                    }
+                }
+            }
+
+            return min_j;
+        }
+
+        static int[,] change(int[,] x)
+        {
+            int max_j = under(x);
+            int min_j = above(x);
+
+            if (max_j == min_j)
+            {
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = max_j + 1; j < x.GetLength(1) - 1; j++)
+                    {
+                        x[i, j] = x[i, j + 1];
+                    }
+                }
+            }
+
+            else
+            {
+                if (max_j > min_j)
+                {
+                    for (int i = 0; i < x.GetLength(0); i++)
+                    {
+                        for (int j = max_j; j < x.GetLength(1) - 1; j++)
+                        {
+                            x[i, j] = x[i, j + 1];
+                        }
+                    }
+
+                    for (int i = 0; i < x.GetLength(0); i++)
+                    {
+                        for (int j = min_j; j < x.GetLength(1) - 1; j++)
+                        {
+                            x[i, j] = x[i, j + 1];
+                        }
+                    }
+                }
+
+                else
+                {
+                    for (int i = 0; i < x.GetLength(0); i++)
+                    {
+                        for (int j = min_j; j < x.GetLength(1) - 1; j++)
+                        {
+                            x[i, j] = x[i, j + 1];
+                        }
+                    }
+
+                    for (int i = 0; i < x.GetLength(0); i++)
+                    {
+                        for (int j = max_j; j < x.GetLength(1) - 1; j++)
+                        {
+                            x[i, j] = x[i, j + 1];
+                        }
+                    }
+                }
+            }
+
+            return x;
+        }
+
+        static void Main(string[] args)
+        {
+
+            int n = 5, m = 5;
+            int[,] a = new int[n, m];
+
+            Random random = new Random();
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    a[i, j] = random.Next(0, 40);
+                }
+            }
+
+            Console.WriteLine("Start matrix: ");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write("{0, -5}", a[i, j]);
+                }
+                Console.WriteLine();
+            }
+
+            int max_j = under(a);
+            int min_j = above(a);
+
+            Console.WriteLine($"Max - {max_j}, min - {min_j} ");
+
+            a = change(a);
+
+            if (max_j == min_j)
+            {
+                Console.WriteLine("Final matrix: ");
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1) - 1; j++)
+                    {
+                        Console.Write("{0, -5}", a[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("Final matrix: ");
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1) - 2; j++)
+                        Console.Write("{0, -5}", a[i, j]);
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
+
+        // Level 2 Num 23
+        static double[,] max_min(double[,] S)
+        {
+            int count = 0;
+            double[] S1 = new double[S.GetLength(0) * S.GetLength(1)];
+
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    S1[count] = S[i, j];
+                    count += 1;
+                }
+            }
+
+            for (int i = 1; i < S1.Length; i++)
+            {
+                int j = i;
+                while (j > 0 && S1[j - 1] < S1[j])
+                {
+                    double p = S1[j - 1];
+                    S1[j - 1] = S1[j];
+                    S1[j] = p;
+                    j--;
+                }
+            }
+
+            count = 0;
+            int f = 1;
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    if (count == 5)
+                    {
+                        f = 0;
+                    }
+                    if (f == 1 && (S[i, j] == S1[0] || S[i, j] == S1[1] || S[i, j] == S1[2] || S[i, j] == S1[3] || S[i, j] == S1[4]))
+                    {
+                        if (S[i, j] >= 0)
+                        {
+                            S[i, j] = 2 * S[i, j];
+                            count += 1;
+                        }
+                        else
+                        {
+                            S[i, j] = S[i, j] / 2;
+                            count += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (S[i, j] >= 0)
+                        {
+                            S[i, j] = S[i, j] / 2;
+                        }
+                        else
+                        {
+                            S[i, j] = 2 * S[i, j];
+                        }
+                    }
+                }
+            }
+            return S;
+        }
+        static void Main(string[] args)
+        {
+            double[,] S1 = new double[4, 4]
+            {
+                {5,  6, -2, 42},
+                {-1, 5, 11, -17},
+                {7,  3, 54, 3},
+                {2, 21, 5, 16}
+            };
+            double[,] S2 = new double[3, 2]
+            {
+                {30, 30},
+                {30, 30},
+                {30, 30},
+            };
+
+            S1 = max_min(S1);
+            S2 = max_min(S2);
+
+            for (int i = 0; i < S1.GetLength(0); i++)
+            {
+                for (int j = 0; j < S1.GetLength(1); j++)
+                {
+                    Console.Write(S1[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i < S2.GetLength(0); i++)
+            {
+                for (int j = 0; j < S2.GetLength(1); j++)
+                {
+                    Console.Write(S2[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
