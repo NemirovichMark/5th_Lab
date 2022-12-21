@@ -14,9 +14,19 @@ static int VarCount(int n, int k) {
             return a;
         }
         static void l1_1() {
-            int n = Convert.ToInt32(Console.ReadLine()), k = Convert.ToInt32(Console.ReadLine());
+            int n;
+            do{}
+            while(!int.TryParse(Console.ReadLine(), out n));
+            int k;
+            do{}
+            while(!int.TryParse(Console.ReadLine(), out k));
             Console.WriteLine(VarCount(n, k));
-            int n1 = Convert.ToInt32(Console.ReadLine()), k1 = Convert.ToInt32(Console.ReadLine());
+            int n1;
+            do{}
+            while(!int.TryParse(Console.ReadLine(), out n1));
+            int k1;
+            do{}
+            while(!int.TryParse(Console.ReadLine(), out k1));
             Console.WriteLine(VarCount(n1, k1));
         }
 l1_1();
