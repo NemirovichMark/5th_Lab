@@ -263,6 +263,7 @@ namespace Project
                         for (int j = 0; j < a.GetLength(0); j++)
                             temp[j] = a[i, j];
                         howToWork = chet;
+                        temp = howToWork(temp);
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
