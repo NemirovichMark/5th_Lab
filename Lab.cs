@@ -1,5 +1,3 @@
-﻿
-//Gnome Sort
 using System;
 using System.IO.Pipes;
 
