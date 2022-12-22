@@ -1,5 +1,4 @@
 using System;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace ConsoleApp1
 {
@@ -128,6 +127,7 @@ namespace ConsoleApp1
 
         static double Permutations(int n, int k)
         {
+            if (n <= 0 || k <= 0) ParseError();
             var c = Factorial(n) / Factorial(k) / Factorial(n - k);
             return c;
         }
@@ -139,6 +139,16 @@ namespace ConsoleApp1
             return s;
         }
 
+        static bool IsTriangleExists(int a, int b, int c)
+        {
+            if (a + b > c && a + c > b && b + c > a)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         static void DeleteElementByIndex(List<int> a, int index)
         {
             var n = a.Count - 1;
@@ -147,22 +157,14 @@ namespace ConsoleApp1
                 (a[i], a[i + 1]) = (a[i + 1], a[i]);
             }
 
-            a.RemoveAt(n - 1);
+            a.RemoveAt(n);
         }
 
         static void DeleteColByIndex(List<List<int>> a, int index)
         {
-            for (var i = 0; i < a.Count; i++)
+            foreach (var row in a)
             {
-                for (var j = index; j < a[i].Count - 1; j++)
-                {
-                    (a[i][j], a[i][j + 1]) = (a[i][j + 1], a[i][j]);
-                }
-            }
-
-            for (var i = 0; i < a.Count; i++)
-            {
-                a[i].RemoveAt(a[i].Count - 1);
+                DeleteElementByIndex(row, index);
             }
         }
 
@@ -182,26 +184,48 @@ namespace ConsoleApp1
             return maxIndex;
         }
 
+        static double[] MinOfMatrixIndex(List<List<double>> a)
+        {
+            var min = 0.0;
+            var minIndexI = 0;
+            var minIndexJ = 0;
+            for (var i = 0; i < a.Count; i++)
+            {
+                for (var j = 0; j < a[i].Count; j++)
+                {
+                    if (a[i][j] < min)
+                    {
+                        min = a[i][j];
+                        minIndexI = i;
+                        minIndexJ = j;
+                    }
+                }
+            }
+
+            return new double[3] { min, minIndexI, minIndexJ };
+        }
+
         static void MaxOfAllTime(List<List<double>> a)
         {
             var n = a.Count;
             var m = a[0].Count;
-            var bools = new List<int[]>(n);
+            var boolList = new List<int[]>(n);
             for (var i = 0; i < n; i++)
             {
-                bools.Add(new int[m]);
+                boolList.Add(new int[m]);
             }
 
             for (var k = 0; k < 5; k++)
             {
-                double max = 0;
-                var maxIndexI = -1;
-                var maxIndexJ = -1;
+                var funcOut = MinOfMatrixIndex(a);
+                var max = funcOut[0];
+                var maxIndexI = (int)funcOut[1];
+                var maxIndexJ = (int)funcOut[2];
                 for (var i = 0; i < n; i++)
                 {
                     for (var j = 0; j < m; j++)
                     {
-                        if (a[i][j] > max && bools[i][j] == 0)
+                        if (a[i][j] > max && boolList[i][j] == 0)
                         {
                             max = a[i][j];
                             maxIndexI = i;
@@ -211,14 +235,14 @@ namespace ConsoleApp1
                 }
 
                 a[maxIndexI][maxIndexJ] *= 2;
-                bools[maxIndexI][maxIndexJ] = 1;
+                boolList[maxIndexI][maxIndexJ] = 1;
             }
 
             for (var i = 0; i < n; i++)
             {
                 for (var j = 0; j < m; j++)
                 {
-                    if (bools[i][j] == 0)
+                    if (boolList[i][j] == 0)
                     {
                         a[i][j] = Math.Round(a[i][j] / 2, 2);
                     }
@@ -268,24 +292,24 @@ namespace ConsoleApp1
 
         static void SortByRows(List<List<int>> a)
         {
-            ListSort delInc = ByIncreasing;
-            ListSort delDisc = ByDecreasing;
+            ListSort del;
             for (var i = 0; i < a.Count; i++)
             {
                 if (i % 2 == 0)
                 {
-                    delDisc(a[i]);
+                    del = ByDecreasing;
                 }
                 else
                 {
-                    delInc(a[i]);
+                    del = ByIncreasing;
                 }
+                del.Invoke(a[i]);
             }
         }
 
         delegate int FindMax(List<List<int>> a);
 
-        static int InFIrstLine(List<List<int>> a)
+        static int InFirstLine(List<List<int>> a)
         {
             var max = 0;
             var maxIndex = -1;
@@ -319,71 +343,92 @@ namespace ConsoleApp1
 
         static void SwitchColsByIndex(List<List<int>> a, int col1, int col2)
         {
-            for (var i = 0; i < a.Count; i++)
+            foreach (var row in a)
             {
-                (a[i][col1], a[i][col2]) = (a[i][col2], a[i][col1]);
+                (row[col1], row[col2]) = (row[col2], row[col1]);
             }
         }
 
         public static void Main(string[] args)
         {
             #region lvl1_task1
-
+            
             Console.Write("Enter K: ");
             if (!int.TryParse(Console.ReadLine(), out var k))
             {
                 ParseError();
             }
-
+            
             Console.Write("Enter N: ");
             if (!int.TryParse(Console.ReadLine(), out var n))
             {
                 ParseError();
             }
-
+            
             Console.Write("Permutations count: " + Permutations(n, k));
-
+            
             #endregion
-
+            
+            
             #region lvl1_task2
-
+            
             Console.Write("Input triangle (A) ([a] [b] [c]): ");
             var input = Console.ReadLine().Split();
-            if (!int.TryParse(input[0], out var a))
+            if (input.Length != 3)
             {
                 ParseError();
             }
-
-            if (!int.TryParse(input[1], out var b))
+            if (!int.TryParse(input[0], out var a) || a < 0)
             {
                 ParseError();
             }
-
-            if (!int.TryParse(input[2], out var c))
+            
+            if (!int.TryParse(input[1], out var b) || b < 0)
             {
                 ParseError();
             }
-
-            var s1 = TriangleArea(a, b, c);
+            
+            if (!int.TryParse(input[2], out var c) || c < 0)
+            {
+                ParseError();
+            }
+            
+            double s1, s2;
+            if (IsTriangleExists(a, b, c))
+            {
+                s1 = TriangleArea(a, b, c);
+            }
+            else
+            {
+                Console.WriteLine("Triangle not exists");
+                return;
+            }
             Console.Write("Input triangle (B) ([a] [b] [c]): ");
             input = Console.ReadLine().Split();
-            if (!int.TryParse(input[0], out a))
+            if (!int.TryParse(input[0], out a) || a < 0)
             {
                 ParseError();
             }
-
-            if (!int.TryParse(input[1], out b))
+            
+            if (!int.TryParse(input[1], out b) || b < 0)
             {
                 ParseError();
             }
-
-            if (!int.TryParse(input[2], out c))
+            
+            if (!int.TryParse(input[2], out c) || c < 0)
             {
                 ParseError();
             }
-
-            var s2 = TriangleArea(a, b, c);
-
+            
+            if (IsTriangleExists(a, b, c))
+            {
+                s2 = TriangleArea(a, b, c);
+            }
+            else
+            {
+                Console.WriteLine("Triangle not exists");
+                return;
+            }
             if (s1 > s2)
             {
                 Console.WriteLine($"The first triangle has a large area. {Math.Round(s1, 3)}");
@@ -396,11 +441,11 @@ namespace ConsoleApp1
             {
                 Console.WriteLine($"The areas of the triangles are the same. {Math.Round(s1, 3)}");
             }
-
+            
             #endregion
-
+            
             #region lvl2_task6
-
+            
             Console.WriteLine("Input array (A):");
             var arrA = InputList();
             var maxA = MaxOfArrayIndex(arrA);
@@ -409,20 +454,22 @@ namespace ConsoleApp1
             var maxB = MaxOfArrayIndex(arrB);
             DeleteElementByIndex(arrA, maxA);
             DeleteElementByIndex(arrB, maxB);
-            arrA.InsertRange(arrA.Count - 1, arrB);
+            arrA.InsertRange(arrA.Count, arrB);
             Console.WriteLine("Output array: ");
             PrintList(arrA);
-
+            
             #endregion
-
+            
+            
+            
             #region lvl2_task10
-
+            
             Console.WriteLine("Input matrix:");
             var arr = InputMatrix();
             var max = 0;
             var maxIndex = -1;
             var min = arr[0][1];
-            var minIndex = -1;
+            var minIndex = 1;
             for (var i = 0; i < arr.Count; i++)
             {
                 for (var j = 0; j <= i; j++)
@@ -434,7 +481,7 @@ namespace ConsoleApp1
                     }
                 }
             }
-
+            
             for (var i = 0; i < arr.Count; i++)
             {
                 for (var j = i + 1; j < arr[i].Count; j++)
@@ -446,21 +493,28 @@ namespace ConsoleApp1
                     }
                 }
             }
-
+            
             DeleteColByIndex(arr, maxIndex);
-            if (minIndex > maxIndex)
+            if (maxIndex != minIndex)
             {
-                minIndex--;
+                if (minIndex > maxIndex)
+                {
+                    minIndex--;
+                }
+            
+                DeleteColByIndex(arr, minIndex);
             }
-
-            DeleteColByIndex(arr, minIndex);
+            
             Console.WriteLine("Output matrix:");
             PrintMatrix(arr);
-
+            
             #endregion
-
+            
+            
+            
+            
             #region lvl2_task23
-
+            
             Console.WriteLine("Input matrix (A):");
             var arr1 = InputMatrixDouble();
             MaxOfAllTime(arr1);
@@ -472,31 +526,33 @@ namespace ConsoleApp1
             MaxOfAllTime(arr2);
             Console.WriteLine("Output matrix (B):");
             PrintMatrixDouble(arr2);
-
+            
             #endregion
-
+            
+            
             #region lvl3_task2
-
+            
             Console.WriteLine("Input matrix:");
             arr = InputMatrix();
             SortByRows(arr);
             Console.WriteLine("Output matrix:");
             PrintMatrix(arr);
-
+            
             #endregion
-
+            
             #region lvl3_task6
-
+            
             Console.WriteLine("Input matrix:");
             arr = InputMatrix();
-            FindMax delInFIrst = InFIrstLine;
-            FindMax delInDiag = InDiagonal;
-            var maxIndex1 = delInFIrst(arr);
-            var maxIndex2 = delInDiag(arr);
-            SwitchColsByIndex(arr, maxIndex1, maxIndex2);
+            FindMax del;
+            del = InDiagonal;
+            var maxIndex1 = del(arr);
+            del = InFirstLine;
+            var maxIndex2 = del(arr);
+            if (maxIndex1 != maxIndex2) SwitchColsByIndex(arr, maxIndex1, maxIndex2);
             Console.WriteLine("Output matrix:");
             PrintMatrix(arr);
-
+            
             #endregion
         }
     }
