@@ -1,0 +1,439 @@
+// See https://aka.ms/new-console-template for more information
+using System;
+
+namespace lab5
+{
+    class Program
+    {
+        static int factorial(int x1, int x2)//1.1
+        {
+            int c;
+            int x3 = 1, x4 = 1, x5 = 1;
+            int i;
+            for (i = 2; i <= x1; i++)
+                x3 *= i;
+            for (i = 2; i <= x2; i++)
+                x4 *= i;
+            for (i = 2; i <= x1 - x2; i++)
+                x5 *= i;
+            c = x3 / (x4 * x5);
+            return c;
+        }
+        static double geron(double a, double b, double c)//1.2
+        {
+            double p = (a + b + c) / 2;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+        }
+        static bool Meow(double a, double b, double c)
+        {
+            if (a < b + c && b < a + c && c < a + b)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        static int vast(int[] mos)//2.6
+        {
+            int Tara = 0;
+            int DinoMike = 0;
+            for (int i = 0; i < mos.Length; i++)
+            {
+                if (mos[i] > Tara)
+                {
+                    Tara = mos[i];
+                    DinoMike = i;
+                }
+            }
+            return DinoMike;
+        }
+        static int[] udalenie(int[] massiv, int h)
+        {
+            int[] mos = new int[massiv.Length - 1];
+            int k = 0;
+            for (int i = 0; i < massiv.Length; i++)
+            {
+                if (i == h)
+                {
+                    continue;
+                }
+                mos[k] = massiv[i];
+                k++;
+            }
+            return mos;
+        }
+        static int[] DvamassivA(int[] m1, int[] m2)
+        {
+            int[] mos = new int[m1.Length + m2.Length];
+            for (int i = 0; i < m1.Length; i++)
+            {
+                mos[i] = m1[i];
+            }
+            for (int i = 0; i < m2.Length; i++)
+            {
+                mos[i + m1.Length] = m2[i];
+            }
+            return mos;
+        }
+        
+        static int[,] minusel(int[,] a, int ind)//2.10
+        {
+            int n = a.GetLength(0), m = a.GetLength(1);
+            m -= 1;
+            for (int i = 0; i < n; i++)
+                for (int iii = ind; iii < m; iii++)
+                    a[i, iii] = a[i, iii + 1];
+            return a;
+        }
+
+        static void Matriz23(int[,] a)//2.23
+        {
+            int[] intel = new int[a.GetLength(0) * a.GetLength(1)];
+            int sew = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int zz = 0; zz < a.GetLength(1); zz++)
+                {
+                    intel[sew] = a[i, zz];
+                    sew++;
+                }
+            }
+            for (int i = 0; i < intel.Length; i++)
+            {
+                for (int zz = 0; zz < intel.Length - 1; zz++)
+                {
+                    if (intel[zz] < intel[zz + 1])
+                    {
+                        int p = intel[zz]; intel[zz] = intel[zz + 1]; intel[zz + 1] = p;
+                    }
+                }
+            }
+            int gtx = 0;
+            if (intel.Length > 5)
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int zz = 0; zz < a.GetLength(1); zz++)
+                    {
+                        if ((a[i, zz] == intel[0] || a[i, zz] == intel[1] || a[i, zz] == intel[2] || a[i, zz] == intel[3] || a[i, zz] == intel[4]) && (gtx < 5))
+                        {
+                            a[i, zz] *= 2;
+                            gtx++;
+                        }
+                        else
+                        {
+                            a[i, zz] /= 2;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int zz = 0; zz < a.GetLength(1); zz++)
+                    {
+                        a[i, zz] *= 2;
+                    }
+                }
+            }
+        }
+        delegate void deleg(int[] mssv);
+        static void go(int[,] Doc, int e, out int[] mssv)//3.2
+        {
+            mssv = new int[Doc.GetLength(1)];
+            for (int i1 = 0; i1 < Doc.GetLength(1); i1++)
+            {
+                mssv[i1] = Doc[e, i1];
+            }
+        }
+        static void func(int[] mssv)//3.2
+        {
+            Array.Sort(mssv);
+            Array.Reverse(mssv);
+        }
+        static void arrayy(int[] mssv)
+        {
+            Array.Sort(mssv);
+        }
+        static void btwn(int[,] Doc, deleg iz, int e)
+        {
+            go(Doc, e, out int[] mssv);
+            iz(mssv);
+            int[] arr1 = mssv;
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                Doc[e, i] = arr1[i];
+            }
+        }
+        static void Main(string[] args)
+        {
+            #region 1.1
+            int team = 5, k8 = 8, k10 = 10, k11 = 11;
+            Console.WriteLine("{0} вариантов из {1} человек", factorial(k8, team), k8);
+            Console.WriteLine("{0} вариантов из {1} человек", factorial(k10, team), k10);
+            Console.WriteLine("{0} вариантов из {1} человек", factorial(k11, team), k11);
+            #endregion
+            #region 1.2
+            double a, b, c;
+            Console.WriteLine("Введите a");
+            while (!double.TryParse(Console.ReadLine(), out a) || a <= 0)
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("a=");
+            }
+            Console.WriteLine("Введите b");
+            while (!double.TryParse(Console.ReadLine(), out b) || b <= 0)
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("b=");
+            }
+            Console.WriteLine("Введите c");
+            while (!double.TryParse(Console.ReadLine(), out c) || c <= 0)
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("c=");
+            }
+            if (Meow(a, b, c))
+            {
+                double plow = geron(a, b, c);
+                Console.WriteLine("Площадь треугольника: {0}", plow);
+            }
+            else
+            {
+                Console.WriteLine("Такого треугольника не существует");
+            }
+            #endregion
+            #region 2.6
+            Random random = new Random();
+            int n = 7, m = 8;
+            int[] nn = new int[n];
+            int[] mm = new int[m];
+            int[] mn = new int[n + m - 2];
+            for (int i = 0; i < nn.Length; i++)
+            {
+                nn[i] = random.Next(100);
+                Console.Write(nn[i] + "\t");
+            }
+            Console.WriteLine();
+            for (int i = 0; i < m; i++)
+            {
+                mm[i] = random.Next(100);
+                Console.Write(mm[i] + "\t");
+            }
+            int bignn = vast(nn);
+            int bigmm = vast(mm);
+            mn = DvamassivA(udalenie(nn, bignn), udalenie(mm, bigmm));
+            Console.WriteLine();
+            for (int i = 0; i < mn.Length; i++)
+            {
+                Console.Write(mn[i] + "\t");
+            }
+            Console.WriteLine();
+            #endregion
+            #region Task2.10
+            Random random = new Random();
+            Console.WriteLine("Введите размер матрицы");
+            int.TryParse(Console.ReadLine(), out int n);
+            int[,] mas10 = new int[n, n]; int cocacola = 0;
+            for (int i = 0; i < n; i++)
+                for (int iii = 0; iii < n; iii++)
+                    mas10[i, iii] = random.Next(100);
+            for (int i = 0; i < n; i++)
+            {
+                for (int iii = 0; iii < n; iii++)
+                {
+                    Console.Write(mas10[i, iii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            int vastwo = mas10[1, 0], weewo = mas10[0, 1];
+            int vast = 0, wee = 0;
+            for (int i = 0; i < mas10.GetLength(0); i++)
+            {
+                for (int iii = 0; iii < mas10.GetLength(1); iii++)
+                {
+                    if (vastwo < mas10[i, iii] && ((i > iii) || (i == iii)))
+                    {
+                        vastwo = mas10[i, iii];
+                        vast = iii;
+                    }
+                    if (weewo > mas10[i, iii] && (i < iii))
+                    {
+                        weewo = mas10[i, iii];
+                        wee = iii;
+                    }
+                }
+            }
+
+            Console.WriteLine("{0:d} {1:d}", weewo, vastwo);
+            if (vast == wee)
+            {
+                minusel(mas10, wee); cocacola += 1;
+            }
+            else if (wee > vast)
+            {
+                minusel(mas10, vast); minusel(mas10, wee - 1); cocacola += 2; ;
+            }
+            else
+            {
+                minusel(mas10, wee); minusel(mas10, vast - 1); cocacola += 2;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int iii = 0; iii < n - cocacola; iii++)
+                {
+                    Console.Write(mas10[i, iii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            #endregion
+            #region 2.23
+            Random rand0m = new Random();
+            Console.WriteLine("Введите n");
+            while (!int.TryParse(Console.ReadLine(), out n))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("n=");
+            }
+            Console.WriteLine("Введите m");
+            while (!int.TryParse(Console.ReadLine(), out m))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("m=");
+            }
+            int[,] mas23 = new int[n, m];
+            for (int i = 0; i < n; i++)
+                for (int ii = 0; ii < m; ii++)
+                    mas23[i, ii] = rand0m.Next(-80, 80);
+            for (int i = 0; i < n; i++)
+            {
+                for (int ii = 0; ii < m; ii++)
+                {
+                    Console.Write(mas23[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Matriz23(mas23);
+            for (int i = 0; i < n; i++)
+            {
+                for (int ii = 0; ii < m; ii++)
+                {
+                    Console.Write(mas23[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            #endregion
+            #region 3.2
+            Console.WriteLine("3.2");
+            int vis, shir;
+            Console.WriteLine("Введите vis");
+            while (!int.TryParse(Console.ReadLine(), out vis))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("vis=");
+            }
+            Console.WriteLine("Введите shir");
+            while (!int.TryParse(Console.ReadLine(), out shir))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("shir=");
+            }
+            int[,] newint = new int[vis, shir];
+            for (int i = 0; i < vis; i++)
+                for (int ii = 0; ii < shir; ii++)
+                    newint[i, ii] = random.Next(-80, 80);
+            Task3_2(newint, vis, shir);
+            for (int i = 0; i < vis; i++)
+            {
+                for (int ii = 0; ii < shir; ii++)
+                {
+                    Console.Write(newint[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            #region task 3.1
+            Task3_1();
+            #endregion
+
+        }
+        #endregion
+        //#region 3.2
+        #region 3.2
+        static void Task3_2(int[,] newint1, int vis1, int shir1)
+        {
+            deleg f1 = func;
+            deleg f2 = arrayy;
+            for (int i = 0; i < vis1; i++)
+            {
+                for (int ii = 0; ii < shir1; ii++)
+                {
+                    Console.Write(newint1[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            for (int i = 0; i < vis1; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    btwn(newint1, f2, i);
+                }
+                else
+                {
+                    btwn(newint1, f1, i);
+                }
+            }
+            #endregion
+
+        }
+        static int metod1(int i)
+        {
+            int a = 1;
+            for (int j = 1; j <= i; j++)
+            {
+                a = a * j;
+            }
+            return a;
+        }
+        delegate double hdmi(double x, int i);
+        static double f1(double x, int i)
+        {
+            ;
+            double chs1;
+            return chs1 = Math.Cos(i * x) / metod1(i);
+        }
+        static double f2(double x, int i)
+        {
+            double chs2;
+            return chs2 = Math.Pow(-1, i) * Math.Cos(i * x) / i * i;
+        }
+        static double plus(hdmi f, double a, double b, double h)
+        {
+            double s = 0;
+            int i = 1;
+            for (double x = a; x <= b; x = x + h)
+            {
+                s = s + f(x, i);
+                i++;
+            }
+            return s;
+        }
+        //#endregion
+        static void Task3_1()
+        {
+            #region 3.1 
+            Console.WriteLine("3.1");
+            double y = 0.1, o = 1, G = 0.1, U = 3.14 / 5, R = 3.14, T = 3.14 / 25;
+            Console.WriteLine("Summ 1: ");
+            Console.WriteLine($"{1 + plus(f1, y, o, G)}");
+            Console.WriteLine("Summ 2: ");
+            Console.WriteLine($"{plus(f2, U, R, T)}");
+            #endregion
+        }
+    }
+}
