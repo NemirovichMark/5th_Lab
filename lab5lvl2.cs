@@ -15,7 +15,7 @@ class homew6lvl2
         return imax;
     }
 
-    
+
     static public int[] del(int[] ma, int indexmax, int l)
     {
         for (int i = indexmax; i < l - 1; i++)
@@ -36,7 +36,7 @@ class homew6lvl2
     static void inputone(int[] ma, int l)
     {
         Console.WriteLine("введите массив");
-        for (int i = 0; i<l; i++)
+        for (int i = 0; i < l; i++)
         {
             try
             {
@@ -47,7 +47,7 @@ class homew6lvl2
                 Console.WriteLine("введите заново");
             }
         }
-        
+
     }
     static void outputone(int[] a, int l)
     {
@@ -63,7 +63,7 @@ class homew6lvl2
             {
                 try
                 {
-                    ma[i,j] = Convert.ToInt32(Console.ReadLine());
+                    ma[i, j] = Convert.ToInt32(Console.ReadLine());
                 }
                 catch
                 {
@@ -93,7 +93,7 @@ class homew6lvl2
         {
             for (int j = 0; j < l; j++)
             {
-                if ((max < a[i, j])&&(i>=j))
+                if ((max < a[i, j]) && (i >= j))
                 {
                     jmax = j;
                     max = a[i, j];
@@ -111,7 +111,7 @@ class homew6lvl2
         {
             for (int j = 0; j < l; j++)
             {
-                if ((min > a[i, j])&&(i<j))
+                if ((min > a[i, j]) && (i < j))
                 {
                     jmin = j;
                     min = a[i, j];
@@ -127,33 +127,25 @@ class homew6lvl2
             for (int j = jndex; j < m - 1; j++)
                 ma[i, j] = ma[i, j + 1];
         }
-           
+
         return ma;
     }
-    static double[] find_5_maximums(double[,] x)
+    static double find_5_maximums(double[,] x, double a)
     {
-        int n = x.GetLength(0), 
-            m = x.GetLength(1);
-        List<double> tmp = new List<double>(n + m);
-        double[] res = new double[5];
-
-        for (int i = 0; i < n; i++)
+        double max = -1000000;
+        for (int i = 0; i < x.GetLength(0); i++)
         {
-            for (int j = 0; j < m; j++)
             {
-                tmp.Add(x[i, j]);
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (x[i, j] > max && x[i, j] < a)
+                    {
+                        max = x[i, j];
+                    }
+                }
             }
         }
-
-        tmp.Sort();
-
-        int k = 0;
-        for (int i = n + m - 5; i <= n + m - 1; i++)
-        {
-            res[k] = tmp[i];
-            k++;
-        }
-        return res;
+        return max;
     }
 
     static bool in_array(double[] arr, double value)
@@ -169,16 +161,41 @@ class homew6lvl2
     }
     static void changematrix(double[,] a, int l, int m)
     {
-        double[] mx5 = find_5_maximums(a);
-        for (int i = 0; i<l;i++)
-            for(int j = 0; j<m;j++)
+       
+            double x = -100000;
+            for (int i = 0; i < 5; i++)
             {
-                if (in_array(mx5, a[i, j]) == true)
-                    a[i, j] *= 2;
-                else
-                    a[i, j] /= 2;
+                x = find_5_maximums(a, x);
             }
-    }
+
+            for (int i = 0; i < l; i++)
+                for (int j = 0; j < m; j++)
+                {
+                if (a[i, j] >= x)
+                {
+                    if (a[i, j] < 0)
+                    {
+                        a[i, j] /= 2;
+                    }
+                    else
+                    {
+                        a[i, j] *= 2;
+                    }
+                }
+                else
+                {
+                    if (a[i, j] < 0)
+                    {
+                        a[i, j] *= 2;
+                    }
+                    else
+                    {
+                        a[i, j] /= 2;
+                    }
+                }
+                }
+        }
+    
     static void Main()
     {
         Console.WriteLine("введите номер задания(6,10,23)");
@@ -217,7 +234,6 @@ class homew6lvl2
                     int jmax = maxsqr(a, m);
 
                     int jmin = minsqr(a, m);
-                    // Console.WriteLine($"jmax -> {jmax}, jmin-> {jmin}");
                     int c = 0;
                     // Console.WriteLine($"jmax -> {jmax}, jmin-> {jmin}");
                     if ((jmin > -1) && (jmin > -1))
@@ -270,7 +286,7 @@ class homew6lvl2
                 Console.WriteLine("введите количество столбцов матрицы А");
                 al = Convert.ToInt32(Console.ReadLine());
 
-                
+
                 Console.WriteLine("введите количество строк матрицы Б");
 
                 bm = Convert.ToInt32(Console.ReadLine());
