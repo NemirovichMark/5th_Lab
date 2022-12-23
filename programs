@@ -242,82 +242,106 @@ static void PrintMatrix(int[, ] arr) {
 // Номер 23
 /*
 #region
-        static void PrintMatrix(int[, ] arr) {
-            for (int i = 0; i < arr.GetLength(0); i++) {
-                for (int j = 0; j < arr.GetLength(1); j++) {
-                    Console.Write(arr[i, j] + "\t");
-                }
-                Console.WriteLine();
-            }
-        }
-
-        static int FindMax(int a, int[, ] arr) {
-            int max = int.MinValue;
-            for (int i = 0; i < arr.GetLength(0); i++) {
-                {
-                    for (int j = 0; j < arr.GetLength(1); j++) {
-                        if (arr[i, j] > max && arr[i, j] < a) {
-                            max = arr[i, j];
-                        }
-                    }
-                }
-            }
-            return max;
-        }
-        static void DoubleMax(int[, ] arr) {
-            int f = int.MaxValue;
-            for (int i = 0; i < 5; i++) {
-                Console.WriteLine(f = FindMax(f, arr));
-            }
-            for (int i = 0; i < arr.GetLength(0); i++) {
-                for (int j = 0; j < arr.GetLength(1); j++) {
-                    if (arr[i, j] >= f) {
-                        arr[i, j] *= 2;
-                    } else {
-                        arr[i, j] /= 2;
-                    }
-                }
-            }
-        }
-
-        static void l2_23() {
-        int m = 3;
-            int[, ] a = new int[m, m];
-            for (int i = 0; i < m; i++)
-{
-    for (int j = 0; j < m; j++)
-    {
-        do
-        {
-        }
-        while (!int.TryParse(Console.ReadLine(), out a[i, j]));
-    }
-}
-            PrintMatrix(a);
-            Console.WriteLine();
-            DoubleMax(a);
-            Console.WriteLine();
-            PrintMatrix(a);
-            Console.WriteLine();
-            int n = 4;
-            int[, ] b = new int[n, n];
-            for (int i = 0; i < n; i++)
+int n;
+do{}
+while(!int.TryParse(Console.ReadLine(), out n));
+int[,] matrix = new int[n,n];
+for (int i = 0; i < n; i++)
 {
     for (int j = 0; j < n; j++)
     {
         do
         {
         }
-        while (!int.TryParse(Console.ReadLine(), out b[i, j]));
+        while (!int.TryParse(Console.ReadLine(), out matrix[i, j]));
     }
 }
-            PrintMatrix(b);
-            Console.WriteLine();
-            DoubleMax(b);
-            Console.WriteLine();
-            PrintMatrix(b);
+PrintMatrix(matrix);
+
+static int[,] NewMatrix(int[,] matrix){
+  int[] a = new int[matrix.GetLength(0) * matrix.GetLength(1)];
+  int index = 0;
+
+  for(int i = 0; i < matrix.GetLength(0); i++){
+    for(int j = 0; j < matrix.GetLength(1); j++){
+      a[index] = matrix[i, j];
+      index++;
+    }
+  }
+
+  a = SortedArrayDown(a);
+
+  for(int i = 0; i < 5; i++){
+    Console.Write($"{a[i]} ");
+  }
+
+  Console.WriteLine();
+  Console.WriteLine();
+
+  for(int i = 0; i < matrix.GetLength(0); i++){
+    for(int j = 0; j < matrix.GetLength(1); j++){
+      if(matrix[i, j] == a[0] || matrix[i, j] == a[1] || matrix[i, j] == a[2] || matrix[i, j] == a[3] || matrix[i, j] == a[4]){
+        if( matrix[i, j] > 0){
+        matrix[i, j] *= 2;
         }
-l2_23();
+        else{
+          matrix[i, j] /= 2;
+        }
+      }
+      else{
+        if(matrix[i, j] < 0){
+        matrix[i, j] *= 2;
+        }
+        else{
+          matrix[i,j] /=2;
+        }
+      }
+      
+    }
+  }
+  return matrix;
+}
+
+matrix = NewMatrix(matrix);
+PrintMatrix(matrix);
+
+static int[] SortedArrayDown(int[] array){
+  int cash = 0;
+  for(int i = 0; i < array.GetLength(0); i++){
+    for(int j = i + 1; j < array.GetLength(0); j++){
+      if(array[i] < array[j]){
+        cash = array[i];
+        array[i] = array[j];
+        array[j] = cash;
+      }
+    }
+  }
+  return array;
+  Console.WriteLine();
+}
+
+
+static void PrintMatrix(int[,] matrix){
+  for(int i = 0; i < matrix.GetLength(0); i++ ){
+    for(int j = 0; j < matrix.GetLength(1); j++){
+      Console.Write($"{ matrix[i,j],5:d}");
+    }
+    Console.WriteLine();
+  }
+  Console.WriteLine();
+}
+
+static int[,] GenerateMatrix(int m, int n, (int, int) range){
+  Random r = new Random();
+  int[,] matrix = new int[m, n];
+  for(int i = 0; i < matrix.GetLength(0); i++){
+    for(int j= 0; j < matrix.GetLength(1); j++){
+      matrix[i, j] = r.Next(range.Item1, range.Item2 + 1);
+    }
+  }
+  return matrix;
+  Console.WriteLine();
+}
 #endregion
 */
 
