@@ -167,11 +167,12 @@ class homew6lvl2
             {
                 x = find_5_maximums(a, x);
             }
+            int c = 0;
 
             for (int i = 0; i < l; i++)
                 for (int j = 0; j < m; j++)
                 {
-                if (a[i, j] >= x)
+                if ((a[i, j] >= x)&&(c<5))
                 {
                     if (a[i, j] < 0)
                     {
@@ -181,6 +182,7 @@ class homew6lvl2
                     {
                         a[i, j] *= 2;
                     }
+                    c+=1;
                 }
                 else
                 {
