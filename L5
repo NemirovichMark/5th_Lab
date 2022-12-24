@@ -1,0 +1,566 @@
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
+using System.Runtime.Serialization.Formatters;
+
+namespace ConsoleApp
+{
+    class Program89
+    {
+        
+        static int factorial(int n)                     //номера вместе с их методами нужно запускать отдельно друг от друга, так как переменные могут повторяться
+        {
+            int fact = 1;
+            for(int i = 1; i <= n; i++)
+            {
+                fact *= i;
+            }
+            return fact;
+                
+        }
+        static double pol(double a,double b,double c)
+        {
+            double p=(a+b+c)/2;
+            return p;
+        }
+        static double geron(double a, double b, double c)
+        {
+            double s=Math.Sqrt(pol(a,b,c)*((pol(a,b,c)-a)* ((pol(a, b, c) - b)* ((pol(a, b, c) - c)))));
+            return s;
+        }
+        static double summa(double aa, double bb, double yy, double hh)
+        {
+
+            double x;
+            double y;
+            double s = 0;
+            aa = (Math.PI) / 5;
+            double sum = 0;
+            bb = Math.PI;
+            hh = (Math.PI / 25);
+
+            for (x = aa; x <= bb; x += hh)
+
+            {
+                int i = 1;
+                s = 0;
+
+                do
+                {
+
+                    s = Math.Pow(-1, i) * Math.Cos(i * x) / Math.Pow(i, 2);
+                    sum += s;
+                    yy = (Math.Pow(x, 2) - ((Math.Pow((Math.PI), 2) / 3))) / 4;
+                    Console.WriteLine($"y:{yy},x:{x}");
+                    i++;
+
+                } while (s >= 0.0001);
+            }
+            Console.WriteLine(sum);
+            return sum;
+        }
+
+
+        static void Max(  int[]array,int n)
+        {
+            
+            int maxind=0;
+            
+            array = new int[n];
+            int max = array[0];
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] > max)
+                {
+                    max = array[i];
+                    maxind = i;
+                }
+            }
+            int temp = array[maxind];
+            array[maxind] = array[^1];
+            array[^1] = temp;
+           
+
+
+
+        }
+        static double summa1(double aa, double bb, double yy, double hh)
+        {
+
+            double x;
+            double y;
+            double s = 1;
+            aa = 0.1;
+            double sum = 0;
+            bb = 1;
+            hh = 0.1;
+
+            for (x = aa; x <= bb; x += hh)
+
+            {
+                int i = 1;
+                s = 1;
+
+                do
+                {
+
+                    s = Math.Cos(i * x) / factorial(i);
+                    sum += s;
+                    yy = Math.Exp(Math.Cos(x) * Math.Cos(Math.Sin(x)));
+                    Console.WriteLine($"y:{yy},x:{x}");
+                    i++;
+
+                } while (s >= 0.0001);
+            }
+            Console.WriteLine(sum);
+            return sum;
+        }
+        static void Rand(int[] a)
+        {
+            Random r = new Random();
+            for (int i = 0; i < a.Length; i++)
+            {
+                a[i] = r.Next(-20, 20);
+            }
+           
+        }
+        static void Vivod6(int[] a)
+        {
+            for (int i = 0; i < a.Length-1; i++)
+            {
+                Console.Write(a[i] + " ");
+            }
+        }
+        static void Vivod(int[] a)
+        {
+            for (int i = 0; i < a.Length ; i++)
+            {
+                Console.Write(a[i] + " ");
+            }
+        }
+        static void task10(int[,] arr, int n)
+        {
+            int max = int.MinValue;
+            int maxind = 0;
+            int min = int.MaxValue;
+            int minind = 0;
+            for (int i = 0; i < n; i++) //поиск максимального элемента и его индекса
+            {
+                for (int j = 0; j < i + 1; j++)
+                {
+                    if (arr[i, j] > max)
+                    {
+                        max = arr[i, j];
+                        maxind = j;
+                    }
+
+                }
+            }
+            for (int i = 0; i < n - 1; i++) //поиск минимального элемента и его индекса
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    if (arr[i, j] < min)
+                    {
+                        min = arr[i, j];
+                        minind = j;
+                    }
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("Исходный массив: ");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+
+                    Console.Write(arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.Write("максимальный элемент: " + max + " и ");
+            Console.WriteLine(" его индекс: " + maxind);
+            Console.Write("минимальный элемент: " + min + " и ");
+            Console.WriteLine(" его индекс: " + minind);
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n - 1; j++)
+                {
+                    if (j == maxind)
+                    {
+                        arr[i, j] = arr[i, j + 1];
+                    }
+
+
+                }
+            }
+            for (int i = 0; i < n; i++)                //удаление столбца с макс
+            {
+                if (maxind != n - 1)
+                {
+                    int temp = arr[i, maxind + 1];
+                    arr[i, maxind + 1] = arr[i, n - 1];
+                    arr[i, n - 1] = temp;
+                }
+            }
+            for (int i = 0; i < n; i++)                   //удаление столбца с мин
+            {
+                if (minind != n - 1)
+                {
+                    int temp = arr[i, minind - 1];
+                    arr[i, minind - 1] = arr[i, n - 2];
+                    arr[i, n - 2] = temp;
+                }
+            }
+            if (maxind == n - 1 || maxind == 0 || minind == n - 1 || minind == 0 || maxind == minind)
+            {
+                Console.WriteLine();
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < n - 2; j++)
+                    {
+
+                        Console.Write(arr[i, j] + "\t");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            if (maxind != n - 1 && maxind != 0 && minind != n - 1 && minind != 0)
+            {
+                Console.WriteLine();
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+
+                        Console.Write(arr[i, j] + "\t");
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
+        static int FindMax23(int a, int[,] arr)
+        {
+            int max = int.MinValue;
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                {
+                    for (int j = 0; j < arr.GetLength(1); j++)
+                    {
+                        if (arr[i, j] > max && arr[i, j] < a)
+                        {
+                            max = arr[i, j];
+                        }
+                    }
+                }
+            }
+            return max;
+        }
+        static void DMax23(int[,] arr)
+        {
+
+            int f = int.MaxValue;
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(f = FindMax23(f, arr));
+            }
+
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)
+                {
+                    if (arr[i, j] >= f)
+                    {
+                        arr[i, j] *= 2;
+                    }
+                    else
+                    {
+                        arr[i, j] /= 2;
+                    }
+                }
+            }
+        }
+        static void task6p3(int[,] array, int n, int m)
+        {
+            int maxa = int.MinValue;
+            int maxstr = 0;
+            for (int i = 0; i < m; i++)
+            {
+                if (array[0, i] > maxa)
+                {
+                    maxa = array[0, i];
+                    maxstr = i;
+
+                }
+            }
+            maxa = int.MinValue;
+            int maxdiag = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (array[i, i] > maxa)
+                {
+                    maxa = array[i, i];
+                    maxdiag = i;
+                }
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+
+                int temp = array[i, maxdiag];
+                array[i, maxdiag] = array[i, maxstr];
+                array[i, maxstr] = temp;
+
+            }
+        }
+        static void Main(string[] args)
+        {
+            /*
+            #region part 1 task 1
+            var cc = factorial(8)/(factorial(5)*factorial(8-5));
+            var c1 = factorial(10) / (factorial(5) * factorial(10 - 5));
+            var c2 = factorial(11) / (factorial(5) * factorial(11 - 5));
+            Console.WriteLine("Для 8 кандидатов:  "+cc);
+            Console.WriteLine("Для 10 кандидатов: "+c1);
+            Console.WriteLine("Для 11 кандидатов: "+c2);
+            #endregion
+            
+
+            #region part 1 task 2
+            Console.WriteLine("Введите a");
+            double a=double.Parse(Console.ReadLine());
+            Console.WriteLine("Введите b");
+            double b = double.Parse(Console.ReadLine());
+            Console.WriteLine("Введите c");
+            double c = double.Parse(Console.ReadLine());
+            Console.WriteLine("Ответ: " + geron(a,b,c));
+            #endregion
+            
+
+            #region part 2 task 6
+            int n = 7;
+            int[] a = new int[n];
+            int m = 8;
+            int [] b = new int[m];
+            Rand(a);
+            Rand(b);
+            Console.WriteLine("Исходный общий массив");
+            Vivod(a);
+            Vivod(b);
+            Max(a,n);
+            Max(b,m);
+            Console.WriteLine();
+            Console.WriteLine("Итоговый массив");
+            Vivod6(a);
+            Vivod6(b);
+            Console.Read();
+            #endregion
+            
+
+            
+
+            #region part 2 task 10
+            int n = 0;
+            try
+            {
+                Console.Write("Введите количество строк и столбцов: ");
+                n = int.Parse(Console.ReadLine());
+            }
+            catch { }
+            int[,] array = new int[n, n];
+            try
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    Console.WriteLine($"Введите элементы строки {i}: ");
+                    for (int j = 0; j < n; j++)
+                    {
+
+                        array[i, j] = int.Parse(Console.ReadLine());
+                    }
+                }
+            }
+            catch { }
+            task10(array, n);
+            #endregion
+             
+            
+            #region part 2 task 23
+            int n=0;
+            try
+            {
+                Console.Write("Введите размерность матрицы A: ");
+                n = int.Parse(Console.ReadLine());
+            }
+            catch{}
+            int[,]a=new int[n, n];
+            try
+            {
+                for(int i=0; i<n; i++)
+                {
+                    Console.WriteLine($"Введите элементы строки {i}: ");
+                    for (int j=0; j<n; j++)
+                    {
+                        a[i, j] = int.Parse(Console.ReadLine());
+                    }
+                }
+            }
+            catch{}
+            for(int i=0; i<n; i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    Console.Write(a[i,j]+"\t ");
+                }
+                Console.WriteLine();
+            }
+            DMax23(a);
+            Console.WriteLine();
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(a[i, j] + "\t ");
+                }
+                Console.WriteLine();
+            }
+            Console.Write("Введите размерность матрицы B: ");
+            int n1 = int.Parse(Console.ReadLine());
+            int[,] b=new int[n1, n1];
+            try
+            {
+                for (int i = 0; i < n1; i++)
+                {
+                    Console.WriteLine($"Введите элементы строки {i}: ");
+                    for (int j = 0; j < n1; j++)
+                    {
+                        b[i, j] = int.Parse(Console.ReadLine());
+                    }
+                }
+            }
+            catch{}
+            Console.WriteLine();
+            for (int i = 0; i < n1; i++)
+            {
+                for (int j = 0; j < n1; j++)
+                {
+                    Console.Write(b[i, j] + "\t ");
+
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            DMax23(b);
+            for (int i = 0; i < n1; i++)
+            {
+                for (int j = 0; j < n1; j++)
+                {
+                    Console.Write(b[i, j] + "\t ");
+
+                }
+                Console.WriteLine();
+            }
+            #endregion
+
+            
+
+            #region part 3 task 1(b)
+            double x;
+            double y;
+            double s = 0;
+            double aa = (Math.PI) / 5;
+            double sum = 0;
+            double bb = Math.PI;
+            double hh = (Math.PI / 25);
+            double yy = 0;
+            del k = summa;
+            double mb = k(aa, bb, yy, hh);
+            
+            #endregion
+            
+            */
+
+
+            #region part 3 task 1(a)
+            double x;
+            double y;
+            double s = 1;
+            double aa = 0.1;
+            double sum = 0;
+            double bb = 1;
+            double hh = 0.1;
+            double yy = 0;
+            deli k = summa1;
+            double b = k(aa, bb, yy, hh);
+            #endregion
+
+            #region part 3 task 6
+            int n = 0;
+            int m = 0;
+            try
+            {
+                Console.WriteLine("Введите количество строк и столбцов: ");
+                n = int.Parse(Console.ReadLine());
+                m = int.Parse(Console.ReadLine());
+            }
+            catch { }
+            int[,] arra = new int[n, m];
+            try
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    Console.WriteLine($"Введите элементы строки {i}: ");
+                    for (int j = 0; j < m; j++)
+                    {
+
+                        arra[i, j] = int.Parse(Console.ReadLine());
+                    }
+                }
+            }
+            catch { }
+            Console.WriteLine();
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+
+                    Console.Write(arra[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            delig u = task6p3;
+            u(arra, n, m);
+            Console.WriteLine();
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+
+                    Console.Write(arra[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            #endregion
+
+
+
+
+
+
+
+
+        }
+        delegate double del(double aa, double bb, double yy, double hh);
+        delegate double deli(double aa, double bb, double yy, double hh);
+        delegate void delig(int[,] array, int n, int m);
+
+
+    }
+}
