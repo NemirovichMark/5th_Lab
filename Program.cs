@@ -9,6 +9,7 @@ namespace lab_5
 {
     delegate double[,] sorted_matrix(double[,] matrix, int index, bool sign);
     delegate double y(double x);
+    delegate double[] array_of_matrix(double[,] matrix);
     class Program
     {
         #region methods
@@ -211,6 +212,53 @@ namespace lab_5
             if (cnt > answ) answ = cnt;
             return answ;
         }
+
+        static double[] diag(double[,] matrix)
+        {
+            double[] array = new double[(int)Math.Sqrt(matrix.Length)];
+            for (int i = 0; i < Math.Sqrt(matrix.Length); i++)
+            {
+                array[i] = matrix[i, i];
+            }
+            return array;
+        }
+
+        static double[] first_row(double[,] matrix)
+        {
+            double[] array = new double[(int)Math.Sqrt(matrix.Length)];
+            for (int i = 0; i < Math.Sqrt(matrix.Length); i++)
+            {
+                array[i] = matrix[0, i];
+            }
+            return array;
+        }
+
+        static int max_array(array_of_matrix get_array, double[,] matrix)
+        {
+            double[] array = get_array(matrix);
+            int index = 0;
+            double max = array[0];
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] > max)
+                {
+                    max = array[i];
+                    index = i;
+                }
+            }
+            return index;
+        }
+
+        static double[,] change_columns(double[,] matrix, int ind1, int ind2)
+        {
+            for (int i = 0; i<Math.Sqrt(matrix.Length); i++)
+            {
+                double temp = matrix[i, ind1];
+                matrix[i, ind1] = matrix[i, ind2];
+                matrix[i, ind2] = temp;
+            }
+            return matrix;
+        }
         #endregion
         static void Main(string[] args)
         {
@@ -374,6 +422,27 @@ namespace lab_5
 
             Console.WriteLine(intervals(func_1, 0, 2, 0.1));
             Console.WriteLine(intervals(func_2, -1, 1, 0.2));
+
+            Console.WriteLine();
+            #endregion
+
+            #region III|6
+            Console.WriteLine("---------- EX III|6 ----------");
+            Console.WriteLine();
+
+            matrix = new double[4, 4] { { 0, 5, 1, -10 },
+                                        { 0.5, -412.42, 1231, 12 },
+                                        { 9, 42, 1, -3 },
+                                        { 0.99999, 123, 42, 1} };
+            int max_diag = max_array(diag, matrix);
+            int max_on_row = max_array(first_row, matrix);
+            matrix = change_columns(matrix, max_diag, max_on_row);
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++) Console.Write("{0,7} ", matrix[i, j]);
+                Console.WriteLine();
+            }
+            Console.WriteLine();
 
             Console.WriteLine();
             #endregion
