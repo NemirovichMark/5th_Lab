@@ -5,7 +5,7 @@ static double p(double a, double b, double c)
 
 static double s(double a, double b, double c, double p)
 {
-    return p * (p - a) * (p - b) * (p - c);
+    return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
 double a1, b1, c1;
