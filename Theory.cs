@@ -26,10 +26,10 @@ namespace _5th_Lab
         #endregion
         #region 5.1.2
 
-        static double square(double a, double b, double c, out double s)
+        static double square(double a, double b, double c)
         {
             double p = (a + b + c) / 2;
-            s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            double s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
             return s;
         }
 
@@ -54,211 +54,137 @@ namespace _5th_Lab
         }
         #endregion
         #region 5.2.10
-        static int Amax(int[,] d)
-        {
-            int maxa = 0;
-            int indexd = 0;
-            for (int i = 0; i < d.GetLength(0); i++)
-            {
-                for (int j = 0; j <= i; j++)
-                {
-                    if (d[i, j] > maxa)
-                    {
-                        maxa = d[i, j];
-                        indexd = j;
-                    }
-                }
-            }
-            return indexd;
+		static int indexmax(int[,] matrix)
+		{
+			int maxel = 0;
+			int indexmax = 0;
+			for (int y = 0; y < matrix.GetLength(0); y++)
+			{
+				for (int x = 0; x <= y; x++)
+				{
+					if (matrix[y,x] > maxel)
+					{
+						maxel = matrix[y,x];
+						indexmax = x;
+					}
 
-        }
-        static int Amin(int[,] x)
-        {
-            int min = 100000000, indexmin = 0;
 
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = i + 1; j < x.GetLength(1); j++)
-                {
-                    if (x[i, j] < min)
-                    {
-                        min = x[i, j];
-                        indexmin = j;
-                    }
-                }
-            }
+				}
+				
+			}
+			return indexmax;
+		}
+		static int indexmin(int[,] matrix)
+		{
+			int minelm = 100000000;
+			int indexmin = 0;
+			for (int y = 0; y < matrix.GetLength(0); y++)
+			{
+				
+				for (int x = y; x < matrix.GetLength(1); x++)
+				{
+					if (matrix[y,x] < minelm)
+					{
+						minelm = matrix[y,x];
+						indexmin = x;
+					}
+				}
+				
+				
+			}
+			return indexmin;
 
-            return indexmin;
-        }
-        static int[,] change(int[,] x)
-        {
-            int max_j = Amax(x);
-            int min_j = Amin(x);
+		}
+		static void delcolm(int[,] matrix)
+		{
+			if (indexmax(matrix) == indexmin(matrix))
+			{
+				int s = indexmax(matrix);
+				for (int y = 0; y < matrix.GetLength(0); y++)
+				{	
+					for (int x = s; x < matrix.GetLength(1)-1; x++)
+					{
+						matrix[y,x] = matrix[y,x+1];
 
-            if (max_j == min_j)
-            {
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = max_j + 1; j < x.GetLength(1) - 1; j++)
-                    {
-                        x[i, j] = x[i, j + 1];
-                    }
-                }
-            }
+					}
+				}
+			}
+			else
+			{
+				int s = indexmax(matrix);
+				for (int y = 0; y < matrix.GetLength(0); y++)
+				{	
+					for (int x = s; x < matrix.GetLength(1)-1; x++)
+					{
+						matrix[y,x] = matrix[y,x+1];
 
-            else
-            {
-                if (max_j > min_j)
-                {
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = max_j; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
+					}
+				}
 
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = min_j; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
-                }
+				int d = indexmin(matrix);
+				for (int y = 0; y < matrix.GetLength(0); y++)
+				{	
+					for (int x = d; x < matrix.GetLength(1)-1; x++)
+					{
+						matrix[y,x] = matrix[y,x+1];
 
-                else
-                {
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = min_j; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
+					}
+				}
 
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = max_j; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
-                }
-            }
 
-            return x;
-        }
+			}
 
-        #endregion
+		}
+
+
+		#endregion
         #region 5.2.23
-        static int min_(int[,] x)
-        {
-            int min = 10000000;
+		static int maxel(int[,] matrix)
+		{
+			int max = -1000000000;
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					if (matrix[i,j] > max)
+					{
+						max = matrix[i,j];
+					}
+				}
+			}
+			return max;
+		}
+		static void xr(int[,] matrix, int maxl)
+		{
+			maxl = maxel(matrix);
+			int c = 0;
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					if (matrix[i,j] == maxl)
+					{
+						if (c < 5)
+						{ 
+							matrix[i,j] *= 2;
+							
+						}
+						c++;
+						if (c > 5)
+						{
+							matrix[i,j] /= 2;
+						}
 
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1); j++)
-                {
-                    if (x[i, j] < min)
-                    {
-                        min = x[i, j];
-                    }
-                }
-            }
-            return min;
-        }
-
-        static int[,] copy(int[,] a)
-        {
-            int[,] b = new int[a.GetLength(0), a.GetLength(1)];
-            for (int i = 0; i < a.GetLength(0); i++)
-            {
-                for (int j = 0; j < a.GetLength(1); j++)
-                {
-                    b[i, j] = a[i, j];
-                }
-            }
-
-            return b;
-        }
-
-        static void ShowMatrix(int[,] x)
-        {
-            int rows = x.GetLength(0);
-            int columns = x.GetLength(1);
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                    Console.Write("{0, -5}", x[i, j]);
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-        }
-
-        static int[,] change(int[,] x, out int[,] b)
-        {
-            int n = 0;
-
-            b = copy(x);
-
-            int[,] c = copy(x);
-
-            int max = x[0, 0], min = min_(x), max_i = 0, max_j = 0;
-            int[] mas = new int[5];
-            int mas_i = 0;
-
-            do
-            {
-                max = x[0, 0];
-                max_i = 0;
-                max_j = 0;
-
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = 0; j < x.GetLength(1); j++)
-                    {
-                        if (x[i, j] > max)
-                        {
-                            max = x[i, j];
-                            max_i = i;
-                            max_j = j;
-                        }
-                    }
-                }
-
-                if (max > 0)
-                {
-                    b[max_i, max_j] = max * 2;
-                }
-                else b[max_i, max_j] = max / 2;
-
-                x[max_i, max_j] = min;
-                mas[mas_i] = b[max_i, max_j];
-
-                n++;
-                mas_i++;
-
-            } while (n < 5);
-
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1); j++)
-                {
-                    if (b[i, j] <= max && b[i, j] != mas[0] && b[i, j] != mas[1] && b[i, j] != mas[2] && b[i, j] != mas[3] && b[i, j] != mas[4])
-                    {
-                        if (b[i, j] > 0)
-                        {
-                            b[i, j] = b[i, j] / 2;
-                        }
-                        else b[i, j] = b[i, j] * 2;
-                    }
-                }
-            }
-            return b;
-        }
-        #endregion
+					}
+					else if (matrix[i,j] < maxl)
+					{
+						matrix[i,j] /= 2;
+					}
+				}
+			}
+		}
+		#endregion
         #region 5.3.1
         static int factorial(int i)
         {
@@ -348,91 +274,83 @@ namespace _5th_Lab
             Console.WriteLine();
             #endregion
             #region 5.1.2 Main
-            double a1, b1, c1, a2, b2, c2, s1 = 0, s2 = 0;
-
-            Console.WriteLine("Введите стороны первого треугольника: ");
-            double.TryParse(Console.ReadLine(), out a1);
-            double.TryParse(Console.ReadLine(), out b1);
-            double.TryParse(Console.ReadLine(), out c1);
-
-            Console.WriteLine("Введите стороны второго треугольника: ");
-            double.TryParse(Console.ReadLine(), out a2);
-            double.TryParse(Console.ReadLine(), out b2);
-            double.TryParse(Console.ReadLine(), out c2);
-
-
-            if (a1 > 0 & b1 > 0 & c1 > 0 & a2 > 0 & b2 > 0 & c2 > 0)
+            Console.WriteLine("Введите количество треугольников");
+            int n;
+            int.TryParse(Console.ReadLine(), out n);
+            double[] tr = new double[n];
+            int cd = 0;
+            while (cd < n)
             {
-                if (a1 + b1 > c1 && a1 + c1 > b1 && b1 + c1 > a1)
+
+                double a1, b1, c1;
+                Console.WriteLine($"Введите стороны {cd} треугольник");
+                double.TryParse(Console.ReadLine(), out a1);
+                double.TryParse(Console.ReadLine(), out b1);
+                double.TryParse(Console.ReadLine(), out c1);
+                if (a1 <= 0 || b1 <= 0 || c1 <= 0)
                 {
-                    square(a1, b1, c1, out s1);
-                    Console.WriteLine($"Площадь первого треугольника: {s1}");
+                    Console.WriteLine("Все стороны должы быть больше 0");
+                    continue;
+                    
+                }
+                else if (a1 + b1 > c1 && a1 + c1 > b1 && b1 + c1 > a1)
+                {
+                    Console.WriteLine($"Площадь {cd} треугольника: {square(a1, b1, c1)}");
+                    tr[cd] = square(a1,b1,c1);
                 }
                 else
                 {
                     Console.WriteLine("Такой треугольник не существует");
                 }
+                cd++;
 
-                if (a2 + b2 > c2 && a2 + c2 > b2 && b2 + c2 > a2)
-                {
-                    square(a2, b2, c2, out s2);
-                    Console.WriteLine($"Площадь второго треугольника: {s2}");
-                }
-                else
-                {
-                    Console.WriteLine("Такой треугольник не существует");
-                }
+                
 
-
-
-                if (s1 > s2)
-                {
-                    Console.WriteLine("Первый треугольник больше второго");
-                }
-                else if (s1 == s2)
-                {
-                    Console.WriteLine("Треугольники равны");
-                }
-                else
-                {
-                    Console.WriteLine("Второй треугольник больше первого");
-                }
             }
-
-            else
+            double max = 0;
+            int indextr = 0;
+            for (int i = 0; i < tr.Length; i++)
             {
-                Console.WriteLine("Треугольники должны быть больше 0");
+                if (tr[i] > max)
+                {
+                    max = tr[i];
+                    indextr = i;
+                }
             }
+            Console.WriteLine($"Наибольшая площадь треугольника у {indextr}: {max} ");
+            Console.ReadLine();
             #endregion
             #region 5.2.6 Main
             int j_q = 0;
-            double[] A = new double[7 + 8 - 2];
-            double[] B = new double[8];
+            int Alen = 3;
+            int Blen = 6;
+            double[] A = new double[Alen + Blen - 2];
+            double[] B = new double[Blen];
             Console.WriteLine($"введите элементы массива A");
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < Alen; i++)
             {
                 double.TryParse(Console.ReadLine(), out A[i]);
             }
             Console.WriteLine($"введите элементы массива B");
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Blen; i++)
             {
                 double.TryParse(Console.ReadLine(), out B[i]);
             }
             Console.WriteLine("массив A:");
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < Alen; i++)
             {
                 Console.Write($"{A[i]} ");
             }
             Console.WriteLine();
             Console.WriteLine("массив B:");
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Blen; i++)
             {
                 Console.Write($"{B[i]} ");
             }
             Console.WriteLine();
-            delmax(A, 7);
-            delmax(B, 8);
-            for (int i = 7 - 1; i < A.Length; i++)
+            delmax(A, Alen);
+            delmax(B, Blen);
+            for (int i = 3 - 1; i < A.Length; i++)
             {
                 A[i] = B[j_q];
                 j_q++;
@@ -452,54 +370,80 @@ namespace _5th_Lab
             int[,] matrix = new int[,]
             {
                 {7,4,8,6},
-                {3,8,1,2},
-                {6,9,3,6},
-                {4,6,2,1}
+                {3,0,4,2},
+                {6,9,7,6},
+                {5,6,2,1}
             };
-            change(matrix);
-            Console.WriteLine("Final matrix: ");
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.GetLength(1) - 2; j++)
-                {
-                    Console.Write(matrix[i, j]);
-                }
-                Console.WriteLine();
-            }
+			if (indexmax(matrix) == indexmin(matrix))
+			{ 
+				delcolm(matrix);
+				for (int y = 0; y < matrix.GetLength(0); y++)
+				{
+					for (int x = 0; x < matrix.GetLength(1)-1; x++)
+					{
+						Console.Write(matrix[y,x] + " ");
+					}
+					Console.WriteLine();
+				}
+			}
+			else 
+			{
+				delcolm(matrix);
+				for (int y = 0; y < matrix.GetLength(0); y++)
+				{
+					for (int x = 0; x < matrix.GetLength(1)-2; x++)
+					{
+						Console.Write(matrix[y,x] + " ");
+					}
+					Console.WriteLine();
+				}
+
+			}
+
+
+
+
+			
+			
+			
 
             #endregion
             #region 5.2.23 Main
-            int[,] A2 = new int[4, 7]
-            {
-                {4,4,4,10,4,4,4},
-                {4,4,4,10,4,4,4},
-                {4,4,4,10,4,10,4},
-                {4,4,4,10,4,4,4}
-            };
-            int[,] B2 = new int[6, 9]
-            {
-                {2,2,2,5,2,2,2,2,2},
-                {2,2,2,5,2,2,2,2,2},
-                {2,2,2,5,2,2,2,2,2},
-                {2,2,2,5,2,2,2,2,2},
-                {2,2,2,5,2,2,2,2,2},
-                {2,2,2,2,2,2,2,2,2}
-            };
-            Console.WriteLine("матрицы А2:");
-            ShowMatrix(A2);
-
-            Console.WriteLine("матрица B2:");
-            ShowMatrix(B2);
-
-            change(A2, out A2);
-            Console.WriteLine("измененная матрица А2: ");
-            ShowMatrix(A2);
-
-            change(B2, out B2);
-            Console.WriteLine("измененная матрица B2: ");
-            ShowMatrix(B2);
-            Console.ReadLine();
-            #endregion
+			int[,] matrix = new int[,]
+			{
+				{-2,-2,-6},
+				{-6,-6,-2},
+				{-6,-2,-2}
+			};
+			int[,] matrix2 = new int[,]
+			{
+				{10,-2,-2},
+				{10,10,-2},
+				{-2,-2,10}
+			};
+			int elmax = maxel(matrix);
+			xr(matrix,elmax);
+			xr(matrix2,elmax);
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					Console.Write(matrix[i,j] + " ");
+				}
+				Console.WriteLine();
+			}
+			Console.WriteLine();
+			for (int i = 0; i < matrix2.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix2.GetLength(1); j++)
+				{
+					Console.Write(matrix2[i,j] + " ");
+				}
+				Console.WriteLine();
+			}
+			Console.ReadLine();
+			
+			#endregion
             #region 5.3.1 Main
 
 
