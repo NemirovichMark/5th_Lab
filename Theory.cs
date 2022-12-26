@@ -38,6 +38,17 @@ namespace Lab_5
             double p = (a + b + c) / 2;
             return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
         }
+        static bool Check_tr(double a, double b, double c)
+        {
+            if (a > 0 && b > 0 && c > 0 && a + b > c && a + c > b && b + c > a)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         static int[] Without_Max(int[] arr)
         {
             int max_ = int.MinValue;
@@ -354,27 +365,21 @@ namespace Lab_5
             #region Num_2
             {
                 double a1 = 15, b1 = 20, c1 = 25, a2 = 16, b2 = 30, c2 = 34;
-                if (a1 > 0 && a2 > 0 && b1 > 0 && b2 > 0 && c1 > 0 && c2 > 0)
+                if (Check_tr(a1, b1, c1) == true && Check_tr(a2, b2, c2) == true)
                 {
-                    if ((a1 + b1 > c1) && (a1 + c1 > b1) && (b1 + c1 > a1) && (a2 + b2 > c2) && (a2 + c2 > b2) && (b2 + c2 > a2))
+                    if (Square(a1, b1, c1) > Square(a2, b2, c2))
                     {
-                        if (Square(a1, b1, c1) > Square(a2, b2, c2))
-                        {
-                            Console.WriteLine($"Square_1 > Square_2 => answer = {Square(a1, b1, c1)} ");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Square_2 > Square_1 => answer = {Square(a2, b2, c2)} ");
-                        }
+                        Console.WriteLine($"Square_1 > Square_2 => answer = {Square(a1, b1, c1)} ");
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        Console.WriteLine($"Square_2 > Square_1 => answer = {Square(a2, b2, c2)} ");
                     }
+
                 }
                 else
                 {
-                    Console.WriteLine("Error");
+                    Console.WriteLine("Try another triangle");
                 }
             }
             #endregion
