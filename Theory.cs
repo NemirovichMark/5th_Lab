@@ -54,50 +54,48 @@ namespace _5th_Lab
         }
         #endregion
         #region 5.2.10
-		static int indexmax(int[,] matrix)
-		{
-			int maxel = 0;
-			int indexmax = 0;
-			for (int y = 0; y < matrix.GetLength(0); y++)
-			{
-				for (int x = 0; x <= y; x++)
-				{
-					if (matrix[y,x] > maxel)
-					{
-						maxel = matrix[y,x];
-						indexmax = x;
-					}
+        static int indexmax(int[,] matrix)
+        {
+            int maxel = 0;
+            int indexelm = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j <= i; j++)
+                {
+                    if (matrix[i,j] > maxel)
+                    {
+                        maxel = matrix[i,j];
+                        indexelm = j;
+                    }
+                }
+                
+            }
+            return indexelm;
+        }
+        static int indexmin(int[,] matrix)
+        {
+            int minel = 10000000;
+            int indexminel = 0;
+            for (int i = 0; i < matrix.GetLength(0)-1; i++)
+            {
+                for (int j = i+1; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i,j] < minel)
+                    {
+                        indexminel = j;
+                        minel = matrix[i,j];
+                    }
+                }
+                
+            }
+            return indexminel;
 
-
-				}
-				
-			}
-			return indexmax;
-		}
-		static int indexmin(int[,] matrix)
+        }
+        static void delcolm(int[,] matrix)
 		{
-			int minelm = 100000000;
-			int indexmin = 0;
-			for (int y = 0; y < matrix.GetLength(0); y++)
-			{
-				
-				for (int x = y; x < matrix.GetLength(1); x++)
-				{
-					if (matrix[y,x] < minelm)
-					{
-						minelm = matrix[y,x];
-						indexmin = x;
-					}
-				}
-				
-				
-			}
-			return indexmin;
-
-		}
-		static void delcolm(int[,] matrix)
-		{
-			if (indexmax(matrix) == indexmin(matrix))
+            int z = indexmax(matrix);
+            int h = indexmin(matrix);
+			if (z == h)
 			{
 				int s = indexmax(matrix);
 				for (int y = 0; y < matrix.GetLength(0); y++)
@@ -136,8 +134,7 @@ namespace _5th_Lab
 
 		}
 
-
-		#endregion
+        #endregion
         #region 5.2.23
 		static int maxel(int[,] matrix)
 		{
@@ -367,14 +364,18 @@ namespace _5th_Lab
 
             #endregion
             #region 5.2.10 Main
+        static void Main(string[] args)
+        {
             int[,] matrix = new int[,]
             {
-                {7,4,8,6},
-                {3,0,4,2},
-                {6,9,7,6},
-                {5,6,2,1}
+                {8,1,0,7},
+                {1,6,8,4},
+                {9,0,2,6},
+                {6,5,4,7}
             };
-			if (indexmax(matrix) == indexmin(matrix))
+            int a = indexmax(matrix);
+            int b = indexmin(matrix);
+            if (a == b)
 			{ 
 				delcolm(matrix);
 				for (int y = 0; y < matrix.GetLength(0); y++)
@@ -399,15 +400,11 @@ namespace _5th_Lab
 				}
 
 			}
-
-
-
-
-			
-			
-			
-
-            #endregion
+            
+            
+           Console.ReadLine();        
+        }   
+        #endregion
             #region 5.2.23 Main
 			int[,] matrix = new int[,]
 			{
@@ -417,7 +414,7 @@ namespace _5th_Lab
 			};
 			int[,] matrix2 = new int[,]
 			{
-				{10,-2,-2},
+				{10,-2,10},
 				{10,10,-2},
 				{-2,-2,10}
 			};
