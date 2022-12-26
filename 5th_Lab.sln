@@ -1,25 +1,433 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.35
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5th_Lab", "5th_Lab.csproj", "{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B2908471-A915-4DD9-9304-AE4A425C3A88}
-	EndGlobalSection
-EndGlobal
+#region lvl1 task 1
+int k = 5;
+Console.WriteLine($"{combin(8, k)} combinations");
+Console.WriteLine($"{combin(10, k)} combinations");
+Console.WriteLine($"{combin(11, k)} combinations");
+
+static int combin(int n, int k)
+{
+    return factorial(n) / factorial(k) * factorial(n - k);
+}
+static int factorial(int n)
+{
+    if (n == 0)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+#endregion
+
+#region lvl1 ex2
+static double Square(double a, double b, double c)
+{
+    double p = (a + b + c) / 2;
+    double s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+    return s;
+}
+
+static bool Triangle(double a, double b, double c)
+{
+    if (a >= b + c)
+        return false;
+    if (b >= a + c)
+        return false;
+    if (c >= a + b)
+        return false;
+    return true;
+}
+
+double S1 = 0, S2 = 0;
+for (int i = 1; i <=2; i++)
+{
+    double a, b, c;
+    while (true)
+    {
+        Console.WriteLine($"    Please enter a:");
+        if (!double.TryParse(Console.ReadLine(), out a))
+        {
+            Console.WriteLine("    Wrong number, please try again");
+            continue;
+        }
+        Console.WriteLine($"    Please enter b:");
+        if (!double.TryParse(Console.ReadLine(), out b))
+        {
+            Console.WriteLine("    Wrong number, please try again");
+            continue;
+        }
+        Console.WriteLine($"    Please enter c:");
+        if (!double.TryParse(Console.ReadLine(), out c))
+        {
+            Console.WriteLine("    Wrong number, please try again");
+            continue;
+        }
+        break;
+    }
+    if (Triangle(a, b, c))
+    {
+        if (i == 1)  S1 = Square(a, b, c);
+        if (i == 2)  S2 = Square(a, b, c);
+    }
+    else Console.WriteLine("    Triangle doen't exist");
+}
+
+if (S1 > S2) Console.WriteLine("    Square of 1st triangle is greater than square of the 2nd one");
+if (S2 > S1) Console.WriteLine("    Square of 2nd triangle is greater than square of the 1st one");
+else Console.WriteLine("    Squares are equal");
+#endregion
+
+#region lvl2 ex6
+double[] a = new double[7];
+double[] b = new double[8];
+int max1 = 0, max2 = 0;
+Console.WriteLine($"    Please enter a arr");
+for (int i = 0; i < 7; i++)
+{
+    if (!double.TryParse(Console.ReadLine(), out double x))
+    {
+        Console.WriteLine("    Wrong number, please try again");
+        continue;
+    }
+    a[i] = x;
+    if (x > a[max1])
+    {
+        max1 = i;
+    }
+}
+
+Console.WriteLine($"    Please enter b arr");
+for (int i = 0; i < 8; i++)
+{
+    if (!double.TryParse(Console.ReadLine(), out double x))
+    {
+        Console.WriteLine("    Wrong number, please try again");
+        continue;
+    }
+    b[i] = x;
+    if (x > b[max2])
+    {
+        max2 = i;
+    }
+}
+
+static double[] Delete(double[] arr, int max)
+{
+    for (int i = max; i < arr.Length - 1; i++)
+    {
+        arr[i] = arr[i + 1];
+    }
+    return arr;
+}
+
+a = Delete(a, max1);
+Array.Resize(ref a, a.Length - 1);
+b = Delete(b, max2);
+Array.Resize(ref b, b.Length - 1);
+
+Array.Resize(ref a, a.Length + b.Length);
+int k = 0;
+for (int i = a.Length - b.Length; i < a.Length; i++)
+{
+    a[i] = b[k];
+    k++;
+}
+
+Console.WriteLine();
+Console.WriteLine("a:");
+for (int i = 0; i < a.Length; i++)
+{
+    Console.Write($"{a[i]} ");
+}
+#endregion
+
+#region lvl2 ex10
+static double[,] Matrix()
+{
+    int n;
+    while (true)
+    {
+        Console.WriteLine("    Please enter n");
+        if ((!int.TryParse(Console.ReadLine(), out n)) || (n <= 0))
+        {
+            Console.WriteLine("    Wrong n, please try again");
+            continue;
+        }
+        break;
+    }
+
+    double[,] a = new double[n, n];
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            Console.WriteLine($"    Please enter {i}, {j} number");
+            if (!double.TryParse(Console.ReadLine(), out double f))
+            {
+                Console.WriteLine("    Wrong number, please try again");
+                break;
+            }
+            a[i, j] = f;
+        }
+    }
+    return a;
+}
+
+static void RemoveColumn(ref double[,] mat, int col)
+{
+    for (int i = 0; i < mat.GetLength(0); i++)
+    {
+        for (int j = col; j < mat.GetLength(1) - 1; j++)
+        {  
+            mat[i, j] = mat[i, j + 1];
+        }
+    }
+}
+
+double[,] mat = Matrix();
+int maxi = 0, maxj = 0, mini = 0, minj = 1;
+for (int i = 0; i < mat.GetLength(0); i++)
+{
+    for (int j = 0; j <= i; j++)
+    {
+        if (mat[i, j] > mat[maxi, maxj])
+        {
+            maxi = i;
+            maxj = j;
+        }
+    }
+    for (int j = mat.GetLength(0) - 1; j > i; j--)
+    {
+        if(mat[i, j] < mat[mini, minj])
+        {
+            mini = i;
+            minj = j;
+        }
+    }
+}
+int k;
+if (minj == maxj)
+{
+    RemoveColumn(ref mat, minj);
+    k = 1;
+}
+else
+{
+    RemoveColumn(ref mat, Math.Max(minj, maxj));
+    RemoveColumn(ref mat, Math.Min(minj, maxj));
+    k = 2;
+}
+
+Console.WriteLine("     Answer: ");
+for (int i = 0; i < mat.GetLength(0); i++)
+{
+    for (int j = 0; j < mat.GetLength(0) - k; j++)
+    {
+        Console.Write($"{mat[i, j]} ");
+    }
+    Console.WriteLine("\n");
+}
+#endregion
+
+#region lvl2 task23
+static double getMaximum(double[,] a, double oldMax)
+{
+    double max = double.NegativeInfinity;
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1); j++)
+        {
+            if ((a[i, j] > max) && (a[i, j] < oldMax))
+            {
+                max = a[i, j];
+            }
+        }
+    }
+    return max;
+}
+static void newMatrix(double[,] a)
+{
+    double min = double.PositiveInfinity;
+    for (int i = 0; i < 5; i++)
+    {
+        min = getMaximum(a, min);
+    }
+    int stop = 0;
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1); j++)
+        {
+            if ((a[i, j] >= min) && (stop < 5))
+            {
+                a[i, j] = a[i, j] < 0 ? a[i, j] / 2 : a[i, j] * 2;
+                stop++;
+            }
+            else a[i, j] = a[i, j] < 0 ? a[i, j] * 2 : a[i, j] / 2;
+        }
+    }
+}
+
+double[,] a1 = new double[4, 4]
+        {
+            {3,  10, 15,  6},
+            {-1, 5, 11, -2},
+            {-4,  3, -1,  2},
+            {9,-10, 5,  2},
+        };
+double[,] a2 = new double[4, 2]
+{
+            {-6, -6}, 
+            {-6, -6},
+            {-8, -8},
+            {-8, -8},
+};
+newMatrix(a1);
+newMatrix(a2);
+Console.WriteLine("     1st matrix: ");
+for (int i = 0; i < a1.GetLength(0); i++)
+{
+    for (int j = 0; j < a1.GetLength(1); j++)
+    {
+        Console.Write($"{a1[i, j]} ");
+    }
+    Console.WriteLine("\n");
+}
+Console.WriteLine("     2nd matrix: ");
+for (int i = 0; i < a2.GetLength(0); i++)
+{
+    for (int j = 0; j < a2.GetLength(1); j++)
+    {
+        Console.Write($"{a2[i, j]} ");
+    }
+    Console.WriteLine("\n");
+}
+#endregion
+
+#region lvl3 task 1   
+static double factorial(double x)
+{
+    double fact = 1;
+    for (double i = 1; i <= x; i++)
+    {
+        fact = fact * i;
+    }
+    return fact;
+}
+static double e1(double x, double i)
+{
+    x = Math.Cos(x * i) / factorial(i);
+    return x;
+}
+static double e2(double x, double i)
+{
+    x = Math.Pow(-1, i) * (Math.Cos(x * i) / Math.Pow(i, 2));
+    return x;
+}
+static double y1(double x)
+{
+    return Math.Pow(Math.E, Math.Cos(x)) * Math.Cos(Math.Sin(x));
+}
+static double y2(double x)
+{
+    return (Math.Pow(x, 2) - (Math.Pow(Math.PI, 2) / 3)) / 4;
+}
+static double seq(el1 e1, double x)
+{
+    double s = 0;
+    for (double i = 1; i >= 0; i++)
+    {
+        if (Math.Abs(e1(x, i)) < 0.001)  return s;
+        s = s + e1(x, i);
+    }
+    return s;
+}
+static void sum(el1 e1, el2 e2, double a, double b, double h, double k)
+{
+    for (double x = a; x <= b; x = x + h)
+    {
+        Console.WriteLine("s = " + (seq(e1, x) + k) + ". y= " + e2(x));
+    }
+}
+
+Console.WriteLine("1st sum: ");
+sum(e1, y1, 0.1, 1, 0.1, 1.0);
+Console.WriteLine("2nd sum: ");
+sum(e2, y2, (Math.PI / 5), (Math.PI), (Math.PI / 25), 0.0);
+
+
+delegate double el2(double x);
+delegate double el1(double x, double i);
+#endregion
+
+#region lvl3 task2
+MatSort del = sorting;
+double[][] mat = matrix();
+double[][] new_mat = del(mat);
+output(new_mat);
+static double[][] matrix()
+{
+    int n, m;
+    while (true)
+    {
+        Console.WriteLine("    Please enter n:");
+        if ((!int.TryParse(Console.ReadLine(), out n)) || (n <= 0))
+        {
+            Console.WriteLine("    Wrong n, please try again");
+            continue;
+        }
+        Console.WriteLine("    Please enter m:");
+        if ((!int.TryParse(Console.ReadLine(), out m)) || (m <= 0))
+        {
+            Console.WriteLine("    Wrong p, please try again");
+            continue;
+        }
+        break;
+    }
+
+    double[][] a = new double[n][];
+
+    for (int i = 0; i < n; i++)
+    {
+        double[] a1 = new double[m];
+        a[i] = a1;
+        for (int j = 0; j < m; j++)
+        {
+            Console.WriteLine($"    Please enter {i}, {j} number");
+            if (!double.TryParse(Console.ReadLine(), out double f))
+            {
+                Console.WriteLine("    Wrong number, please try again");
+                break;
+            }
+            a[i][j] = f;
+        }
+    }
+    return a;
+}
+static double[][] sorting(double[][] a)
+{
+    for (int i = 0; i < a.Length; i++)
+    {
+        if (i % 2 == 0)
+            Array.Sort(a[i]);
+        else
+        {
+            Array.Sort(a[i]);
+            Array.Reverse(a[i]);
+        }
+    }
+    return a;
+}
+
+static void output(double[][] a)
+{
+    for (int i = 0; i < a.Length; i++)
+    {
+        for (int j = 0; j < a[i].Length; j++)
+        {
+            Console.Write(a[i][j] + "\t");
+        }
+        Console.WriteLine();
+    }
+}
+
+delegate double[][] MatSort(double[][] a);
+#endregion
