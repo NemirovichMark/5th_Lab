@@ -21,8 +21,13 @@ namespace lab_5
 
         static double S(double a, double b, double c)
         {
-            double p = (a + b + c) / 2;
-            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            if ((a >= 0) && (b >= 0) && (c >= 0) && (a + b > c) && (b + c > a) && (c + a > b))
+            {
+                double p = (a + b + c) / 2;
+                return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            }
+            else
+                return -1;
         }
 
         static double[] Del_el(double[] array, int index)
@@ -128,12 +133,14 @@ namespace lab_5
             {
                 for (int j = 0; j < col; j++)
                 {
-                    matrix[i, j] /= 2;
+                    if (matrix[i, j] < 0) matrix[i, j] *= 2;
+                    else matrix[i, j] /= 2;
                 }
             }
             for (int i = 0; i < 5; i++)
             {
-                matrix[answ_index[i, 0], answ_index[i, 1]] *= 4;
+                if (matrix[answ_index[i, 0], answ_index[i, 1]] < 0) matrix[answ_index[i, 0], answ_index[i, 1]] /= 4;
+                else matrix[answ_index[i, 0], answ_index[i, 1]] *= 4;
             }
             return matrix;
         }
@@ -282,10 +289,14 @@ namespace lab_5
             Console.WriteLine("---------- EX I|2 ----------");
             Console.WriteLine();
 
-            double x1 = S(10, 4.1, 9), x2 = S(8, 8.1, 13);
-            if (x1 > x2) Console.WriteLine("First triangle");
-            else if (x1 == x2) Console.WriteLine("First triangle = Second triangle");
-            else Console.WriteLine("Second triangle");
+            double x1 = S(10, 10, 10), x2 = S(10, 10, 10);
+            if ((x1 == -1) || (x2 == -1)) Console.WriteLine("Incorrect enter");
+            else
+            {
+                if (x1 > x2) Console.WriteLine("First triangle");
+                else if (x1 == x2) Console.WriteLine("First triangle = Second triangle");
+                else Console.WriteLine("Second triangle");
+            }
 
             Console.WriteLine();
             #endregion
@@ -366,10 +377,10 @@ namespace lab_5
             Console.WriteLine("---------- EX II|23 ----------");
             Console.WriteLine();
 
-            double[,] matrix1 = new double[4, 3] {{1, 5, 9},
-                                                  {-4, 10, 20},
-                                                  {6, 2, 1},
-                                                  {9, 1, 4}};
+            double[,] matrix1 = new double[4, 3] {{-1, -5, -9},
+                                                  {-4, -10, -20},
+                                                  {-6, -2, -1},
+                                                  {-9, -1, -4}};
             double[,] matrix2 = new double[3, 4] {{5, 100, 24, 1},
                                                   {5, 12, 4, 9},
                                                   {-14, 421, -24, -123}};
