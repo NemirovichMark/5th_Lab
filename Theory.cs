@@ -230,6 +230,7 @@ namespace Lab_5
                 maxes_[i] = arr[i];
             }
             double count = 0;
+            int k = 0;
             for (int i = matrix.GetLength(0) - 1; i >= 0; --i)
             {
                 for (int j = matrix.GetLength(1) - 1; j >= 0; --j)
@@ -242,39 +243,39 @@ namespace Lab_5
                     {
                         count = 0.5;
                     }
-                    if (matrix[i,j] == maxes_[0])
+                    if (matrix[i,j] == maxes_[0] && k < 5)
                     {
                         matrix[i, j] = (int)(matrix[i, j] * count);
-                        ++count;
                         maxes_[0] *= (int)(maxes_[0] * count);
+                        ++k;
                     }
-                    else if (matrix[i,j] == maxes_[1])
+                    else if (matrix[i,j] == maxes_[1] && k < 5)
                     {
                         matrix[i, j] = (int)(matrix[i, j] * count);
-                        ++count;
                         maxes_[1] *= (int)(maxes_[1] * count);
+                        ++k;
                     }
-                    else if (matrix[i, j] == maxes_[2])
+                    else if (matrix[i, j] == maxes_[2] && k < 5)
                     {
                         matrix[i, j] = (int)(matrix[i, j] * count);
-                        ++count;
                         maxes_[2] *= (int)(maxes_[2] * count);
+                        ++k;
                     }
-                    else if (matrix[i, j] == maxes_[3])
+                    else if (matrix[i, j] == maxes_[3] && k < 5)
                     {
                         matrix[i, j] = (int)(matrix[i, j] * count);
-                        ++count;
                         maxes_[3] *= (int)(maxes_[3] * count);
+                        ++k;
                     }
-                    else if (matrix[i, j] == maxes_[4])
+                    else if (matrix[i, j] == maxes_[4] && k < 5)
                     {
                         matrix[i, j] = (int)(matrix[i, j] * count);
-                        ++count;
                         maxes_[4] *= (int)(maxes_[4] * count);
+                        ++k;
                     }
                     else
                     {
-                        matrix[i, j] = matrix[i, j] / 2;
+                        matrix[i, j] = (int)(matrix[i, j] / count);
                     }
                 }
             }
