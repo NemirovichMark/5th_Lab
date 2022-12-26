@@ -261,110 +261,128 @@ Result(res(ind1, ind2, ar));
 
 #region lvl2 ex23
 
-static List<int> maxim(List<List<int>> matrix, List<int> maxi)
+static void outputsqr(double[,] a, int l, int m)
 {
-    int max = matrix[0][0];
-    for (int i = 0; i < matrix.Count; i++)
+    for (int i = 0; i < l; i++)
     {
-        for (int j = 0; j < matrix[i].Count; j++)
-        {
-            if (matrix[i][j] > max && maxi.Contains(matrix[i][j]) == false)
-            {
-                max = matrix[i][j];
-            }
-        }
-    }
-    maxi.Add(max);
-    return maxi;
-}
-static void vvodmatrici(int n, int m, out List<List<int>> matrix)
-{
-    matrix = new List<List<int>>();
-    string[] line;
-    for (int i = 0; i < n; i++)
-    {
-        matrix.Add(new List<int>());
-        while (true)
-        {
-            line = Console.ReadLine().Split(" ");
-            if (line.Length != m) { Console.WriteLine("re-enter the line: "); continue; }
-            else { break; }
-        }
-
         for (int j = 0; j < m; j++)
         {
-            int x;
-            int.TryParse(line[j], out x);
-            matrix[i].Add(x);
-        }
-    }
-
-}
-static void vivodmatrici(List<List<int>> matrix)
-{
-    for (int i = 0; i < matrix.Count(); i++)
-    {
-        for (int j = 0; j < matrix[0].Count(); j++)
-        {
-            Console.Write(matrix[i][j] + " ");
+            Console.Write(a[i, j]);
+            Console.Write(" ");
         }
         Console.WriteLine();
     }
 }
-static List<List<int>> preobr1(List<List<int>> matrix, List<int> maxi)
+
+static void inputsqr(double[,] ma, int l, int m)
 {
-    for (int i = 0; i < matrix.Count; i++)
+    Console.WriteLine("введите массив");
+    for (int i = 0; i < l; i++)
     {
-        for (int j = 0; j < matrix[0].Count(); j++)
+        for (int j = 0; j < m; j++)
         {
-            if (maxi.Contains(matrix[i][j]) == true) matrix[i][j] = matrix[i][j] * 2;
-            else matrix[i][j] = matrix[i][j] / 2;
+            try
+            {
+                ma[i, j] = Convert.ToInt32(Console.ReadLine());
+            }
+            catch
+            {
+                Console.WriteLine("введите заново");
+            }
         }
     }
-    return matrix;
 }
 
-List<List<int>> matrix1 = new List<List<int>>();
-List<List<int>> matrix2 = new List<List<int>>();
-Console.WriteLine("Enter the first size of first matrix: ");
-int n1;
-int.TryParse(Console.ReadLine(), out n1);
-if (n1 <= 0) { Console.WriteLine("Size of matrix can't be less or equal to zero!"); return 0; }
-Console.WriteLine("Enter the second size of first matrix: ");
-int m1;
-int.TryParse(Console.ReadLine(), out m1);
-if (m1 <= 0) { Console.WriteLine("Size of matrix can't be less or equal to zero!"); return 0; }
-Console.WriteLine("Enter first matrix: ");
-vvodmatrici(n1, m1, out matrix1);
-Console.WriteLine("Enter the first size of second matrix: ");
-int n2;
-int.TryParse(Console.ReadLine(), out n2);
-if (n2 <= 0) { Console.WriteLine("Size of matrix can't be less or equal to zero!"); return 0; }
-Console.WriteLine("Enter the second size of second matrix: ");
-int m2;
-int.TryParse(Console.ReadLine(), out m2);
-if (m2 <= 0) { Console.WriteLine("Size of matrix can't be less or equal to zero!"); return 0; }
-Console.WriteLine("Enter second matrix: ");
-vvodmatrici(n2, m2, out matrix2);
-List<int> maxi1 = new List<int>();
-List<int> maxi2 = new List<int>();
-
-
-for (int i = 0; i < 5; i++)
+static void changematrix(double[,] a, int l, int m)
 {
-    maxim(matrix1, maxi1);
-    maxim(matrix2, maxi2);
+
+    double x = -100000;
+    for (int i = 0; i < 5; i++)
+    {
+        x = find_5_maximums(a, x);
+    }
+    int c = 0;
+
+    for (int i = 0; i < l; i++)
+        for (int j = 0; j < m; j++)
+        {
+            if ((a[i, j] >= x) && (c < 5))
+            {
+                if (a[i, j] < 0)
+                {
+                    a[i, j] /= 2;
+                }
+                else
+                {
+                    a[i, j] *= 2;
+                }
+                c += 1;
+            }
+            else
+            {
+                if (a[i, j] < 0)
+                {
+                    a[i, j] *= 2;
+                }
+                else
+                {
+                    a[i, j] /= 2;
+                }
+            }
+        }
 }
 
-matrix1 = preobr1(matrix1, maxi1);
-matrix2 = preobr1(matrix2, maxi2);
+static double find_5_maximums(double[,] x, double a)
+{
+    double max = -1000000;
+    for (int i = 0; i < x.GetLength(0); i++)
+    {
+        {
+            for (int j = 0; j < x.GetLength(1); j++)
+            {
+                if (x[i, j] > max && x[i, j] < a)
+                {
+                    max = x[i, j];
+                }
+            }
+        }
+    }
+    return max;
+}
 
-Console.WriteLine("New first matrix: ");
-vivodmatrici(matrix1);
-Console.WriteLine("New second matrix: ");
-vivodmatrici(matrix2);
+int am, al, bm, bl;
+try
+{
+    Console.WriteLine("введите количество строк матрицы А");
+    am = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("введите количество столбцов матрицы А");
+    al = Convert.ToInt32(Console.ReadLine());
 
-return 0;
+
+    Console.WriteLine("введите количество строк матрицы Б");
+
+    bm = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("введите количество столбцов матрицы Б");
+
+    bl = Convert.ToInt32(Console.ReadLine());
+    if (((am > 1) && (bm > 1) && (al > 1) && (bm > 1)) && (am * al >= 5) && (bm * bl >= 5))
+    {
+        double[,] a = new double[am, al];
+
+        inputsqr(a, am, al);
+        double[,] b = new double[bm, bl];
+        inputsqr(b, bm, bl);
+        changematrix(a, am, al);
+        changematrix(b, bm, bl);
+        outputsqr(a, am, al);
+        outputsqr(b, bm, bl);
+    }
+    else Console.WriteLine(" fall");
+}
+catch
+{
+    Console.WriteLine("введите заново");
+}
 
 #endregion
 /*
