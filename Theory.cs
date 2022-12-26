@@ -42,6 +42,11 @@ namespace Лаба5
             Console.WriteLine("Enter number 'c': ");
             string in_c = Console.ReadLine();
             double.TryParse(in_c, out c);
+            if (a >= b + c || b >= a + c || c >= a + b)
+            {
+                Console.WriteLine("The triangle does not exist");
+                return;
+            }
             Console.WriteLine("Enter number 'n': ");
             string in_n = Console.ReadLine();
             double.TryParse(in_n, out n);
@@ -51,6 +56,11 @@ namespace Лаба5
             Console.WriteLine("Enter number 'q': ");
             string in_q = Console.ReadLine();
             double.TryParse(in_q, out q);
+            if (n >= m + q || m >= n + q || q >= n + m)
+            {
+                Console.WriteLine("The triangle does not exist");
+                return;
+            }
             double p1 = Answ(a, b, c);
             double p2 = Answ(n, m, q);
             if (p1 > p2)
@@ -199,8 +209,15 @@ namespace Лаба5
                     }
                 }
             }
-            m = del(a, n, m, index_jd);
-            m = del(a, n, m, index_jup);
+            if (index_jup == index_jd)
+            {
+                m = del(a, n, m, index_jd);
+            }
+            else
+            {
+                m = del(a, n, m, index_jd);
+                m = del(a, n, m, index_jup);
+            }
             Console.WriteLine("The answer is output as a matrix: ");
             for (int i = 0; i < n; i++)
             {
@@ -224,5 +241,274 @@ namespace Лаба5
             return m;
         }
         #endregion
+
+        #region Task 2_23
+        static void Main(string[] args)
+        {
+            int n, m, index_jup = 0, index_jd = 0;
+            Console.WriteLine("Enter the size n of the matrix: ");
+            string vvod = Console.ReadLine();
+            if (int.TryParse(vvod, out n) & n > 1)
+            {
+                int.TryParse(vvod, out n);
+            }
+            else
+            {
+                Console.WriteLine("Enter an integer > 1");
+                return;
+            }
+            Console.WriteLine("Enter the size m of the matrix: ");
+            string vvod2 = Console.ReadLine();
+            if (int.TryParse(vvod2, out m) & m > 1)
+            {
+                int.TryParse(vvod2, out m);
+            }
+            else
+            {
+                Console.WriteLine("Enter an integer > 1");
+                return;
+            }
+            int[,] a = new int[n, m];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.WriteLine("Enter the element y: " + i + " x: " + j);
+                    a[i, j] = int.Parse(Console.ReadLine());
+                }
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write("{0,5:d} ", a[i, j]);
+                }
+                Console.WriteLine();
+            }
+            matrix(a, n, m);
+            Console.WriteLine("The answer is output as a matrix: ");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write("{0,5:d} ", a[i, j]);
+                }
+                Console.WriteLine();
+            }
         }
+        static void matrix(int[,] a, int n, int m)
+        {
+            int[] a_a = new int[n * m];
+            int k = 0;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    a_a[k] = a[i, j];
+                    k++;
+                }
+            }
+            int rem;
+            for (int i = 0; i < n * m - 1; i++)
+            {
+                if (a_a[i] < a_a[i + 1])
+                {
+                    rem = a_a[i];
+                    a_a[i] = a_a[i + 1];
+                    a_a[i + 1] = rem;
+                    i = -1;
+                }
+            }
+            int ch = 0;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    if ((a[i, j] == a_a[0] || a[i, j] == a_a[1] || a[i, j] == a_a[2] || a[i, j] == a_a[3] || a[i, j] == a_a[4]) && ch < 5)
+                    {
+                        if (a[i, j] > 0)
+                        {
+                            a[i, j] *= 2;
+                        }
+                        else
+                        {
+                            a[i, j] += a[i, j] * (-1) / 2;
+                        }
+                        ch++;
+                    }
+                    else
+                    {
+                        if (a[i, j] > 0)
+                        {
+                            a[i, j] /= 2;
+                        }
+                        else
+                        {
+                            a[i, j] *= 2;
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Task 3_1
+        const double eps = 0.0001;
+        static void Si(double a, double b, double h, f fi, Y yi, double s)
+        {
+            for (double x = a; x <= b; x += h)
+            {
+                double y = yi(x);
+                double sum = fi(x) + s;
+                Console.WriteLine($"s = {sum}, y = {y}");
+            }
+        }
+        static void Main(string[] args)
+        {
+            Si(0.1, 1, 0.1, f1, Y1, 1);
+            Console.WriteLine();
+            Si(Math.PI / 5, Math.PI, Math.PI / 25, f2, Y2, 0);
+        }
+        delegate double f(double x);
+        delegate double Y(double x);
+        static double f1(double x)
+        {
+            double dem = 1, element, answ = 0;
+            for (int i = 1; i == i; i++)
+            {
+                dem *= i;
+                element = Math.Cos(i * x) / dem;
+                answ += element;
+                if (element <= eps)
+                {
+                    break;
+                }
+            }
+            return answ;
+        }
+        static double Y1(double x)
+        {
+            double y = Math.Exp(Math.Cos(x)) * Math.Cos(Math.Sin(x));
+            return y;
+        }
+        static double f2(double x)
+        {
+            double koef = -1, element = 1, answ = 0;
+            for (int i = 1; i == i; i++)
+            {
+                element = Math.Cos(i * x) / (i * i) * koef;
+                answ += element;
+                koef *= -1;
+                if (element <= eps)
+                {
+                    break;
+                }
+            }
+            return answ;
+        }
+        static double Y2(double x)
+        {
+            double y = (Math.Pow(x, 2) - (Math.Pow(Math.PI, 2) / 3)) / 4;
+            return y;
+        }
+        #endregion
+
+        #region Task 3_2
+        static void Si(f fi, int[,] a, int n, int m, int k)
+        {
+            for (; k < n; k += 2)
+            {
+                fi(a, n, m, k);
+            }
+        }
+        static void Main(string[] args)
+        {
+            int n, m;
+            Console.WriteLine("Enter the size n of the matrix: ");
+            string vvod = Console.ReadLine();
+            if (int.TryParse(vvod, out n) & n > 1)
+            {
+                int.TryParse(vvod, out n);
+            }
+            else
+            {
+                Console.WriteLine("Enter an integer > 1");
+                return;
+            }
+            Console.WriteLine("Enter the size m of the matrix: ");
+            string vvod2 = Console.ReadLine();
+            if (int.TryParse(vvod2, out m) & m > 1)
+            {
+                int.TryParse(vvod2, out m);
+            }
+            else
+            {
+                Console.WriteLine("Enter an integer > 1");
+                return;
+            }
+            int[,] a = new int[n, m];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.WriteLine("Enter the element y: " + i + " x: " + j);
+                    a[i, j] = int.Parse(Console.ReadLine());
+                }
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write("{0,5:d} ", a[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Si(f1, a, n, m, 1);
+            Si(f2, a, n, m, 0);
+            Console.WriteLine("The answer is output as a matrix: ");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write("{0,5:d} ", a[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+        delegate void f(int[,] a, int n, int m, int k);
+        static void f1(int[,] a, int n, int m, int k)
+        {
+            int rem;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m - 1; j++)
+                {
+                    if (a[k, j] < a[k, j + 1])
+                    {
+                        rem = a[k, j];
+                        a[k, j] = a[k, j + 1];
+                        a[k, j + 1] = rem;
+                    }
+                }
+            }
+        }
+        static void f2(int[,] a, int n, int m, int k)
+        {
+            int rem;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m - 1; j++)
+                {
+                    if (a[k, j] > a[k, j + 1])
+                    {
+                        rem = a[k, j];
+                        a[k, j] = a[k, j + 1];
+                        a[k, j + 1] = rem;
+                    }
+                }
+            }
+        }
+        #endregion
+
+    }
 }
