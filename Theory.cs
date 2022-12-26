@@ -188,12 +188,12 @@ namespace Lab_5
             int[] arr = new int[matrix.GetLength(0)*matrix.GetLength(1)];
             int[] maxes_ = new int[5];
             int p = 0;
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < matrix.GetLength(0); ++i)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < matrix.GetLength(1); ++j)
                 {
                     arr[p] = matrix[i,j];
-                    p++;
+                    ++p;
                 }
             }
 
@@ -201,7 +201,7 @@ namespace Lab_5
             int empty = 0;
             while(index < arr.Length)
             {
-                if (index==0 || arr[index] <= arr[index - 1])
+                if (index == 0 || arr[index] <= arr[index - 1])
                 {
                     ++index;
                 } 
@@ -218,34 +218,55 @@ namespace Lab_5
             {
                 maxes_[i] = arr[i];
             }
-
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            double count = 0;
+            for (int i = matrix.GetLength(0) - 1; i >= 0; --i)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = matrix.GetLength(1) - 1; j >= 0; --j)
                 {
-                    if (matrix[i,j] == maxes_[0] || matrix[i, j] == maxes_[1] || matrix[i, j] == maxes_[2] || matrix[i, j] == maxes_[3] || matrix[i, j] == maxes_[4])
+                    if (matrix[i,j] > 0)
                     {
-                        if (matrix[i,j]>0)
-                        {
-                            matrix[i, j] *= 2;
-                        } else
-                        {
-                            matrix[i, j] = matrix[i, j] / 2;
-                        }
-                    } else
+                        count = 2;
+                    }
+                    else
                     {
-                        if (matrix[i, j] > 0)
-                        {
-                            matrix[i, j] = matrix[i, j] / 2;
-                        }
-                        else
-                        {
-                            matrix[i, j] *= 2;
-                        }
+                        count = 0.5;
+                    }
+                    if (matrix[i,j] == maxes_[0])
+                    {
+                        matrix[i, j] = (int)(matrix[i, j] * count);
+                        ++count;
+                        maxes_[0] *= (int)(maxes_[0] * count);
+                    }
+                    else if (matrix[i,j] == maxes_[1])
+                    {
+                        matrix[i, j] = (int)(matrix[i, j] * count);
+                        ++count;
+                        maxes_[1] *= (int)(maxes_[1] * count);
+                    }
+                    else if (matrix[i, j] == maxes_[2])
+                    {
+                        matrix[i, j] = (int)(matrix[i, j] * count);
+                        ++count;
+                        maxes_[2] *= (int)(maxes_[2] * count);
+                    }
+                    else if (matrix[i, j] == maxes_[3])
+                    {
+                        matrix[i, j] = (int)(matrix[i, j] * count);
+                        ++count;
+                        maxes_[3] *= (int)(maxes_[3] * count);
+                    }
+                    else if (matrix[i, j] == maxes_[4])
+                    {
+                        matrix[i, j] = (int)(matrix[i, j] * count);
+                        ++count;
+                        maxes_[4] *= (int)(maxes_[4] * count);
+                    }
+                    else
+                    {
+                        matrix[i, j] = matrix[i, j] / 2;
                     }
                 }
             }
-
             return matrix;
         }
 
