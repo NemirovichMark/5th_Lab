@@ -48,44 +48,86 @@ namespace program
                 {
                     h = 4;
                     flag2 = true;
-                    while (h > -1 && flag2)
+                    if (a[i, j] >= intel[4] && flag2)
                     {
-                        if (a[i, j] >= intel[h])//1,2,3,4,5
-                        {
-                            intel[0] = a[i, j];
-                            Array.Sort(intel);
-                            flag2 = false;
-                        }
-                        h--;
+                        intel[0] = intel[1];
+                        intel[1] = intel[2];
+                        intel[2] = intel[3];
+                        intel[3] = intel[4];
+                        intel[4] = a[i, j];
+                        flag2 = false;
                     }
+                    if (a[i, j] >= intel[3] && flag2)
+                    {
+                        intel[0] = intel[1];
+                        intel[1] = intel[2];
+                        intel[2] = intel[3];
+                        intel[3] = a[i, j];
+                        flag2 = false;
+                    }
+                    if (a[i, j] >= intel[2] && flag2)
+                    {
+                        intel[0] = intel[1];
+                        intel[1] = intel[2];
+                        intel[2] = a[i, j];
+                        flag2 = false;
+                    }
+                    if (a[i, j] >= intel[1] && flag2)
+                    {
+                        intel[0] = intel[1];
+                        intel[1] = a[i, j];
+                        flag2 = false;
+                    }
+                    if (a[i, j] >= intel[0] && flag2)
+                    {
+                        intel[0] = a[i, j];
+                        flag2 = false;
+                    } 
                 }
             }
-            
+
             Console.WriteLine();
             int y = 0;
-            int e = 0;
-            bool flag1;
+            bool flag1=true;
             for (int i = n - 1; i > -1; i--)
             {
                 for (int j = m - 1; j > -1; j--)
                 {
-                    e = 0;
                     flag1 = true;
-                    while ( flag1 && intel.Length!=0 && e<intel.Length)
-                    {
-                        
-                        if (intel[e] == a[i, j])
+                        if (intel[0] == a[i, j]&&flag1&&y!=5)
                         {
                             if (a[i, j] > 0) a[i, j] = a[i, j] * 2;
                             else a[i, j] = a[i, j] / 2;
                             flag1 = false;
-                            double dop = intel[intel.Length-1];
-                            intel[intel.Length - 1] = intel[e];
-                            intel[e] = dop;
-                            Array.Resize(ref intel,intel.Length-1);
+                        y++;                       
                         }
-                        e++;
-
+                    if (intel[1] == a[i, j] && flag1&&y!=5)
+                    {
+                        if (a[i, j] > 0) a[i, j] = a[i, j] * 2;
+                        else a[i, j] = a[i, j] / 2;
+                        flag1 = false;
+                        y++;
+                    }
+                    if (intel[2] == a[i, j] && flag1 && y != 5)
+                    {
+                        if (a[i, j] > 0) a[i, j] = a[i, j] * 2;
+                        else a[i, j] = a[i, j] / 2;
+                        flag1 = false;
+                        y++;
+                    }
+                    if (intel[3] == a[i, j] && flag1 && y != 5)
+                    {
+                        if (a[i, j] > 0) a[i, j] = a[i, j] * 2;
+                        else a[i, j] = a[i, j] / 2;
+                        flag1= false;
+                        y++;
+                    }
+                    if (intel[4] == a[i, j] && flag1 && y != 5)
+                    {
+                        if (a[i, j] > 0) a[i, j] = a[i, j] * 2;
+                        else a[i, j] = a[i, j] / 2;
+                        flag1 = false;
+                        y++;
                     }
                     if (flag1)
                     {
@@ -94,62 +136,6 @@ namespace program
                     }
                 }
             }
-        }
-        delegate void deleg2(int[] mssv);
-        static void btwn(int[,] Doc, deleg2 iz, int e)
-        {
-            go(Doc, e, out int[] mssv);
-            iz(mssv);
-            int[] arr1 = mssv;
-            for (int i = 0; i < arr1.Length; i++)
-            {
-                Doc[e, i] = arr1[i];
-            }
-
-
-        }
-        static void arrayy(int[] mssv)
-        {
-            Array.Sort(mssv);
-        }
-        static void go(int[,] Doc, int e, out int[] mssv)//3.2
-        {
-            mssv = new int[Doc.GetLength(1)];
-            for (int i1 = 0; i1 < Doc.GetLength(1); i1++)
-            {
-                mssv[i1] = Doc[e, i1];
-            }
-        }
-        static void func(int[] mssv)
-        {
-            Array.Sort(mssv);
-           Array.Reverse(mssv);
-        }
-        static void Task3_2(int[,] newint1, int vis1, int shir1)
-        {
-            deleg2 f2;
-            for (int i = 0; i < vis1; i++)
-            {
-                for (int ii = 0; ii < shir1; ii++)
-                {
-                    Console.Write(newint1[i, ii] + "\t");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-            for (int i = 0; i < vis1; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    f2 = arrayy;
-                }
-                else
-                {
-                    f2 = func;
-                }
-                btwn(newint1,f2,i);
-            }
-
         }
         public static void Main()
         {
@@ -173,7 +159,7 @@ namespace program
             for (int i = 0; i < n; i++)
                 for (int ii = 0; ii < m; ii++)
                 {
-                   
+                  
                      mas23[i, ii] = rand0m.Next(-80, 80);
                 }
             Console.WriteLine("Первый массив");
@@ -219,35 +205,6 @@ namespace program
             }
             #endregion
 
-            #region 3.2
-            Console.WriteLine("3.2");
-            int vis, shir;
-            Console.WriteLine("Введите vis");
-            while (!int.TryParse(Console.ReadLine(), out vis))
-            {
-                Console.WriteLine("Неверные входные данные");
-                Console.Write("vis=");
-            }
-            Console.WriteLine("Введите shir");
-            while (!int.TryParse(Console.ReadLine(), out shir))
-            {
-                Console.WriteLine("Неверные входные данные");
-                Console.Write("shir=");
-            }
-            int[,] newint = new int[vis, shir];
-            for (int i = 0; i < vis; i++)
-                for (int ii = 0; ii < shir; ii++)
-                    newint[i, ii] = rand0m.Next(-80, 80);
-            Task3_2(newint, vis, shir);
-            for (int i = 0; i < vis; i++)
-            {
-                for (int ii = 0; ii < shir; ii++)
-                {
-                    Console.Write(newint[i, ii]+"\t");
-                }
-                Console.WriteLine();
-            }
-            #endregion
 
         }
     }
