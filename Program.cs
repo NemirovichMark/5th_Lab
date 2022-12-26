@@ -234,7 +234,15 @@ namespace ConsoleApp1
                     }
                 }
 
-                a[maxIndexI][maxIndexJ] *= 2;
+                if (a[maxIndexI][maxIndexJ] > 0)
+                {
+                    a[maxIndexI][maxIndexJ] *= 2;
+                }
+                else
+                {
+                    a[maxIndexI][maxIndexJ] = Math.Round(a[maxIndexI][maxIndexJ] / 2, 2);
+                }
+
                 boolList[maxIndexI][maxIndexJ] = 1;
             }
 
@@ -244,7 +252,14 @@ namespace ConsoleApp1
                 {
                     if (boolList[i][j] == 0)
                     {
-                        a[i][j] = Math.Round(a[i][j] / 2, 2);
+                        if (a[i][j] > 0)
+                        {
+                            a[i][j] = Math.Round(a[i][j] / 2, 2);
+                        }
+                        else
+                        {
+                            a[i][j] *= 2;
+                        }
                     }
                 }
             }
@@ -303,6 +318,7 @@ namespace ConsoleApp1
                 {
                     del = ByIncreasing;
                 }
+
                 del.Invoke(a[i]);
             }
         }
@@ -352,47 +368,48 @@ namespace ConsoleApp1
         public static void Main(string[] args)
         {
             #region lvl1_task1
-            
+
             Console.Write("Enter K: ");
             if (!int.TryParse(Console.ReadLine(), out var k))
             {
                 ParseError();
             }
-            
+
             Console.Write("Enter N: ");
             if (!int.TryParse(Console.ReadLine(), out var n))
             {
                 ParseError();
             }
-            
+
             Console.Write("Permutations count: " + Permutations(n, k));
-            
+
             #endregion
-            
-            
+
+
             #region lvl1_task2
-            
+
             Console.Write("Input triangle (A) ([a] [b] [c]): ");
             var input = Console.ReadLine().Split();
             if (input.Length != 3)
             {
                 ParseError();
             }
+
             if (!int.TryParse(input[0], out var a) || a < 0)
             {
                 ParseError();
             }
-            
+
             if (!int.TryParse(input[1], out var b) || b < 0)
             {
                 ParseError();
             }
-            
+
             if (!int.TryParse(input[2], out var c) || c < 0)
             {
                 ParseError();
             }
-            
+
             double s1, s2;
             if (IsTriangleExists(a, b, c))
             {
@@ -403,23 +420,24 @@ namespace ConsoleApp1
                 Console.WriteLine("Triangle not exists");
                 return;
             }
+
             Console.Write("Input triangle (B) ([a] [b] [c]): ");
             input = Console.ReadLine().Split();
             if (!int.TryParse(input[0], out a) || a < 0)
             {
                 ParseError();
             }
-            
+
             if (!int.TryParse(input[1], out b) || b < 0)
             {
                 ParseError();
             }
-            
+
             if (!int.TryParse(input[2], out c) || c < 0)
             {
                 ParseError();
             }
-            
+
             if (IsTriangleExists(a, b, c))
             {
                 s2 = TriangleArea(a, b, c);
@@ -429,6 +447,7 @@ namespace ConsoleApp1
                 Console.WriteLine("Triangle not exists");
                 return;
             }
+
             if (s1 > s2)
             {
                 Console.WriteLine($"The first triangle has a large area. {Math.Round(s1, 3)}");
@@ -441,11 +460,11 @@ namespace ConsoleApp1
             {
                 Console.WriteLine($"The areas of the triangles are the same. {Math.Round(s1, 3)}");
             }
-            
+
             #endregion
-            
+
             #region lvl2_task6
-            
+
             Console.WriteLine("Input array (A):");
             var arrA = InputList();
             var maxA = MaxOfArrayIndex(arrA);
@@ -457,13 +476,12 @@ namespace ConsoleApp1
             arrA.InsertRange(arrA.Count, arrB);
             Console.WriteLine("Output array: ");
             PrintList(arrA);
-            
+
             #endregion
-            
-            
-            
+
+
             #region lvl2_task10
-            
+
             Console.WriteLine("Input matrix:");
             var arr = InputMatrix();
             var max = 0;
@@ -481,7 +499,7 @@ namespace ConsoleApp1
                     }
                 }
             }
-            
+
             for (var i = 0; i < arr.Count; i++)
             {
                 for (var j = i + 1; j < arr[i].Count; j++)
@@ -493,7 +511,7 @@ namespace ConsoleApp1
                     }
                 }
             }
-            
+
             DeleteColByIndex(arr, maxIndex);
             if (maxIndex != minIndex)
             {
@@ -501,20 +519,18 @@ namespace ConsoleApp1
                 {
                     minIndex--;
                 }
-            
+
                 DeleteColByIndex(arr, minIndex);
             }
-            
+
             Console.WriteLine("Output matrix:");
             PrintMatrix(arr);
-            
+
             #endregion
-            
-            
-            
-            
+
+
             #region lvl2_task23
-            
+
             Console.WriteLine("Input matrix (A):");
             var arr1 = InputMatrixDouble();
             MaxOfAllTime(arr1);
@@ -526,22 +542,22 @@ namespace ConsoleApp1
             MaxOfAllTime(arr2);
             Console.WriteLine("Output matrix (B):");
             PrintMatrixDouble(arr2);
-            
+
             #endregion
-            
-            
+
+
             #region lvl3_task2
-            
+
             Console.WriteLine("Input matrix:");
             arr = InputMatrix();
             SortByRows(arr);
             Console.WriteLine("Output matrix:");
             PrintMatrix(arr);
-            
+
             #endregion
-            
+
             #region lvl3_task6
-            
+
             Console.WriteLine("Input matrix:");
             arr = InputMatrix();
             FindMax del;
@@ -552,7 +568,7 @@ namespace ConsoleApp1
             if (maxIndex1 != maxIndex2) SwitchColsByIndex(arr, maxIndex1, maxIndex2);
             Console.WriteLine("Output matrix:");
             PrintMatrix(arr);
-            
+
             #endregion
         }
     }
