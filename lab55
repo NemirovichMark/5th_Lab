@@ -1,0 +1,254 @@
+namespace program
+{
+    public class program1
+    {   static void Matriz23(ref double[,] a, int n, int m)//2.23
+        {
+            int h = 0;
+            double[] intel = new double[5];
+            int ii = 0;
+            int x1 = 0, x2 = 0;
+            while (ii < n && h < 5)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    if (h < 5)
+                    {
+                        intel[h] = a[ii, j];
+                        x1 = ii;
+                        x2 = j;
+                    }
+                    h++;
+                }
+                ii++;
+            }
+            if (x2 == m)
+            {
+                x1++;
+                x2 = 0;
+            }
+            else
+                x2++;
+            Array.Sort(intel);
+            int sew = 0;
+            bool flag = true;
+            bool flag2 = true;
+            int k;
+            int t;
+            int free = 4;
+            for (int i = x1; i < n; i++)
+            {
+                if (flag)
+                {
+                    k = x2;
+                    flag = false;
+                }
+                else
+                    k = 0;
+                for (int j = k; j < m; j++)
+                {
+                    h = 4;
+                    flag2 = true;
+                    while (h > -1 && flag2)
+                    {
+                        if (a[i, j] >= intel[h])//1,2,3,4,5
+                        {
+                            intel[0] = a[i, j];
+                            Array.Sort(intel);
+                            flag2 = false;
+                        }
+                        h--;
+                    }
+                }
+            }
+            
+            Console.WriteLine();
+            int y = 0;
+            int e = 0;
+            bool flag1;
+            for (int i = n - 1; i > -1; i--)
+            {
+                for (int j = m - 1; j > -1; j--)
+                {
+                    e = 0;
+                    flag1 = true;
+                    while ( flag1 && intel.Length!=0 && e<intel.Length)
+                    {
+                        
+                        if (intel[e] == a[i, j])
+                        {
+                            if (a[i, j] > 0) a[i, j] = a[i, j] * 2;
+                            else a[i, j] = a[i, j] / 2;
+                            flag1 = false;
+                            double dop = intel[intel.Length-1];
+                            intel[intel.Length - 1] = intel[e];
+                            intel[e] = dop;
+                            Array.Resize(ref intel,intel.Length-1);
+                        }
+                        e++;
+
+                    }
+                    if (flag1)
+                    {
+                        if (a[i, j] > 0) a[i, j] = a[i, j] / 2;
+                        else a[i, j] = a[i, j] * 2;
+                    }
+                }
+            }
+        }
+        delegate void deleg2(int[] mssv);
+        static void btwn(int[,] Doc, deleg2 iz, int e)
+        {
+            go(Doc, e, out int[] mssv);
+            iz(mssv);
+            int[] arr1 = mssv;
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                Doc[e, i] = arr1[i];
+            }
+
+
+        }
+        static void arrayy(int[] mssv)
+        {
+            Array.Sort(mssv);
+        }
+        static void go(int[,] Doc, int e, out int[] mssv)//3.2
+        {
+            mssv = new int[Doc.GetLength(1)];
+            for (int i1 = 0; i1 < Doc.GetLength(1); i1++)
+            {
+                mssv[i1] = Doc[e, i1];
+            }
+        }
+        static void func(int[] mssv)
+        {
+            Array.Sort(mssv);
+           Array.Reverse(mssv);
+        }
+        static void Task3_2(int[,] newint1, int vis1, int shir1)
+        {
+            deleg2 f2;
+            for (int i = 0; i < vis1; i++)
+            {
+                for (int ii = 0; ii < shir1; ii++)
+                {
+                    Console.Write(newint1[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            for (int i = 0; i < vis1; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    f2 = arrayy;
+                }
+                else
+                {
+                    f2 = func;
+                }
+                btwn(newint1,f2,i);
+            }
+
+        }
+        public static void Main()
+        {
+            #region 2.23
+            int n, m;
+            Random rand0m = new Random();
+            Console.WriteLine("Введите n");
+            while (!int.TryParse(Console.ReadLine(), out n))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("n=");
+            }
+            Console.WriteLine("Введите m");
+            while (!int.TryParse(Console.ReadLine(), out m))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("m=");
+            }
+            double[,] mas23 = new double[n, m];
+            double[,] mas232 = new double[n, m];
+            for (int i = 0; i < n; i++)
+                for (int ii = 0; ii < m; ii++)
+                {
+                   
+                     mas23[i, ii] = rand0m.Next(-80, 80);
+                }
+            Console.WriteLine("Первый массив");
+            for (int i = 0; i < n; i++)
+            {
+                for (int ii = 0; ii < m; ii++)
+                {
+                    Console.Write(mas23[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Matriz23(ref mas23, n, m);
+            for (int i = 0; i < n; i++)
+            {
+                for (int ii = 0; ii < m; ii++)
+                {
+                    Console.Write(mas23[i, ii] +"\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("Второй массив");
+            for (int i = 0; i < n; i++)
+                for (int ii = 0; ii < m; ii++)
+                    mas232[i, ii] = rand0m.Next(-80, 80);
+            for (int i = 0; i < n; i++)
+            {
+                for (int ii = 0; ii < m; ii++)
+                {
+                    Console.Write(mas232[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Matriz23(ref mas232, n, m);
+            for (int i = 0; i < n; i++)
+            {
+                for (int ii = 0; ii < m; ii++)
+                {
+                    Console.Write(mas232[i, ii] + "\t");
+                }
+                Console.WriteLine();
+            }
+            #endregion
+
+            #region 3.2
+            Console.WriteLine("3.2");
+            int vis, shir;
+            Console.WriteLine("Введите vis");
+            while (!int.TryParse(Console.ReadLine(), out vis))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("vis=");
+            }
+            Console.WriteLine("Введите shir");
+            while (!int.TryParse(Console.ReadLine(), out shir))
+            {
+                Console.WriteLine("Неверные входные данные");
+                Console.Write("shir=");
+            }
+            int[,] newint = new int[vis, shir];
+            for (int i = 0; i < vis; i++)
+                for (int ii = 0; ii < shir; ii++)
+                    newint[i, ii] = rand0m.Next(-80, 80);
+            Task3_2(newint, vis, shir);
+            for (int i = 0; i < vis; i++)
+            {
+                for (int ii = 0; ii < shir; ii++)
+                {
+                    Console.Write(newint[i, ii]+"\t");
+                }
+                Console.WriteLine();
+            }
+            #endregion
+
+        }
+    }
+}
