@@ -100,11 +100,26 @@ namespace ConsoleApp7
                 {
                     if (a[i, j] == m[0] || a[i, j] == m[1] || a[i, j] == m[2] || a[i, j] == m[3] || a[i, j] == m[4])
                     {
-                        a[i, j] *= 2;
+                        if (a[i, j] > 0)
+                        {
+                            a[i, j] *= 2;
+                        }
+                        else
+                        {
+                            a[i, j] /= 2;
+                        }
                     }
                     else
                     {
-                        a[i, j] /= 2;
+                        if (a[i, j] > 0)
+                        {
+                            a[i, j] /= 2;
+                        }
+                        else
+                        {
+                            a[i, j] *= 2;
+                        }
+                        
                     }
                 }
             }
@@ -117,7 +132,7 @@ namespace ConsoleApp7
             double[] kandidats = new double[3] { 8, 10, 11 };
             for (int i = 0; i < kandidats.Length; i++)
             {
-                Console.WriteLine($"{i + 1} answer - {fact(kandidats[i]) / (fact(team) * fact(kandidats[i] - team)) }");
+                Console.WriteLine($"{i + 1} answer - {fact(kandidats[i]) / (fact(team) * fact(kandidats[i] - team))}");
             }
         }
 
@@ -239,8 +254,15 @@ namespace ConsoleApp7
                     }
                 }
             }
-            a = DeleteColumn(a, col_i1);
-            a = DeleteColumn(a, col_i2);
+            if (col_i1 == col_i2)
+            {
+                a = DeleteColumn(a, col_i1);
+            }
+            else
+            {
+                a = DeleteColumn(a, col_i1);
+                a = DeleteColumn(a, col_i2);
+            }
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 for (int j = 0; j < a.GetLength(1); j++)
@@ -396,7 +418,7 @@ namespace ConsoleApp7
             int n = 0;
             try { Convert.ToInt32(Console.ReadLine()); } catch { return; }
             double[,] array = new double[n, n];
-            for (int i = 0;i < array.GetLength(0);i++)
+            for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
