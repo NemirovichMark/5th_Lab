@@ -5,50 +5,15 @@ public class Program
     //level 1
     // #1
 
-    static int pk(int k1, int n1)
+    static int p(int n)
     {
-        int n2 = 1;
-        int k2 = 1;
-        int k2n2 = 1;
-        int hod = 1;
-        while (hod <= k1)
+        int t = 1;
+        for (int i = 1; i < n + 1; i++)
         {
-            while (hod <= k1)
-            {
-                k2 = k2 * hod;
-                hod++;
-            }
-            
+            t = t * i;
         }
-        return k2;
+        return t;
     }
-    static int pnk(int k1, int n1)
-    {
-        int n2 = 1;
-        int k2 = 1;
-        int k2n2 = 1;
-        int hod = 1;
-        while (hod <= n1 - k1)
-        {
-            k2n2 = k2n2 * hod;
-            hod++;
-        }
-            return k2n2;
-    }
-        static int pn(int k1, int n1)
-        {
-            int n2 = 1;
-            int k2 = 1;
-            int k2n2 = 1;
-            int hod = 1;
-            while (hod <= n1)
-            {
-                n2 = n2 * hod;
-                hod++;
-            }
-
-        return n2;
-        }
     
     
     // #2
@@ -352,7 +317,7 @@ public class Program
         }
         catch { Console.WriteLine("все по 0"); }
 
-        Console.WriteLine(pn(k, n) / (pk(k, n) * pnk(k, n)));
+        Console.WriteLine(p(n) / (p(n - k) * p(k)));
         
         
         // #2
