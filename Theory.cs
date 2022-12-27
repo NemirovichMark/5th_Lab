@@ -1,233 +1,605 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Net.Http.Headers;
 
 namespace _5th_Lab
 {
-    class Program
+    public class Class_Of_Usefull_Methods
     {
-        #region How to use Delegate. Example 1.
-        delegate int LinkUsing(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
-        static int GetLength(int[] arr) // create a 1st method with same params as ddelegate has
+        static bool Checking_For_Double(string message)
         {
-            return arr.Length;
-        }
-        static int GetSum(int[] arr) // create a 2nd method with same params as ddelegate has
-        {
-            int sum = 0;
-            foreach (int element in arr)
-                sum += element;
-            return sum;
-        }
-        static int Calculate(LinkUsing func, int[] arr, int count)
-        {
-            int total = 0;
-            for (int i = 0; i < count; i++)
-            {
-                total += func(arr);
-            }
-            return total;
-        }
-        #endregion
-
-        #region How to use Delegate. Example 2.
-        delegate void SequenceUsing(int[] arr); // create a delegate with type: return void (!!!), input: 1st param: int[]
-        static void Say(int[] arr) // create a 1st method with same params as ddelegate has
-        {
-            Console.WriteLine($"It is a {arr.GetType().ToString()}");
-        }
-        static void Read(int[] arr) // create a 2nd method with same params as ddelegate has
-        {
-            foreach (int element in arr)
-                Console.Write($"{element} ");
-            Console.WriteLine();
-        }
-        static void Analyze(int[] arr, int start, int end)
-        {
-            int[] part = new int[end-start];
-            int k = 0;
-            for (int i = start; i < end; i++)
-            {
-                part[k] = arr[i];
-                k++;
-            }
-            SequenceUsing severalWorks = Say; // if we call the severalWorks after that, it would call Say(int[] arr);
-            severalWorks += Read; // if we call the severalWorks after that, it would call Say(int[] arr) and next Read(int[] arr);
+            bool Key = true;
             try
             {
-                severalWorks -= Say; // if we call the severalWorks after that, it would call Read(int[] arr) only;
+                double v = Convert.ToDouble(message);
             }
-            catch { }
-            severalWorks += Say; // if we call the severalWorks after that, it would call Read(int[] arr) and next Say(int[] arr);
-            
-            severalWorks(part); // call it (2 methods).
-            /*
-             * But know, that if the methods return some value, you will get only last result!!! so better use delegates with void methods in that way!
-             */
-        }
-        #endregion
-        #region How to use Delegate. Example 3.
-        delegate double ChooseUsage(int[,] matrix, int row); // create a delegate with type: return double value, input: 2 param: int[,], int
-        static double GetAverageInTheRow(int[,] matrix, int row)
-        {
-            double avg = 0;
-            int columns = matrix.GetLength(1);
-            for (int i = 0; i < columns; i++)
-                avg += matrix[row, i] / columns;
-            return avg;
-        }
-        static double GetAverageInTheColumn(int[,] matrix, int column)
-        {
-            double avg = 0;
-            int rows = matrix.GetLength(0);
-            for (int i = 0; i < rows; i++)
-                avg += matrix[i, column] / rows;
-            return avg;
-        }
-        #endregion
-
-        static int PolymorphMethod() { return 0; }
-        static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
-                                                                        //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
-        static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
-        static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
-
-        //     static T PolymorphMethod<T>(T yourType) { return number; } - cannot create since there is method with same input params
-        static double PolymorphMethod(int count, double[] array)
-        {
-            var sum = 0.0;
-            foreach (double value in array)
+            catch
             {
-                sum += value;
+                Key = false;
             }
-            return sum + count;
+            return Key;
+        }
+        static public double Getting_Double_From_User()
+        {
+            double result = 0;
+            while (true)
+            {
+                string message = Console.ReadLine();
+                if (Checking_For_Double(message)) { 
+                    result = Convert.ToDouble(message); 
+                    return result; 
+                }
+            else Console.WriteLine("Mistake!");
+            }
+        }
+        static bool Checking_For_Int(string message)
+        {
+            bool Key = true;
+            try
+            {
+                double v = Convert.ToInt32(message);
+            }
+            catch
+            {
+                Key = false;
+            }
+            return Key;
+        }
+        static public int Getting_Int_From_User()
+        {
+            int result = 0;
+            while (true)
+            {
+                string message = Console.ReadLine();
+                if (Checking_For_Double(message))
+                {
+                    result = Convert.ToInt32(message);
+                    return result;
+                }
+                else Console.WriteLine("Mistake!");
+            }
+        }
+        public static void Printing_Array(int[] array) { 
+            
+            for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} "); 
+            Console.WriteLine(); 
+        }
+        public static void Printing_Matrix(int[,] array) { 
+            for (int i = 0; i < array.GetLength(0); i++) { 
+                for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} "); 
+                Console.WriteLine(); 
+            } 
+        }
+        public static void Printing_Array(double[] array) { 
+            for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} "); 
+            Console.WriteLine(); }
+        public static void Printing_Matrix(double[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} ");
+                Console.WriteLine();
+            }
+        }
+    }
+    public class Task_1_Level_1 : Class_Of_Usefull_Methods
+    {
+        static int Getting_Factorial(int Num)
+        {
+            int Result = 1;
+            for (int i = 1; i <= Num; i++) Result *= i;
+            return Result;
+        }
+        static int Counting_Ways(int Amount_Of_Group, int Amount_Of_All)
+        {
+            int Ways = Getting_Factorial(Amount_Of_All) / (Getting_Factorial(Amount_Of_Group) * Getting_Factorial(Amount_Of_All - Amount_Of_Group)); ;
+            return Ways;
+        }
+        public void Cycling_Task()
+        {
+            int Amount_From_Task = 5;
+            int[] Variables_From_Task = { 8, 10, 11 };
+            foreach (var arg in Variables_From_Task)
+            {
+                Console.WriteLine($"Amount of ways for group of {Amount_From_Task} people from {arg} at all is {Counting_Ways(Amount_From_Task, arg)}");
+            }
+        }
+    }
+    public class Task_2_Level_1 : Class_Of_Usefull_Methods
+    {
+        static double[] Taking_Arguments()
+        {
+            double[] Arr = new double[3];
+            for (int i = 0; i < 3; i++) {
+                do
+                {
+                    Arr[i] = Getting_Double_From_User();
+                    if (Arr[i] <= 0) Console.WriteLine("Please, enter right params!");
+                } while (Arr[i] <= 0);
+             };
+            return Arr;
+        }
+        static double Getting_Square(double[] arr)
+        {
+            double p = (arr[0] + arr[1] + arr[2]) / 2;
+            double Square = Math.Sqrt(p * (p - arr[0]) * (p - arr[1]) * (p - arr[2]));
+            return Square;
+        }
+        public void Cycling_Task()
+        {
+            Console.WriteLine("Enter params of triangles one by one!");
+            double Square_1 = Getting_Square(Taking_Arguments());
+            double Square_2 = Getting_Square(Taking_Arguments());
+            if (Square_1 > Square_2) Console.WriteLine("First Square is bigger!");
+            else if (Square_1 < Square_2) Console.WriteLine("Second Square is bigger!");
+            else Console.WriteLine("They have similar squares!");
+        }
+    }
+    public class Task_6_Level_2 : Class_Of_Usefull_Methods
+    {
+        static int Finding_Index_Max_In_Array(double[] arr)
+        {
+            double maxi = arr[0];
+            int index = 0;
+            for (int i = 1; i < arr.Length; i++) if (maxi < arr[i]) { maxi = arr[i]; index = i; }
+            return index;
+        }
+        static double[] Deleting_Elem_In_Array(double[] arr_1, int index)
+        {
+            double[] arr_2 = new double[arr_1.Length - 1];
+            for (int i = 0; i < arr_1.Length; i++)
+            {
+                if (i < index) arr_2[i] = arr_1[i];
+                else if (i > index) arr_2[i - 1] = arr_1[i];
+            }
+            return arr_2;
         }
 
-        static bool Compare(int left, int right) => left > right; // => it is lambda operator the same as { return }
-        static bool Compare(double left, double right) => left > right;
+        static double[] Creating_Array_From_Two(double[] arr_1, double[] arr_2)
+        {
+            double[] final_array = new double[arr_1.Length + arr_2.Length];
+            int point = 0;
+            while (true)
+            {
+                if (point == arr_1.Length + arr_2.Length) break;
+                else if (point < arr_1.Length) final_array[point] = arr_1[point];
+                else final_array[point] = arr_2[point - arr_1.Length];
+                point++;
+            }
+            return final_array;
+        }
+        public void Cycling_Task()
+        {
+            Console.WriteLine("Enter length of two arrays one by one. Then enter all elements of arrays one by one");
+            double[] arr_1 = new double[Getting_Int_From_User()];
 
+            
+
+            double[] arr_2 = new double[Getting_Int_From_User()];
+
+            for (int i = 0; i < arr_1.Length; i++) arr_1[i] = Getting_Double_From_User();
+            for (int i = 0; i < arr_2.Length; i++) arr_2[i] = Getting_Double_From_User();
+
+            int Maxi_Index_First = Finding_Index_Max_In_Array(arr_1);
+            int Maxi_Index_Second = Finding_Index_Max_In_Array(arr_2);
+
+            double[] final_arr_1 = Deleting_Elem_In_Array(arr_1, Maxi_Index_First);
+            double[] final_arr_2 = Deleting_Elem_In_Array(arr_2, Maxi_Index_Second);
+
+            double[] final_arr = Creating_Array_From_Two(final_arr_1, final_arr_2);
+
+            Printing_Array(final_arr);
+        }
+    }
+    public class Task_10_Level_2 : Class_Of_Usefull_Methods
+    {
+        static int Finding_Maxi(double[,] matrix)
+        {
+            int point = 1;
+            int Maxi_Ind = 0;
+            double Maxi = matrix[0, 1];
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int x = 0; x < point; x++)
+                {
+                    if (matrix[i, x] > Maxi) { Maxi = matrix[i, x]; Maxi_Ind = x; }
+                }
+                point++;
+            }
+            return Maxi_Ind;
+        }
+        static int Finding_Mini(double[,] matrix)
+        {
+            int point = 1;
+            int Mini_Ind = 1;
+            double Mini = matrix[0, 1];
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int x = point; x < matrix.GetLength(0); x++)
+                {
+                    if (matrix[i, x] < Mini) { Mini = matrix[i, x]; Mini_Ind = x; }
+                }
+                point++;
+            }
+            return Mini_Ind;
+        }
+        static double[,] Clearing_Matrix(double[,] matrix, int pos_maxi, int pos_mini)
+        {
+            if(pos_maxi!=pos_mini){
+                double[,] Final_Matrix = new double[matrix.GetLength(0), matrix.GetLength(1) - 2];
+
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    int pointer = 0;
+                    for (int x = 0; x < matrix.GetLength(1); x++)
+                    {
+                        if ((x == pos_mini) || (x == pos_maxi)) { pointer++; continue; }
+                        Final_Matrix[i, x - pointer] = matrix[i, x];
+                    }
+                }
+                return Final_Matrix;
+            }
+            else
+            {
+                double[,] Final_Matrix = new double[matrix.GetLength(0), matrix.GetLength(1) - 1];
+
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    int pointer = 0;
+                    for (int x = 0; x < matrix.GetLength(1); x++)
+                    {
+                        if (x == pos_mini) { pointer++; continue; }
+                        Final_Matrix[i, x - pointer] = matrix[i, x];
+                    }
+                }
+                return Final_Matrix;
+            }
+        }
+        public void Cycling_Task()
+        {
+            double[,] Matrix =
+            {
+                {20, 20, 20, 20, 20 },
+                {20, 20, 20, 20, 0 },
+                {20, 2220, 20, 20, 20},
+                {20, 20, 20, 20, 20},
+                {20, 20, 20, 20, 220},
+            };
+
+            int Maxi_Pos = Finding_Maxi(Matrix);
+            int Mini_Pos = Finding_Mini(Matrix);
+            Console.WriteLine(Mini_Pos);
+            Console.WriteLine(Maxi_Pos);
+            Printing_Matrix(Clearing_Matrix(Matrix, Maxi_Pos, Mini_Pos));
+        }
+    }
+    public class Task_23_Level_2 : Class_Of_Usefull_Methods
+    {
+        public static void Printing_Array(double[] array)
+        {
+            for (int i = 0; i < array.Length; i++) Console.Write($"{array[i]} ");
+            Console.WriteLine();
+        }
+        public static void Printing_Matrix(double[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int x = 0; x < array.GetLength(1); x++) Console.Write($"{array[i, x]} ");
+                Console.WriteLine();
+            }
+        }
+
+        static bool Checking_Presence_Of_Point(int[] Point, int[,] Indexes)
+        {
+            bool key = false;
+            for (int i = 0; i < Indexes.GetLength(0); i++) if ((Indexes[i, 0] == Point[0]) && (Indexes[i, 1] == Point[1])) { key = true; break; }
+            return key;
+        }
+
+        static bool Checking_Presence_In_List(int i, int x, List<List<int>> indexes)
+        {
+            bool key = false;
+            for (int z = 0; z < indexes.Count(); z++)
+            {
+                if ((indexes[z][0] == i) && (indexes[z][1] == x)) { key = true; break; }
+            }
+            return key;
+        }
+
+        static double[,] Reconstructing_Matrix(double[,] Matrix, int[,] Indexes)
+        {
+            for (int i = 0; i < Matrix.GetLength(0); i++)
+            {
+                for (int x = 0; x < Matrix.GetLength(1); x++)
+                {
+                    int[] Point = { i, x };
+                    if (Checking_Presence_Of_Point(Point, Indexes))
+                    {
+                        if (Matrix[i, x] > 0) Matrix[i, x] *= 2;
+                        else Matrix[i, x] /= 2;
+                    }
+                    else
+                    {
+                        if (Matrix[i, x] > 0) Matrix[i, x] *= 2;
+                        else Matrix[i, x] /= 2;
+                    }
+                }
+            }
+            return Matrix;
+        }
+
+        static bool Matrix_Checking(double[,] matrix)
+        {
+            if (matrix.GetLength(0) * matrix.GetLength(1) < 5) return true;
+            else return false;
+        }
+
+        static int[,] Getting_Indexes_Of_Maxis(double[,] Matrix)
+        {
+            List<List<int>> indexes = new List<List<int>>();
+            for (int i = 0; i < 5; i++) indexes.Add(Finding_Another_Maxi(Matrix, indexes));
+            int[,] Indexes = Rebuilding_List_Into_Array(indexes);
+            return Indexes;
+        }
+
+        static List<int> Finding_Another_Maxi(double[,] Matrix, List<List<int>> indexes)
+        {
+            double Maxi = Matrix[0, 0];
+            List<int> Maxi_Indexes = new List<int>();
+            Maxi_Indexes.Add(0);
+            Maxi_Indexes.Add(0);
+
+            for (int i = 0; i < Matrix.GetLength(0); i++)
+            {
+                for (int x = 0; x < Matrix.GetLength(1); x++)
+                {
+                    if (Checking_Presence_In_List(i, x, indexes)) continue;
+                    if (Matrix[i, x] > Maxi) { Maxi = Matrix[i, x]; Maxi_Indexes.Clear(); Maxi_Indexes.Add(i); Maxi_Indexes.Add(x); }
+                }
+            }
+
+            return Maxi_Indexes;
+        }
+
+        static int[,] Rebuilding_List_Into_Array(List<List<int>> indexes)
+        {
+            int[,] Indexes = new int[indexes.Count(), 2];
+
+            for (int i = 0; i < indexes.Count(); i++)
+            {
+
+                Indexes[i, 0] = indexes[i][0];
+                Indexes[i, 1] = indexes[i][1];
+            }
+            return Indexes;
+        }
+        static void Main_Process_With_Matrix(double[,] Matrix)
+        {
+            int[,] Indexes = Getting_Indexes_Of_Maxis(Matrix);
+            Printing_Matrix(Reconstructing_Matrix(Matrix, Indexes));
+        }
+        public void Cycling_Task()
+        {
+            double[,] Matrix_1 =
+            {
+        {1, 2, 3, 4, 5 },
+        {-32, -32, -90, -4, -2 },
+        };
+            if (Matrix_Checking(Matrix_1)) Console.WriteLine("Not enough elements in matrix!");
+            if (Matrix_Checking(Matrix_1))
+            {
+                for (int i = 0; i < Matrix_1.GetLength(0); i++)
+                {
+                    for (int x = 0; x < Matrix_1.GetLength(1); x++)
+                    {
+                        Matrix_1[i, x] *= 2;
+                    }
+                }
+            }
+            else Main_Process_With_Matrix(Matrix_1);
+        }
+    }
+
+
+
+    public class Task_2_Level_3 : Class_Of_Usefull_Methods
+    {
+        delegate double[] Del(double[] array);
+        public double[] Sorting_Array_Up(double[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    if (array[i] > array[j])
+                    {
+                        double temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
+            return array;
+        }
+        public double[] Sorting_Array_Down(double[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                for (int j = i + 1; j < array.Length; j++)
+                {
+                    if (array[i] < array[j])
+                    {
+                        double temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
+            return array;
+        }
+        public double[,] Cycling_Rows_From_Matrix(double[,] matrix)
+        {
+
+            double[] array = new double[matrix.GetLength(1)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                Del method;
+                if (i % 2 == 0) method = Sorting_Array_Down;
+                else method = Sorting_Array_Up;
+                for (int x = 0; x < matrix.GetLength(1); x++) array[x] = matrix[i, x];
+
+
+                double[] sorted_array = method(array);
+
+
+                for (int x = 0; x < matrix.GetLength(1); x++) matrix[i, x] = sorted_array[x];
+            }
+            return matrix;
+        }
+        public void Cycling_Task()
+        {
+            double[,] Matrix =
+            {
+                {0, -20, 10, 30, 90 },
+                {-20, -40, 80, 20, 0 },
+                {-220, -20, 150, 0, 10},
+                {200, 10, 20, 0, 40},
+                {20, 30, 20, -40, 60 },
+                };
+
+            double[,] Final_Matrix = Cycling_Rows_From_Matrix(Matrix);
+
+            Printing_Matrix(Final_Matrix);
+        }
+    }
+    public class Task_4_Level_3 : Class_Of_Usefull_Methods
+    {
+        delegate double[] Del(double[,] matrix);
+        
+        public double[] Taking_Down_Triangle(double[,] matrix)
+        {
+            int len = 0;
+            for (int i = 0; i <= matrix.GetLength(0); i++) len += i;
+            double[] array = new double[len];
+
+            int point = 0;
+            int limit = 0;
+            for(int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for(int x = 0; x <= limit; x++)
+                {
+                    array[point] = matrix[i, x];
+                    point++;
+                }
+                limit++;
+            }
+            return array;
+        }
+        public double[] Taking_Upper_Triangle(double[,] matrix)
+        {
+            int len = 0;
+            for (int i = 0; i <= matrix.GetLength(0); i++) len += i;
+            double[] array = new double[len];
+
+            int point = 0;
+            int limit = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int x = limit; x < matrix.GetLength(0); x++)
+                {
+                    array[point] = matrix[i, x];
+                    point++;
+                }
+                limit++;
+            }
+            return array;
+        }
+        public double Summing(double[] vector)
+        {
+            double sum = 0;
+            for (int i = 0; i < vector.Length; i++) sum += vector[i] * vector[i];
+            return sum;
+        }
+        public bool Making_Decision()
+        {
+            Random gen = new Random();
+            int prob = gen.Next(100);
+            return prob > 50;
+        }
+        public void Cycling_Task()
+        {
+            Del method;
+            double[,] matrix = {
+                {0, -20, 10, 30, 90 },
+                {-20, -40, 80, 20, 0 },
+                {-220, -20, 150, 0, 10},
+                {200, 10, 20, 0, 40},
+                {20, 90, 20, -40, 60 },
+                };
+
+            if (Making_Decision()) method = Taking_Upper_Triangle;
+            else method = Taking_Down_Triangle;
+            double[] array = method(matrix);
+            Printing_Array(array);
+            Console.WriteLine(Summing(method(matrix)));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public class Programm
+    {
         static void Main(string[] args)
         {
 
-            Console.WriteLine("Delegate example 1");
-            int[] array = new int[5] { 1, 0, 2, 0, 5 };
-            Calculate(GetLength, array, 3);
-            Calculate(GetSum, array, 3);
+            Task_1_Level_1 Task_1 = new Task_1_Level_1();
+            Task_1.Cycling_Task();
+            Console.WriteLine();
 
-            Console.WriteLine("Delegate example 2");
+            Task_2_Level_1 Task_2 = new Task_2_Level_1();
+            Task_2.Cycling_Task();
+            Console.WriteLine();
 
-            Analyze(new int[5] { 1, 2, 3, 4, 5 }, 2, 4);
-
-            Console.WriteLine("Delegate example 3");
-
-            ChooseUsage select;
-            if (int.TryParse(Console.ReadLine(), out int sample))
-                select = GetAverageInTheRow;
-            else
-                select = GetAverageInTheColumn;
-            Console.WriteLine($"Average = {select(new int[2, 3] { { 1, 2, 0 }, { 11, 3, 9 } }, 1)}");
-
-            return;
-            #region OOP principles
-
-            /* You operation mith moduls. Modul can work with data he get or keep inside. 
-             * Moduls of higher lvl hould not know about lower ones.
-             * So your code will be safe and logical.
-             * 
-             * 
-             * What are you need?
-             * 
-             * Abstraction - noone shuld know HOW another modul (class / method) works.
-             * You have to provide input value and get the output.
-             * User interface shouldn't affect on the system's work.
-             * Also realization should not change the pattern (abstract scheme)
-             * 
-             * Encapsulation - do not provide more than asked.
-             * Another class or method shouldn't know about any field or method in your object (class, structure and so on) except you provide to it.
-             * Group your data in a single object. One object (entity) should know and do only that things that incuded or were gotten outside.
-             * 
-             * Inheritance - Inheritance is the method of acquiring features of the existing class into the new class with additional properties or methods.
-             * Also it is allow us to reach better incapsulation (up-cast).
-             * Inheritance can be from 1 to many (classes / interfaces) or from many to one (interfaces only). 
-             * So we can create an object (entity) with such properties we need and agregate in with another objects that have the same property.
-             * 
-             * Polymorphism - the most essential concept which allow any object or method has more than one name associated with it. And it allow your code be more flexible.
-             * Difference can be in the type it use, parameters it get.
-             * 
-             * In that lab you will have an acquaintance with polymorphism
-             * 
-             */
-
-            Console.WriteLine(PolymorphMethod());
-
-            Console.WriteLine(PolymorphMethod(10));
-
-            Console.WriteLine(PolymorphMethod(2.56));
-
-            Console.WriteLine(PolymorphMethod("Abracadabra")); // general type will be called, because no another method that suit to this type
-
-            Console.WriteLine(PolymorphMethod(5, new[] { 0.1223, 1.2, 8.9, -1.5 }));
-
-            #endregion
-
-            #region DRY - don't repeat yourself
-
-            /* Very simple advice :)
-             * You already did it, using cycle, for example instead maing calculation on each line
-             * 
-             * If you see that in your program is repeat, make a separate method and call it when it needs.
-             */
-
-            int numerator = 1, denominator = 1;
+            Task_6_Level_2 Task_3 = new Task_6_Level_2();
+            Task_3.Cycling_Task();
+            Console.WriteLine();
 
 
-            double sum = 0, average = 0;
+            Task_10_Level_2 Task_4 = new Task_10_Level_2();
+            Task_4.Cycling_Task();
+            Console.WriteLine();
 
-            if (numerator > denominator)
-            {
-                Console.WriteLine(true);
-            }
-            else
-            {
-                Console.WriteLine(false);
-            }
+            Task_23_Level_2 Task_5 = new Task_23_Level_2();
+            Task_5.Cycling_Task();
+            Console.WriteLine();
 
-            if (sum > average)
-            {
-                Console.WriteLine(true);
-            }
-            else
-            {
-                Console.WriteLine(false);
-            }
+            Task_2_Level_3 Task_6 = new Task_2_Level_3();
+            Task_6.Cycling_Task();
+            Console.WriteLine();
 
-            // Carry out the logic (DRY + Incapsilation + Polymorphism in such small example)) - look in the head of program
-            Compare(numerator, denominator);
-            Compare(sum, average);
+            Task_4_Level_3 Task_7 = new Task_4_Level_3();
+            Task_7.Cycling_Task();
+            Console.WriteLine();
 
-            #endregion
-
-            #region SOLID principles
-
-            /* single responsibility, open–closed, Liskov substitution, interface segregation и dependency inversion
-             * 
-             * S - Each class should keep everithing he need for work inside itself.
-             * O - Your program should be open for extentions but closed for changes. It is very difficlt to reach it, actually.
-             * L - Heirs should be able to use father's metods.
-             * I - Separate your program to interfaces and provide only what need in particular cases.
-             * D - One object shouldn't to talk another at the same level what to do. Use actions instead.
-             */
-
-            // We will work with SOLID closely at 7-8 & 10th labs.
-
-            #endregion
-
-            #region Signature
-            /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
-             * In c# for methods (and delegates) it includes full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
-             */
-
-            #endregion
+            
         }
     }
 }
