@@ -42,11 +42,6 @@ namespace Лаба5
             Console.WriteLine("Enter number 'c': ");
             string in_c = Console.ReadLine();
             double.TryParse(in_c, out c);
-            if (a >= b + c || b >= a + c || c >= a + b)
-            {
-                Console.WriteLine("The triangle does not exist");
-                return;
-            }
             Console.WriteLine("Enter number 'n': ");
             string in_n = Console.ReadLine();
             double.TryParse(in_n, out n);
@@ -56,7 +51,7 @@ namespace Лаба5
             Console.WriteLine("Enter number 'q': ");
             string in_q = Console.ReadLine();
             double.TryParse(in_q, out q);
-            if (n >= m + q || m >= n + q || q >= n + m)
+            if (n >= m + q || m >= n + q || q >= n + m || a >= b + c || b >= a + c || c >= a + b)
             {
                 Console.WriteLine("The triangle does not exist");
                 return;
@@ -153,7 +148,7 @@ namespace Лаба5
         #region Task 2_10
         static void Main(string[] args)
         {
-            int n, m, index_jup = 0, index_jd = 0;
+            int n, m, index_jup = 0, index_jd = 0, b;
             Console.WriteLine("Enter the size of the square matrix: ");
             string vvod = Console.ReadLine();
             if (int.TryParse(vvod, out n) & n > 1)
@@ -172,7 +167,16 @@ namespace Лаба5
                 for (int j = 0; j < n; j++)
                 {
                     Console.WriteLine("Enter the element y: " + i + " x: " + j);
-                    a[i, j] = int.Parse(Console.ReadLine());
+                    string vvod1 = Console.ReadLine();
+                    if (int.TryParse(vvod1, out b))
+                    {
+                        a[i, j] = b;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error");
+                        return;
+                    }
                 }
             }
             for (int i = 0; i < n; i++)
@@ -184,6 +188,7 @@ namespace Лаба5
                 Console.WriteLine();
             }
             int max_down = a[0, 0];
+            index_jd = 0;
             for (int i = 0; i < n; i++)
             {
                 for (int j = i; j >= 0; j--)
@@ -197,6 +202,7 @@ namespace Лаба5
                 }
             }
             int min_up = a[0, 1];
+            index_jup = 1;
             for (int i = 0; i < n - 1; i++)
             {
                 for (int j = i + 1; j < n; j++)
