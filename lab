@@ -1,0 +1,297 @@
+static double fact(double a)
+{
+    double b = 1;
+    for (int i = 2; i <= a; i++)
+    {
+        b *= i;
+    }
+    return b;
+}
+
+static double Geron(double a, double b, double c)
+{
+    if (a + b <= c)
+    {
+        return -1;
+    }
+
+    double p = (a + b + c) / 2;
+    return Math.Sqrt(p*(p-a)*(p-b)*(p-c));
+}
+
+static double[] Delete(double[] array)
+{
+    double[] array1 = new double[array.Length-1];
+    double temp = 0;
+    double max = double.NegativeInfinity;
+    int max_i = 0;
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (array[i] > max)
+        {
+            max = array[i];
+            max_i = i;
+        }
+    }
+    for (int i = max_i; i < array.Length-1; i++)
+    {
+        temp = array[i];
+        array[i] = array[i + 1];
+        array[i+1] = temp;
+    }
+    for (int i = 0; i < array1.Length; i++)
+    {
+        array1[i] = array[i];
+    }
+    return array1;
+}
+
+static double[,] DeleteColumn(double[,] a, int st)
+{
+    double temp = 0;
+    double[,] a1 = new double[a.GetLength(0), a.GetLength(1)-1];
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = st; j < a.GetLength(1)-1; j++)
+        {
+            temp = a[i, j];
+            a[i, j] = a[i,j + 1];
+            a[i,j + 1] = temp;
+        }
+    }
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1)-1; j++)
+        {
+            a1[i, j] = a[i, j];
+        }
+    }
+    return a1;
+}
+
+static double[,] Array_Change(double[,] a)
+{
+    int t = 0;
+    double[] temp = new double[a.GetLength(0) * a.GetLength(1)];
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1); j++)
+        {
+            temp[t] = a[i, j];
+            t++;
+        }
+    }
+    Array.Sort(temp);
+    Array.Reverse(temp);
+    double[] m = new double[5];
+    for (int i = 0; i < 5; i++)
+    {
+        m[i] = temp[i];
+    }
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1); j++)
+        {
+            if (a[i, j] == m[0] || a[i, j] == m[1] || a[i, j] == m[2] || a[i, j] == m[3] || a[i, j] == m[4])
+            {
+                a[i, j] *= 2;
+            }
+            else
+            {
+                a[i, j] /= 2;
+            }
+        }
+    }
+    return a;
+}
+
+static void lvl1Task1()
+{
+    double team = 5;
+    double[] kandidats = new double[3] { 8, 10, 11 };
+    for (int i = 0; i < kandidats.Length; i++)
+    {
+        Console.WriteLine($"{i+1} answer - {fact(kandidats[i]) / (fact(team)*fact(kandidats[i]-team)) }");
+    }
+}
+
+static void lvl1Task2()
+{
+    Console.WriteLine("ALL VALUES SHOULD BE >0");
+    Console.WriteLine("Enter a1:");
+    double a1 = 0;
+    try { a1 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    Console.WriteLine("Enter b1:");
+    double b1 = 0;
+    try { b1 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    Console.WriteLine("Enter c1:");
+    double c1 = 0;
+    try { c1 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    Console.WriteLine("Enter a2:");
+    double a2 = 0;
+    try { a2 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    Console.WriteLine("Enter b2:");
+    double b2 = 0;
+    try { b2 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    Console.WriteLine("Enter c2:");
+    double c2 = 0;
+    try { c2 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    double[] check = new double[6] { a1, b1, c1, a2, b2, c2 };
+    for (int i = 0; i < check.Length; i++)
+    {
+        if (check[i] <= 0)
+        {
+            Console.WriteLine("Sovsem durak?");
+            return;
+        }
+    }
+    
+    if (Geron(a1, b1, c1) == -1 || Geron(a2, b2, c2) == -1)
+    {
+        return;
+    }
+    if (Geron(a1, b1, c1) > Geron(a2, b2, c2))
+    {
+        Console.WriteLine("First is bigger");
+    }
+    else
+    {
+        Console.WriteLine("Second is bigger");
+    }
+}
+
+static void lvl2Task6()
+{
+    double[] a = new double[7];
+    double[] b = new double[8];
+    double[] c = new double[6+7];
+    Console.WriteLine("Enter array A values:");
+    for (int i = 0; i < a.Length; i++)
+    {
+        try { a[i] = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    }Console.WriteLine("Enter array B values:");
+    for (int i = 0; i < b.Length; i++)
+    {
+        try { b[i] = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    }
+    a = Delete(a);
+    b = Delete(b);
+    for (int i = 0; i < 6 + 7; i++)
+    {
+        if (i <= 5)
+        {
+            c[i] = a[i];
+        }
+        else
+        {
+            c[i] = b[i - 6];
+        }
+    }
+    Console.WriteLine(string.Join("", c));
+}
+
+static void lvl2Task10()
+{
+    double max = double.NegativeInfinity;
+    int col_i1 = 0;
+    int col_i2 = 0;
+
+    Console.WriteLine("Enter n:");
+    int n = 0;
+    try { n = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    double[,] a = new double[n,n];
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1); j++)
+        {
+            try { a[i, j] = Convert.ToDouble(Console.ReadLine()); } catch { return; }
+        }
+    }
+
+
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (a[i, j] > max)
+            {
+                max = a[i,j];
+                col_i1 = j;
+            }
+        }
+    }
+    max = double.NegativeInfinity;
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = i; j < a.GetLength(1); j++)
+        {
+            if (a[i, j] > max)
+            {
+                max = a[i, j];
+                col_i2 = j;
+            }
+        }
+    }
+    a = DeleteColumn(a, col_i1);
+    a = DeleteColumn(a, col_i2);
+    for (int i = 0; i < a.GetLength(0); i++)
+    {
+        for (int j = 0; j < a.GetLength(1); j++)
+        {
+            Console.Write(a[i, j] + "\t");
+        }
+        Console.WriteLine();
+    }
+}
+
+static void lvl2Task23()
+{
+    Console.WriteLine("Enter array1 size");
+    int h1 = 0;
+    try { h1 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    int w1 = 0;
+    try { w1 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    Console.WriteLine("Enter array2 size");
+    int h2 = 0;
+    try { h2 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    int w2 = 0;
+    try { w2 = Convert.ToInt32(Console.ReadLine()); } catch { return; }
+    double[,] a1 = new double[h1, w1];
+    double[,] a2 = new double[h2, w2];
+    Console.WriteLine("Enter array1 values:");
+    for (int i = 0; i < a1.GetLength(0); i++)
+    {
+        for (int j = 0; j < a1.GetLength(1); j++)
+        {
+            try { a1[i, j] = Convert.ToDouble(Console.ReadLine()); } catch { return; }
+        }
+    }
+    Console.WriteLine("Enter array2 values:");
+    for (int i = 0; i < a2.GetLength(0); i++)
+    {
+        for (int j = 0; j < a2.GetLength(1); j++)
+        {
+            try { a2[i, j] = Convert.ToDouble(Console.ReadLine()); } catch { return; }
+        }
+    }
+    a1 = Array_Change(a1);
+    a2 = Array_Change(a2);
+    Console.WriteLine("Array 1:");
+    for (int i = 0; i < a1.GetLength(0); i++)
+    {
+        for (int j = 0; j < a1.GetLength(1); j++)
+        {
+            Console.Write(a1[i, j] + "\t");
+        }
+        Console.WriteLine();
+    }
+    Console.WriteLine("Array 2:");
+    for (int i = 0; i < a2.GetLength(0); i++)
+    {
+        for (int j = 0; j < a2.GetLength(1); j++)
+        {
+            Console.Write(a2[i, j] + "\t");
+        }
+        Console.WriteLine();
+    }
+}
