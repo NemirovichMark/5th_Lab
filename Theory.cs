@@ -1,21 +1,102 @@
-﻿using System;
+using System;
+using System.Drawing;
 
 namespace _5th_Lab
 {
     class Program
     {
+        #region How to use Delegate. Example 1.
+        delegate int LinkUsing(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
+        static int GetLength(int[] arr) // create a 1st method with same params as ddelegate has
+        {
+            return arr.Length;
+        }
+        static int GetSum(int[] arr) // create a 2nd method with same params as ddelegate has
+        {
+            int sum = 0;
+            foreach (int element in arr)
+                sum += element;
+            return sum;
+        }
+        static int Calculate(LinkUsing func, int[] arr, int count)
+        {
+            int total = 0;
+            for (int i = 0; i < count; i++)
+            {
+                total += func(arr);
+            }
+            return total;
+        }
+        #endregion
+
+        #region How to use Delegate. Example 2.
+        delegate void SequenceUsing(int[] arr); // create a delegate with type: return void (!!!), input: 1st param: int[]
+        static void Say(int[] arr) // create a 1st method with same params as ddelegate has
+        {
+            Console.WriteLine($"It is a {arr.GetType().ToString()}");
+        }
+        static void Read(int[] arr) // create a 2nd method with same params as ddelegate has
+        {
+            foreach (int element in arr)
+                Console.Write($"{element} ");
+            Console.WriteLine();
+        }
+        static void Analyze(int[] arr, int start, int end)
+        {
+            int[] part = new int[end-start];
+            int k = 0;
+            for (int i = start; i < end; i++)
+            {
+                part[k] = arr[i];
+                k++;
+            }
+            SequenceUsing severalWorks = Say; // if we call the severalWorks after that, it would call Say(int[] arr);
+            severalWorks += Read; // if we call the severalWorks after that, it would call Say(int[] arr) and next Read(int[] arr);
+            try
+            {
+                severalWorks -= Say; // if we call the severalWorks after that, it would call Read(int[] arr) only;
+            }
+            catch { }
+            severalWorks += Say; // if we call the severalWorks after that, it would call Read(int[] arr) and next Say(int[] arr);
+            
+            severalWorks(part); // call it (2 methods).
+            /*
+             * But know, that if the methods return some value, you will get only last result!!! so better use delegates with void methods in that way!
+             */
+        }
+        #endregion
+        #region How to use Delegate. Example 3.
+        delegate double ChooseUsage(int[,] matrix, int row); // create a delegate with type: return double value, input: 2 param: int[,], int
+        static double GetAverageInTheRow(int[,] matrix, int row)
+        {
+            double avg = 0;
+            int columns = matrix.GetLength(1);
+            for (int i = 0; i < columns; i++)
+                avg += matrix[row, i] / columns;
+            return avg;
+        }
+        static double GetAverageInTheColumn(int[,] matrix, int column)
+        {
+            double avg = 0;
+            int rows = matrix.GetLength(0);
+            for (int i = 0; i < rows; i++)
+                avg += matrix[i, column] / rows;
+            return avg;
+        }
+        #endregion
+
         static int PolymorphMethod() { return 0; }
         static int PolymorphMethod(int number) { return number; }
         static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
-    //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
+                                                                        //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
         static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
         static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
 
         //     static T PolymorphMethod<T>(T yourType) { return number; } - cannot create since there is method with same input params
-        static double PolymorphMethod(int count, double[] array) 
+        static double PolymorphMethod(int count, double[] array)
         {
             var sum = 0.0;
-            foreach(double value in array)
+            foreach (double value in array)
             {
                 sum += value;
             }
@@ -27,6 +108,26 @@ namespace _5th_Lab
 
         static void Main(string[] args)
         {
+
+            Console.WriteLine("Delegate example 1");
+            int[] array = new int[5] { 1, 0, 2, 0, 5 };
+            Calculate(GetLength, array, 3);
+            Calculate(GetSum, array, 3);
+
+            Console.WriteLine("Delegate example 2");
+
+            Analyze(new int[5] { 1, 2, 3, 4, 5 }, 2, 4);
+
+            Console.WriteLine("Delegate example 3");
+
+            ChooseUsage select;
+            if (int.TryParse(Console.ReadLine(), out int sample))
+                select = GetAverageInTheRow;
+            else
+                select = GetAverageInTheColumn;
+            Console.WriteLine($"Average = {select(new int[2, 3] { { 1, 2, 0 }, { 11, 3, 9 } }, 1)}");
+
+            return;
             #region OOP principles
 
             /* You operation mith moduls. Modul can work with data he get or keep inside. 
@@ -65,7 +166,7 @@ namespace _5th_Lab
 
             Console.WriteLine(PolymorphMethod("Abracadabra")); // general type will be called, because no another method that suit to this type
 
-            Console.WriteLine(PolymorphMethod(5, new []{ 0.1223, 1.2, 8.9, -1.5 }));
+            Console.WriteLine(PolymorphMethod(5, new[] { 0.1223, 1.2, 8.9, -1.5 }));
 
             #endregion
 
@@ -85,7 +186,7 @@ namespace _5th_Lab
             if (numerator > denominator)
             {
                 Console.WriteLine(true);
-            }    
+            }
             else
             {
                 Console.WriteLine(false);
@@ -120,12 +221,12 @@ namespace _5th_Lab
             // We will work with SOLID closely at 7-8 & 10th labs.
 
             #endregion
-            
+
             #region Signature
             /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
              * In c# for methods (and delegates) it includes full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
              */
-             
+
             #endregion
         }
     }
