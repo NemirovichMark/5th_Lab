@@ -155,6 +155,7 @@ namespace _5th_Lab
 		{
 			maxl = maxel(matrix);
 			int c = 0;
+            int f = 0;
 			for (int i = 0; i < matrix.GetLength(0); i++)
 			{
 				
@@ -168,14 +169,16 @@ namespace _5th_Lab
 							
 						}
 						c++;
-						if (c > 5)
+						if (c > 5 && f < 5)
 						{
+                            f++;
 							matrix[i,j] /= 2;
 						}
 
 					}
-					else if (matrix[i,j] < maxl)
+					else if (matrix[i,j] < maxl && f < 5)
 					{
+                        f++;
 						matrix[i,j] /= 2;
 					}
 				}
