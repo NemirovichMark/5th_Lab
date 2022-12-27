@@ -4,29 +4,51 @@ public class Program
     
     //level 1
     // #1
-    static int p (int k1, int n1)
+
+    static int pk(int k1, int n1)
     {
         int n2 = 1;
         int k2 = 1;
         int k2n2 = 1;
         int hod = 1;
-        
-        while (hod <= n1)
+        while (hod <= k1)
         {
-            if (hod <= k1)
+            while (hod <= k1)
             {
                 k2 = k2 * hod;
+                hod++;
             }
-            if (hod <= (n1 - k1))
-            {
-                k2n2 = k2n2 * hod;
-            }
-            n2 = n2 * hod;
+            
+        }
+        return k2;
+    }
+    static int pnk(int k1, int n1)
+    {
+        int n2 = 1;
+        int k2 = 1;
+        int k2n2 = 1;
+        int hod = 1;
+        while (hod <= n1 - k1)
+        {
+            k2n2 = k2n2 * hod;
             hod++;
         }
-        
-        return n2 / (k2 * k2n2);
+            return k2n2;
     }
+        static int pn(int k1, int n1)
+        {
+            int n2 = 1;
+            int k2 = 1;
+            int k2n2 = 1;
+            int hod = 1;
+            while (hod <= n1)
+            {
+                n2 = n2 * hod;
+                hod++;
+            }
+
+        return n2;
+        }
     
     
     // #2
@@ -70,28 +92,34 @@ public class Program
     }
     
     // #23
-    static void preobr(double [,] aa, int nn, int mm)
+    static void preobr(double[,] aa, int nn, int mm)
     {
-        double[,] xran = new double[3,5];
+        double[,] xran = new double[3, 5];
         double[] matr = new double[nn * mm];
         
-        for (int i = 0; i < nn; i++)
+            for (int i = 0; i < nn; i++)
         {
             for (int k = 0; k < mm; k++)
             {
                 matr[i * mm + k] = aa[i, k];
             }
         }
-        
+
+        for (int i = 0; i < 5; i++)
+        {
+            xran[0, i] = matr[i];
+            xran[1, i] = i / mm;
+            xran[2, i] = i - (xran[1, i]) * mm;
+        }
         double xr = 0;
         double xr_n = 0;
         double xr_m = 0;
         int flak = 0;
-        
+
         double vr_xr = 0;
         double vr_xr_n = 0;
         double vr_xr_m = 0;
-        
+
         for (int i = 0; i < nn * mm; i++)
         {
             for (int k = 0; k < 5; k++)
@@ -111,29 +139,29 @@ public class Program
                     vr_xr = xran[0, k];
                     vr_xr_n = xran[1, k];
                     vr_xr_m = xran[2, k];
-                    
+
                     xran[0, k] = xr;
                     xran[1, k] = xr_n;
                     xran[2, k] = xr_m;
-                    
+
                     xr = vr_xr;
                     xr_n = vr_xr_n;
                     xr_m = vr_xr_m;
                 }
-                
-                
+
+
             }
             xr = 0;
             xr_n = 0;
             xr_m = 0;
-            
+
             flak = 0;
-            
-            
-            
+
+
+
         }
+
         
-        /*
         for (int i = 0; i < 3; i++)
         {
             for (int k = 0; k < 5; k++)
@@ -143,24 +171,38 @@ public class Program
             Console.WriteLine("");
         }
         Console.WriteLine("");
-        */
+        
 
-            
-        
-        
+
+
+
         for (int k = 0; k < 5; k++)
         {
-            aa[(int)xran[1, k], (int)xran[2, k]] = aa[(int)xran[1, k], (int)xran[2, k]] * 4;
+            if (aa[(int)xran[1, k], (int)xran[2, k]] > 0)
+            {
+                aa[(int)xran[1, k], (int)xran[2, k]] *= 4;
+            }
+            else
+            {
+                aa[(int)xran[1, k], (int)xran[2, k]] = aa[(int)xran[1, k], (int)xran[2, k]] / 4;
+            }
         }
-        
+
         for (int i = 0; i < nn; i++)
         {
             for (int k = 0; k < mm; k++)
             {
-                aa[i, k] = aa[i, k] / 2;
+                if (aa[i, k] > 0)
+                {
+                    aa[i, k] = aa[i, k] / 2;
+                }
+                else
+                {
+                    aa[i, k] = aa[i, k] * 2;
+                }
             }
         }
-        
+
     }
     
     //level 3
@@ -300,16 +342,17 @@ public class Program
         Console.WriteLine("#1");
         int k = 0;
         int n = 0;
-        try 
+        try
         {
-            k = int.Parse(Console.ReadLine());
             Console.WriteLine("Введите размер команды");
-            n = int.Parse(Console.ReadLine());
+            k = int.Parse(Console.ReadLine());
             Console.WriteLine("Введите количество кандидатов");
+            n = int.Parse(Console.ReadLine());
+            
         }
-        catch {Console.WriteLine("все по 0"); }
-        
-        Console.WriteLine(p(k, n));
+        catch { Console.WriteLine("все по 0"); }
+
+        Console.WriteLine(pn(k, n) / (pk(k, n) * pnk(k, n)));
         
         
         // #2
@@ -317,15 +360,17 @@ public class Program
         double s1 = 0;
         double s2 = 0;
         int flak = 0;
+        double max_s = 0;
+        int nomer = 0;
         for (int i = 0; i < 2; i++)
         {
             Console.Write("Треугольник № ");
-            Console.WriteLine(i);
+            Console.WriteLine(i + 1);
             double a = 0;
             double b = 0;
             double c = 0;
-            
-            try 
+
+            try
             {
                 Console.WriteLine("Введите a");
                 a = double.Parse(Console.ReadLine());
@@ -334,45 +379,35 @@ public class Program
                 Console.WriteLine("Введите c");
                 c = double.Parse(Console.ReadLine());
             }
-            catch 
+            catch
             {
                 Console.WriteLine("Это не треугольник");
                 flak = 1;
                 break;
             }
-            
-            if (a <= 0 || b <=0 || c <= 0 || a*a > b*b + c*c || c*c > a*a + b*b || b*b > a*a + c*c)
+
+            if (a <= 0 || b <= 0 || c <= 0 || a * a > b * b + c * c || c * c > a * a + b * b || b * b > a * a + c * c)
             {
                 flak = 1;
                 break;
             }
-            else
-            {
-                if (i == 0)
+            double Ss = p2(a, b, c);
+            
+            if (max_s > Ss) ;
                 {
-                    s1 = p2(a, b, c);
+                    max_s = Ss;
+                    nomer = i;
                 }
-                else
-                {
-                    s2 = p2(a, b, c);
-                }
-            }
+            
         }
         if (flak == 1)
         {
             Console.WriteLine("Это не треугольник!");
         }
-        else if (s1 > s2)
+        else
         {
-            Console.WriteLine("Первый больше");
-        }
-        else if(s2 > s1)
-        {
-            Console.WriteLine("Второй больше");
-        }
-        else if(s1 == s2)
-        {
-            Console.WriteLine("Они равны");
+            Console.Write("Больше ");
+            Console.WriteLine(nomer);
         }
 
 
@@ -492,11 +527,11 @@ public class Program
         Console.WriteLine("#23");
         int n_a4_5 = 4;
         int m_a4_5 = 5;
-        double[,] a4_5 = new double[,] {{4, 7, 1000, 3, 3}, 
-                                    {54, -7, 230, 650, -4}, 
-                                    {3, 4, 5000, -24, 45}, 
-                                    {34, 2, 100, 6, 22}};
-                                    
+        double[,] a4_5 = new double[,] {{4, 7, 1000, -3, 3},
+                                    {-54, -7, -230, 650, 4},
+                                    {-3, -4,  5000, -24, -45},
+                                    {-34,   -2,    -100, -6, -22}};
+
         for (int i = 0; i < n_a4_5; i++)
         {
             for (int k = 0; k < m_a4_5; k++)
@@ -506,10 +541,10 @@ public class Program
             Console.WriteLine("");
         }
         Console.WriteLine("");
-        
+
         preobr(a4_5, n_a4_5, m_a4_5);
-        
-        
+
+
         for (int i = 0; i < n_a4_5; i++)
         {
             for (int k = 0; k < m_a4_5; k++)
