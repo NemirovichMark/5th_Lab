@@ -61,20 +61,30 @@ public class Program
     {
         double[,] xran = new double[3, 5];
         double[] matr = new double[nn * mm];
-        
-            for (int i = 0; i < nn; i++)
+        double minn = aa[0, 0];
+        int mi_n = 0;
+        int mi_m = 0;
+        for (int i = 0; i < nn; i++)
         {
             for (int k = 0; k < mm; k++)
             {
                 matr[i * mm + k] = aa[i, k];
+                if (minn > aa[i, k])
+                {
+                    minn = aa[i, k];
+                    mi_n = i;
+                    mi_m = k;
+                }
             }
         }
+        
+        
 
         for (int i = 0; i < 5; i++)
         {
-            xran[0, i] = matr[i];
-            xran[1, i] = i / mm;
-            xran[2, i] = i - (xran[1, i]) * mm;
+            xran[0, i] = minn;
+            xran[1, i] = mi_n;
+            xran[2, i] = mi_m;
         }
         double xr = 0;
         double xr_n = 0;
@@ -137,11 +147,7 @@ public class Program
         }
         Console.WriteLine("");
         
-
-
-
-
-        for (int k = 0; k < 5; k++)
+    for (int k = 0; k < 5; k++)
         {
             if (aa[(int)xran[1, k], (int)xran[2, k]] > 0)
             {
