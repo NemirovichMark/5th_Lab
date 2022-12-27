@@ -331,7 +331,7 @@ namespace _5th_Lab
             {
                 for (int j = 0; j < Matrix.GetLength(0); j++)
                 {
-                    if (counter == 5)
+                    if (counter == 4)
                     {
                         flag = 0;
                     }
@@ -340,27 +340,24 @@ namespace _5th_Lab
                         if (Matrix[i, j] >= 0) //поменял
                         {
                             Matrix[i, j] *= 2;
-                            counter++;
                         }
-                        else
+                        if (Matrix[i, j] < 0)
                         {
                             Matrix[i, j] /= 2;
-                            counter++;
                         }
+                        counter++;
                     }
                     else
                     {
                         if (Matrix[i, j] >= 0)
                         {
                             Matrix[i, j] /= 2;
-                            
                         }
 
-                        else
+                        if (Matrix[i, j] < 0)
                         {
-                            Matrix[i, j] *= 2;
-                            
-                        }
+                            Matrix[i, j] /= 2;
+                        } 
                     }
                 }
             }
