@@ -1,0 +1,480 @@
+using System;
+
+namespace ConsoleApp7
+{
+    class Program
+    {
+        static int Factorial(int a)
+        {
+            int s = 1;
+            while (a > 0)
+            {
+                s *= a;
+                a -= 1;
+            }
+            return s;
+        }
+
+        static int Sum(int n, int k)
+        {
+            return Factorial(n) / (Factorial(k) * Factorial(n - k));
+        }
+
+        static double Geron(int a, int b, int c)
+        {
+            double p = (a + b + c) / 2;
+            if (a >= b + c || b >= a + c || c >= a + b)
+            {
+                return -1;
+            }
+            double s = Math.Pow(p * (p - a) * (p - b) * (p - c), 0.5);
+            return s;
+        }
+
+        static int Int()
+        {
+            if (!int.TryParse(Console.ReadLine(), out int a))
+            {
+                Console.WriteLine("Error");
+                return Int();
+
+            }
+            else if (a <= 0)
+            {
+                Console.WriteLine("Error");
+                return Int();
+            }
+            return a;
+        }
+
+        static int[] Maxdel(int[] S)
+        {
+            int max = S[0], ind = 0, cnt = 0;
+            int[] S1 = new int[S.Length - 1];
+            for (int i = 1; i < S.Length; i++)
+            {
+                if (max < S[i])
+                {
+                    max = S[i];
+                    ind = i;
+                }
+            }
+            for (int i = 0; i < S.Length; i++)
+            {
+                if (i != ind)
+                {
+                    S1[cnt] = S[i];
+                    cnt += 1;
+                }
+            }
+            return S1;
+        }
+
+        static int[,] Matdel(int[,] S, int j1, int j2)
+        {
+            int[,] S1;
+            if (j1 == j2)
+            {
+                S1 = new int[S.GetLength(0), S.GetLength(1) - 1];
+            }
+            else
+            {
+                S1 = new int[S.GetLength(0), S.GetLength(1) - 2];
+            }
+
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                int cntj = 0;
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    if (j != j1 && j != j2)
+                    {
+                        S1[i, cntj] = S[i, j];
+                        cntj += 1;
+                    }
+                }
+            }
+
+
+            return S1;
+        }
+
+        static double[,] MaksMin(double[,] S)
+        {
+            int cnt = 0;
+            double[] S1 = new double[S.GetLength(0) * S.GetLength(1)];
+
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    S1[cnt] = S[i, j];
+                    cnt += 1;
+                }
+            }
+
+            for (int i = 1; i < S1.Length; i++)
+            {
+                int j = i;
+                while (j > 0 && S1[j - 1] < S1[j])
+                {
+                    double p = S1[j - 1];
+                    S1[j - 1] = S1[j];
+                    S1[j] = p;
+                    j--;
+                }
+            }
+
+            cnt = 0;
+            int f = 1;
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    if (cnt == 5)
+                    {
+                        f = 0;
+                    }
+                    if (f == 1 && (S[i, j] == S1[0] || S[i, j] == S1[1] || S[i, j] == S1[2] || S[i, j] == S1[3] || S[i, j] == S1[4]))
+                    {
+                        if (S[i, j] >= 0)
+                        {
+                            S[i, j] = 2 * S[i, j];
+                            cnt += 1;
+                        }
+                        else
+                        {
+                            S[i, j] = S[i, j] / 2;
+                            cnt += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (S[i, j] >= 0)
+                        {
+                            S[i, j] = S[i, j] / 2;
+                        }
+                        else
+                        {
+                            S[i, j] = 2 * S[i, j];
+                        }
+                    }
+                }
+            }
+            return S;
+        }
+
+        delegate double Member(int i, double x, int now);
+        delegate int Down(int previ, int i);
+        delegate double Refer(double x);
+        delegate int[] Mas_del(int[] S);
+        delegate int[] Vec_del(int[,] S);
+
+        static int Down1(int previ, int i) => previ * i;
+        static int Down2(int previ, int i) => previ * -1;
+
+        static double Member1(int i, double x, int now) => Math.Cos(i * x) / now;
+        static double Member2(int i, double x, int now) => (Math.Cos(i * x) * now) / (i * i);
+
+        static double Refer1(double x) => Math.Pow(Math.E, Math.Cos(x)) * Math.Cos(Math.Sin(x));
+        static double Refer2(double x) => (x * x - (Math.PI * Math.PI / 3)) / 4;
+
+        static void Summ(Member member, Down down, Refer refer, int fnumb, double a, double b, double h)
+        {
+            for (double x = a; x <= b; x += h)
+            {
+                int i = 1, now = 1;
+                double sum = fnumb;
+
+                while (Math.Abs(member(i, x, now)) > 0.0001)
+                {
+                    now = down(now, i);
+                    sum += member(i, x, now);
+                    i++;
+                }
+                Console.WriteLine(Math.Round(sum, 3) + " " + Math.Round(refer(x), 3));
+            }
+        }
+
+        
+
+        static int[] Sort(int[] S)
+        {
+            Array.Sort(S);
+            return S;
+        }
+
+        static int[] Sortr(int[] S)
+        {
+            Array.Sort(S);
+            Array.Reverse(S);
+            return S;
+        }
+
+        static void Mas(int[,] S)
+        {
+
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                int[] S1 = new int[S.GetLength(1)];
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    S1[j] = S[i, j];
+                }
+                Mas_del a;
+                if (i % 2 == 0)
+                {
+                    a = Sort;
+                }
+                else
+                {
+                    a = Sortr;
+                }
+                S1 = a(S1);
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    S[i, j] = S1[j];
+                }
+            }
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = 0; j < S.GetLength(1); j++)
+                {
+                    Console.Write(S[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        
+
+        static int[] Up(int[,] S)
+        {
+            int s = S.GetLength(0), lgth = 0;
+            while (s > 0)
+            {
+                lgth += s;
+                s -= 1;
+            }
+            int[] S1 = new int[lgth];
+            int cnt = 0;
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = i; j < S.GetLength(1); j++)
+                {
+                    S1[cnt] = S[i, j];
+                    cnt += 1;
+                }
+            }
+            return S1;
+        }
+
+        static int[] Low(int[,] S)
+        {
+            int s = S.GetLength(0), lgth = 0;
+            while (s > 0)
+            {
+                lgth += s;
+                s -= 1;
+            }
+            int[] S1 = new int[lgth];
+            int cnt = 0;
+            for (int i = 0; i < S.GetLength(0); i++)
+            {
+                for (int j = 0; j <= i; j++)
+                {
+                    S1[cnt] = S[i, j];
+                    cnt += 1;
+                }
+            }
+            return S1;
+        }
+
+        static void Vec(int[,] S, Vec_del vec)
+        {
+            int[] S1 = vec(S);
+            for (int i = 0; i < S1.Length; i++)
+            {
+                Console.Write(S1[i] + " ");
+            }
+            int sum = 0;
+            for (int i = 0; i < S1.Length; i++)
+            {
+                sum += S1[i] * S1[i];
+            }
+            Console.WriteLine(Math.Pow(sum, 0.5));
+        }
+
+        static void Main(string[] args)
+        {
+            #region 1-1
+            Console.WriteLine("1) C = " + Sum(8, 5) +
+                            "\n2) C = " + Sum(10, 5) +
+                            "\n3) C = " + Sum(11, 5) + "\n");
+            #endregion
+
+            #region 1-2
+            int a = Int();
+            int b = Int();
+            int c = Int();
+            int d = Int();
+            int e = Int();
+            int f = Int();
+
+            if (Geron(a, b, c) == -1 || Geron(d, e, f) == -1)
+            {
+                Console.WriteLine("Error");
+            }
+
+            else if (Geron(a, b, c) > Geron(d, e, f))
+            {
+                Console.WriteLine("First is more big");
+            }
+            else if (Geron(a, b, c) == Geron(d, e, f))
+            {
+                Console.WriteLine("=");
+            }
+            else
+            {
+                Console.WriteLine("Second is more big");
+            }
+            Console.WriteLine();
+            #endregion
+            #region 2-6
+            int[] A = new int[] { 12, -8, -7, 6, 9, 14, -10 };
+            int[] B = new int[] { 0, -1, 11, -4, 4, -2, 20, 9 };
+            int[] A1 = Maxdel(A);
+            int[] B1 = Maxdel(B);
+            int[] C = new int[A1.Length + B1.Length];
+            for (int i = 0; i < A1.Length + B1.Length; i++)
+            {
+                if (i < A1.Length)
+                {
+                    C[i] = A1[i];
+                }
+                else
+                {
+                    C[i] = B1[i - A1.Length];
+                }
+            }
+            for (int i = 0; i < C.Length; i++)
+            {
+                Console.Write(C[i] + " ");
+            }
+            Console.WriteLine("\n");
+            #endregion
+
+            #region 2-10
+            int[,] M = new int[5, 5]
+            {
+                {9,  -3, 2,  11, 1 },
+                {-4, 5, 5, -9,  -8 },
+                {16,  -3, 21,  -2,  3 },
+                {5,-10, 1,  9,  -8 },
+                {12,  3, -5,  6,  7 }
+            };
+
+            int max1 = M[0, 0], min1 = M[0, 1], ind1 = 0, ind2 = 1;
+            for (int i = 0; i < M.GetLength(0); i++)
+            {
+                for (int j = 0; j < M.GetLength(1); j++)
+                {
+                    if (i >= j && max1 < M[i, j])
+                    {
+                        max1 = M[i, j];
+                        ind1 = j;
+                    }
+                    if (j > i && min1 > M[i, j])
+                    {
+                        max1 = M[i, j];
+                        ind2 = j;
+                    }
+                }
+            }
+            int[,] P = Matdel(M, ind1, ind2);
+
+            for (int i = 0; i < P.GetLength(0); i++)
+            {
+                for (int j = 0; j < P.GetLength(1); j++)
+                {
+                    Console.Write(P[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            #endregion
+
+            #region 2-23
+            double[,] S1 = new double[5, 5]
+            {
+                {9,  -3, 2,  11, 1 },
+                {-4, 5, 5, -9,  -8 },
+                {16,  -3, 21,  -2,  3 },
+                {5,-10, 1,  9,  -8 },
+                {12,  3, -5,  6,  7 }
+            };
+            double[,] S2 = new double[4, 4]
+            {
+                {1,  -5, 4,  -8},
+                {12, -10, 1, 3},
+                {-22,  3, 11,  -6},
+                {-9,-7, -4,  -6},
+            };
+
+            S1 = MaksMin(S1);
+            S2 = MaksMin(S2);
+
+            for (int i = 0; i < S1.GetLength(0); i++)
+            {
+                for (int j = 0; j < S1.GetLength(1); j++)
+                {
+                    Console.Write(S1[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i < S2.GetLength(0); i++)
+            {
+                for (int j = 0; j < S2.GetLength(1); j++)
+                {
+                    Console.Write(S2[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            #endregion
+            #region 3-1
+            Summ(Member1, Down1, Refer1, 1, 0.1, 1, 0.1);
+            Console.WriteLine();
+            Summ(Member2, Down2, Refer2, 0, Math.PI / 5, Math.PI, Math.PI / 25);
+            #endregion
+
+            #region 3-2
+            int[,] Q = new int[5, 5]
+            {
+                {9,  -3, 2,  11, 1 },
+                {-4, 5, 5, -9,  -8 },
+                {16,  -3, 21,  -2,  3 },
+                {5,-10, 1,  9,  -8 },
+                {12,  3, -5,  6,  7 }
+            };
+
+            Mas(Q);
+            #endregion
+
+            #region 3-4
+            int[,] W = new int[5, 5]
+            {
+                {9,  -3, 2,  11, 1 },
+                {-4, 5, 5, -9,  -8 },
+                {16,  -3, 21,  -2,  3 },
+                {5,-10, 1,  9,  -8 },
+                {12,  3, -5,  6,  7 }
+            };
+
+            Vec(W, Up);
+            Vec(W, Low);
+            #endregion
+        }
+    }
+}
