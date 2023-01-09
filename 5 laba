@@ -135,7 +135,7 @@ namespace _5th_Lab
                     {
                         if (i >= j)
                         {
-                            if (Sa[i, j] > maximus) // поменял
+                            if (Sa[i, j] < minimus)
                             {
                                 maximus = Sa[i, j];
                                 indexj = j;
@@ -143,7 +143,7 @@ namespace _5th_Lab
                         }
                         if (i < j)
                         {
-                            if (Sa[i, j] <minimus)
+                            if (Sa[i, j] > maximus)
                             {
                                 minimus = Sa[i, j];
                                 indexjj = j;
@@ -165,10 +165,11 @@ namespace _5th_Lab
             #endregion
             #region n 23
             {
-                double[,] Matrix = new double[3, 3] 
-                                              {{3, -2, -2}, 
-                                               {-4, 5, -1}, 
-                                               {-6, -3,-1}};
+                double[,] Matrix = new double[5, 5] {{1,2,3,4,5},
+                                               {6,7,8,9,10 },
+                                               {11,12,13,14,15 },
+                                               {16,17,18,19,20 },
+                                               {21,22,23,34,123425 } };
                 double[,] Matrix_2 = new double[6, 6] {   {1234,234,45,2,34,12},
                                                         {11,345,-500,0,-8,1},
                                                         {66,666,77,-2,1,44},
@@ -207,7 +208,7 @@ namespace _5th_Lab
                 Summ(Sigma2, DownGrade2, y2, 0, Math.PI / 5, Math.PI, Math.PI / 25);
             }
             #endregion
-
+            
             #region n 2
             {
                 double[,] mmm = new double[5, 5]
@@ -260,7 +261,7 @@ namespace _5th_Lab
                 Console.WriteLine("треугольник фигня");
             return (Math.Pow(p * (p - a) * (p - b) * (p - c), 0.5));
         }
-        static int[] array(int[] A)
+        static int[] array(int[] A  )
         {
             int index = 0, max = A[0];
             for (int i = 0; i < A.Length; i++)
@@ -317,7 +318,7 @@ namespace _5th_Lab
             int counter = 0;
             for (int i = 0; i < Matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < Matrix.GetLength(1); j++)
+                for(int j = 0; j < Matrix.GetLength(1); j++)
                 {
                     arr[counter] = Matrix[i, j];
                     counter++;
@@ -329,36 +330,31 @@ namespace _5th_Lab
             int flag = 1;
             for (int i = 0; i < Matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < Matrix.GetLength(0); j++)
+                for (int j =0; j < Matrix.GetLength(0); j++)
                 {
-                    if (counter == 4)
+                    if (counter == 5)
                     {
-                        flag = 0;
+                        flag = 1;
                     }
                     if (flag == 1 && (Matrix[i, j] == arr[0] || Matrix[i, j] == arr[1] || Matrix[i, j] == arr[2] || Matrix[i, j] == arr[3] || Matrix[i, j] == arr[4]))
                     {
-                        if (Matrix[i, j] >= 0) //поменял
+                        if (Matrix[i, j] >= 0)
                         {
                             Matrix[i, j] *= 2;
                         }
-                        if (Matrix[i, j] < 0)
+                        else
                         {
                             Matrix[i, j] /= 2;
+                            counter++;
                         }
-                        counter++;
                     }
                     else
                     {
-                        if (Matrix[i, j] >= 0)
-                        {
+                        if (Matrix[i, j] > 0)
                             Matrix[i, j] /= 2;
-                        }
-
-                        if (Matrix[i, j] < 0)
-                        {
-                            Matrix[i, j] /= 2;
-                        } 
-                    }
+                        else
+                            Matrix[i, j] *= 2;
+                    }                   
                 }
             }
             return Matrix;
@@ -371,10 +367,10 @@ namespace _5th_Lab
         static int DownGrade2(int p, int i) => p * -1;
 
         static double Sigma1(int i, double x, int now) => Math.Cos(i * x) / now;
-        static double Sigma2(int i, double x, int now) => (Math.Cos(i * x) * now) / (i * i);
+        static double Sigma2(int i, double x, int now) => (Math.Cos(i * x) * now) / (i*i);
 
         static double y1(double x) => Math.Pow(Math.E, Math.Cos(Math.Sin(x)));
-        static double y2(double x) => ((x * x) - Math.Pow(Math.PI, 2) / 3) / 4;
+        static double y2(double x) => ((x*x) - Math.Pow(Math.PI, 2)/3)/4;
 
         static void Summ(Sigma sig, DownGrade down, y _y_, int first_n, double a, double b, double h)
         {
